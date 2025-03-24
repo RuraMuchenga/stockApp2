@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request
 import yfinance as yf
 import pandas as pd
@@ -11,7 +12,8 @@ from keras.models import Sequential
 from keras.layers import Dense, LSTM
 import xgboost as xgb
 
-
+# Force TensorFlow to run on CPU only
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 app = Flask(__name__)
 
@@ -26,6 +28,7 @@ def plot_to_base64():
 # ARIMA Model
 def arima_prediction(data):
     try:
+        data.index.freq = data.index.inferred_freq
         model = ARIMA(data['Close'], order=(2, 1, 0))
         model_fit = model.fit()
         predictions = model_fit.forecast(steps=5)
@@ -119,4 +122,5 @@ def index():
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
 
-
+# Gunicorn command suggestion (extend timeout)
+# gunicorn app:app --timeout 120
