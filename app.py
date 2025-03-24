@@ -1,29 +1,30 @@
 import os
-from flask import Flask, render_template, request
-import yfinance as yf
+from flask import Flask, render_template, request, jsonify, url_for
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import io
-import base64
+from datetime import datetime
+import yfinance as yf
 from statsmodels.tsa.arima.model import ARIMA
 from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
 from keras.layers import Dense, LSTM
 import xgboost as xgb
+import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
 
 # Force TensorFlow to run on CPU only
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', template_folder='templates')
 
 # Helper function to convert plots to base64
 def plot_to_base64():
-    img = io.BytesIO()
-    plt.savefig(img, format='png')
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
     plt.close()
-    img.seek(0)
-    return base64.b64encode(img.getvalue()).decode('utf8')
+    buffer.seek(0)
+    return base64.b64encode(buffer.getvalue()).decode('utf8')
 
 # ARIMA Model
 def arima_prediction(data):
@@ -121,6 +122,3 @@ def index():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
-
-# Gunicorn command suggestion (extend timeout)
-# gunicorn app:app --timeout 120
