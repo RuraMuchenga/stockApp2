@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: flask-stock-app
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --timeout 300
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8000

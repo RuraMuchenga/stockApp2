@@ -1,35 +1,39 @@
-import os
-from flask import Flask, render_template, request, jsonify, url_for
+from flask import Flask, render_template, request
+import yfinance as yf
 import pandas as pd
 import numpy as np
-from datetime import datetime
-import yfinance as yf
+import matplotlib.pyplot as plt
+import io
+import base64
 from statsmodels.tsa.arima.model import ARIMA
 from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
-from keras.layers import Dense, LSTM
+from keras.layers import Dense, LSTM, Input
 import xgboost as xgb
-import matplotlib.pyplot as plt
-import base64
-from io import BytesIO
+import os
+import tensorflow as tf
 
 # Force TensorFlow to run on CPU only
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
-app = Flask(__name__, static_folder='static', template_folder='templates')
+# Control TensorFlow memory growth
+physical_devices = tf.config.list_physical_devices('GPU')
+if physical_devices:
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+
+app = Flask(__name__)
 
 # Helper function to convert plots to base64
 def plot_to_base64():
-    buffer = BytesIO()
-    plt.savefig(buffer, format='png')
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
     plt.close()
-    buffer.seek(0)
-    return base64.b64encode(buffer.getvalue()).decode('utf8')
+    img.seek(0)
+    return base64.b64encode(img.getvalue()).decode('utf8')
 
 # ARIMA Model
 def arima_prediction(data):
     try:
-        data.index.freq = data.index.inferred_freq
         model = ARIMA(data['Close'], order=(2, 1, 0))
         model_fit = model.fit()
         predictions = model_fit.forecast(steps=5)
@@ -53,10 +57,12 @@ def lstm_prediction(data):
             y.append(data_scaled[i, 0])
         X, y = np.array(X), np.array(y)
         X = X.reshape(X.shape[0], X.shape[1], 1)
-        model = Sequential()
-        model.add(LSTM(units=50, return_sequences=True, input_shape=(X.shape[1], 1)))
-        model.add(LSTM(units=50))
-        model.add(Dense(1))
+        model = Sequential([
+            Input(shape=(X.shape[1], 1)),
+            LSTM(units=50, return_sequences=True),
+            LSTM(units=50),
+            Dense(1)
+        ])
         model.compile(optimizer='adam', loss='mse')
         model.fit(X, y, epochs=10, batch_size=32, verbose=0)
         predictions = model.predict(X[-5:])
@@ -96,22 +102,19 @@ def index():
     if request.method == 'POST':
         stock_symbol = request.form['stock_symbol'].upper()
         try:
-            data = yf.download(stock_symbol, start='2020-01-01', end='2025-12-31', auto_adjust=False)
+            data = yf.download(stock_symbol, start='2020-01-01', end='2025-12-31', auto_adjust=True)
             if data.empty or 'Close' not in data.columns:
                 return "Error: Failed to fetch stock data. Check the symbol."
-            
+
+            # Ensure DataFrame has proper datetime index with frequency
+            data.index = pd.date_range(start=data.index[0], periods=len(data), freq='B')
+
             arima_plot, arima_preds = arima_prediction(data)
             lstm_plot, lstm_preds = lstm_prediction(data)
             xgboost_plot, xgboost_preds = xgboost_prediction(data)
 
             latest_data = data.iloc[-1]
-            stock_info = {
-                'Open': latest_data['Open'],
-                'High': latest_data['High'],
-                'Low': latest_data['Low'],
-                'Close': latest_data['Close'],
-                'Volume': latest_data['Volume']
-            }
+            stock_info = {col: round(latest_data[col], 2) for col in ['Open', 'High', 'Low', 'Close', 'Volume']}
 
             return render_template('results.html', stock_symbol=stock_symbol, stock_info=stock_info,
                                    arima_plot=arima_plot, lstm_plot=lstm_plot, xgboost_plot=xgboost_plot,
@@ -121,4 +124,5 @@ def index():
     return render_template('checkPrediction.html')
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    # Increase Gunicorn timeout
+    app.run(host='0.0.0.0', port=8000)
