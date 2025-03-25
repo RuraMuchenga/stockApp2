@@ -12,6 +12,7 @@ from keras.layers import Dense, LSTM, Input
 import xgboost as xgb
 import os
 import tensorflow as tf
+from keras import backend as K
 
 # Force TensorFlow to run on CPU only
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
@@ -64,7 +65,7 @@ def lstm_prediction(data):
             Dense(1)
         ])
         model.compile(optimizer='adam', loss='mse')
-        model.fit(X, y, epochs=10, batch_size=32, verbose=0)
+        model.fit(X, y, epochs=5, batch_size=64, verbose=0)
         predictions = model.predict(X[-5:])
         predictions = scaler.inverse_transform(predictions)
         plt.figure()
@@ -72,6 +73,7 @@ def lstm_prediction(data):
         plt.plot(data.index[-5:], predictions, label='LSTM Predicted Price', color='orange')
         plt.title('LSTM Stock Price Prediction')
         plt.legend()
+        K.clear_session()  # Clear TensorFlow session to prevent memory buildup
         return plot_to_base64(), predictions.flatten().tolist()
     except Exception as e:
         return f"LSTM Error: {e}", []
@@ -125,4 +127,4 @@ def index():
 
 if __name__ == "__main__":
     # Increase Gunicorn timeout
-    app.run(host='0.0.0.0', port=8000)
+    app.run(host='0.0.0.0', port=8000, threaded=True)
