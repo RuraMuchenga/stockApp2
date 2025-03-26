@@ -1,5 +1,5 @@
 import matplotlib
-matplotlib.use('Agg')
+matplotlib.use('Agg')  # Thread-safe backend
 import matplotlib.pyplot as plt
 from flask import Flask, render_template, request
 import yfinance as yf
@@ -46,7 +46,6 @@ def prophet_prediction(data):
         df = data.reset_index()
         if isinstance(df.columns, pd.MultiIndex):
             df.columns = [col[0] if col[1] == '' else f"{col[0]}_{col[1]}" for col in df.columns]
-        print(f"Prophet - Reset index took: {time.time() - start_time:.2f}s")
         
         date_col = None
         for col in df.columns:
@@ -65,23 +64,32 @@ def prophet_prediction(data):
             return "Prophet Error: No 'Close' column found", []
         
         df = df[[date_col, close_col]].rename(columns={date_col: 'ds', close_col: 'y'})
-        print(f"Prophet - Data prep took: {time.time() - start_time:.2f}s")
         
         model = Prophet()
         model.fit(df)
-        print(f"Prophet - Fit took: {time.time() - start_time:.2f}s")
         
         future = model.make_future_dataframe(periods=5)
         forecast = model.predict(future)
         predictions = forecast[['ds', 'yhat']].tail(5)
-        print(f"Prophet - Predict took: {time.time() - start_time:.2f}s")
         
-        # Skip plotting for now
+        # Plotting
+        plt.figure(figsize=(10, 5))
+        plt.plot(df['y'].tail(10), label='Actual', marker='o')
+        plt.plot(range(10, 15), predictions['yhat'], label='Predicted', color='orange', marker='o')
+        plt.title(f'Prophet Prediction')
+        plt.xlabel('Days')
+        plt.ylabel('Price')
+        plt.legend()
+        plot_data = plot_to_base64()
+        
         print(f"Prophet - Total time: {time.time() - start_time:.2f}s")
-        return "prophet_plot_placeholder", predictions['yhat'].tolist()
+        return plot_data, predictions['yhat'].tolist()
     except Exception as e:
-        print(f"Prophet - Failed with detailed error: {str(e)} at {time.time() - start_time:.2f}s")
-        return f"Prophet Error: {str(e)}", []
+        print(f"Prophet - Failed with error: {str(e)} at {time.time() - start_time:.2f}s")
+        plt.figure(figsize=(10, 5))
+        plt.text(0.5, 0.5, 'Prophet Plot Failed', ha='center', va='center')
+        plot_data = plot_to_base64()
+        return plot_data, []
 
 def xgboost_prediction(data):
     start_time = time.time()
@@ -89,7 +97,6 @@ def xgboost_prediction(data):
         df = data.copy()
         if isinstance(df.columns, pd.MultiIndex):
             df.columns = [col[0] if col[1] == '' else f"{col[0]}_{col[1]}" for col in df.columns]
-        print(f"XGBoost - Reset index took: {time.time() - start_time:.2f}s")
         
         close_col = None
         open_col = None
@@ -109,7 +116,6 @@ def xgboost_prediction(data):
                 volume_col = col
         
         if not all([close_col, open_col, high_col, low_col, volume_col]):
-            print(f"XGBoost - Missing columns at: {time.time() - start_time:.2f}s")
             return "XGBoost Error: Missing required columns", []
         
         df['MA5'] = df[close_col].rolling(window=5).mean()
@@ -117,11 +123,9 @@ def xgboost_prediction(data):
         df['RSI'] = ta.momentum.RSIIndicator(df[close_col], window=14).rsi()
         df['MACD'] = ta.trend.MACD(df[close_col]).macd()
         df = df.dropna()
-        print(f"XGBoost - Indicators added took: {time.time() - start_time:.2f}s")
         
         df['Target'] = df[close_col].shift(-1)
         df = df.dropna()
-        print(f"XGBoost - Target prep took: {time.time() - start_time:.2f}s")
         
         X = df[[open_col, high_col, low_col, close_col, volume_col, 'MA5', 'MA10', 'RSI', 'MACD']]
         y = df['Target']
@@ -129,21 +133,29 @@ def xgboost_prediction(data):
         train_size = int(len(df) * 0.8)
         X_train, X_test = X[:train_size], X[train_size:]
         y_train, y_test = y[:train_size], y[train_size:]
-        print(f"XGBoost - Data split took: {time.time() - start_time:.2f}s")
         
         model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100)
         model.fit(X_train, y_train)
-        print(f"XGBoost - Model fit took: {time.time() - start_time:.2f}s")
-        
         predictions = model.predict(X_test[-5:])
-        print(f"XGBoost - Predict took: {time.time() - start_time:.2f}s")
         
-        # Skip plotting for now
+        # Plotting
+        plt.figure(figsize=(10, 5))
+        plt.plot(y_test.tail(5), label='Actual', marker='o')
+        plt.plot(range(5), predictions, label='Predicted', color='orange', marker='o')
+        plt.title(f'XGBoost Prediction')
+        plt.xlabel('Days')
+        plt.ylabel('Price')
+        plt.legend()
+        plot_data = plot_to_base64()
+        
         print(f"XGBoost - Total time: {time.time() - start_time:.2f}s")
-        return "xgboost_plot_placeholder", predictions.tolist()
+        return plot_data, predictions.tolist()
     except Exception as e:
-        print(f"XGBoost - Failed with detailed error: {str(e)} at {time.time() - start_time:.2f}s")
-        return f"XGBoost Error: {str(e)}", []
+        print(f"XGBoost - Failed with error: {str(e)} at {time.time() - start_time:.2f}s")
+        plt.figure(figsize=(10, 5))
+        plt.text(0.5, 0.5, 'XGBoost Plot Failed', ha='center', va='center')
+        plot_data = plot_to_base64()
+        return plot_data, []
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -157,11 +169,6 @@ def index():
 
         prophet_result, prophet_preds = prophet_prediction(data)
         xgboost_result, xgboost_preds = xgboost_prediction(data)
-
-        if isinstance(prophet_result, str) and prophet_result.startswith("Prophet Error"):
-            return f"Prophet failed: {prophet_result}"
-        if isinstance(xgboost_result, str) and xgboost_result.startswith("XGBoost Error"):
-            return f"XGBoost failed: {xgboost_result}"
 
         latest_data = data.iloc[-1]
         stock_info = {col: round(latest_data[col], 2) for col in ['Open', 'High', 'Low', 'Close', 'Volume']}

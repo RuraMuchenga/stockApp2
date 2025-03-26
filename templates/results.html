@@ -2,10 +2,10 @@
 <html lang="en" dir="ltr" data-startbar="dark" data-bs-theme="light">
 <head>
     <meta charset="utf-8" />
-    <title>Stock Vision - Dashboard Template</title>
+    <title>Stock Vision - {{ stock_symbol }} Prediction</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-    <meta content="" name="author" />
+    <meta content="Advanced Stock Prediction Dashboard" name="description" />
+    <meta content="Ruramai Muchenga" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='libs/@splidejs/splide/css/splide.min.css') }}">
@@ -13,16 +13,90 @@
     <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url_for('static', filename='css/app.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
-        .stock-card { color: #fff; font-weight: bold; }
-        .stock-card.open { background-color: #28a745; }
-        .stock-card.high { background-color: #ffc107; }
-        .stock-card.low { background-color: #dc3545; }
-        .stock-card.close { background-color: #007bff; }
-        .stock-card.volume { background-color: #6f42c1; }
+        /* Enhanced Stock Cards */
+        .stock-card {
+            color: #fff;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .stock-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .stock-card.open { background: linear-gradient(135deg, #28a745, #218838); }
+        .stock-card.high { background: linear-gradient(135deg, #ffc107, #e0a800); }
+        .stock-card.low { background: linear-gradient(135deg, #dc3545, #c82333); }
+        .stock-card.close { background: linear-gradient(135deg, #007bff, #0069d9); }
+        .stock-card.volume { background: linear-gradient(135deg, #6f42c1, #5a32a3); }
+
+        /* Chart Containers */
+        .chart-container {
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        .chart-container img {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+        }
+
+        /* Insights Card */
+        .insights-card {
+            background: #f8f9fa;
+            border: none;
+            border-radius: 10px;
+            height: 100%;
+        }
+        .insights-card h5 {
+            color: #343a40;
+            font-weight: 700;
+        }
+        .insights-card ul {
+            padding-left: 20px;
+            color: #495057;
+        }
+
+        /* Prediction Table */
+        .pred-table {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .pred-table thead {
+            background: #343a40;
+            color: #fff;
+        }
+        .pred-table tbody tr:hover {
+            background: #f1f3f5;
+        }
+
+        /* General Styling */
+        h1, h3 {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        .btn-primary {
+            background: #007bff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: background 0.3s;
+        }
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        .page-content {
+            background: #f4f6f8;
+            min-height: 100vh;
+        }
     </style>
 </head>
 <body>
-    <!-- Top Bar and Sidebar (keep as is) -->
+    <!-- Top Bar (unchanged) -->
     <div class="topbar d-print-none">
         <div class="container-fluid">
             <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">    
@@ -55,6 +129,7 @@
         </div>
     </div>
 
+    <!-- Sidebar (unchanged) -->
     <div class="startbar d-print-none">
         <div class="brand">
             <a href="{{ url_for('static', filename='index.html') }}" class="logo"><span></span><span class=""></span></a>
@@ -87,6 +162,7 @@
     <div class="page-wrapper">
         <div class="page-content">
             <div class="container-fluid">
+                <!-- Ticker (unchanged) -->
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -104,69 +180,71 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Main Results -->
                 <div class="row">
                     <div class="col-12">
-                        <div class="container mt-4">
-                            <h1 class="text-center mb-4">Stock Prediction Results for {{ stock_symbol }}</h1>
+                        <div class="container mt-5">
+                            <h1 class="text-center mb-4">Prediction Analysis for {{ stock_symbol }}</h1>
 
                             <!-- Stock Info Cards -->
-                            <div class="row text-center mb-4">
+                            <div class="row justify-content-center mb-5">
                                 {% for key, value in stock_info.items() %}
-                                <div class="col-md-2">
-                                    <div class="card shadow-sm p-2 stock-card {{ key|lower }}">
-                                        <h5 class="card-title">{{ key }}</h5>
-                                        <p class="card-text fw-bold">{{ stock_symbol }} {{ value | round(4) }}</p>
+                                <div class="col-md-2 col-sm-4 mb-3">
+                                    <div class="card stock-card {{ key|lower }} p-3 text-center">
+                                        <h5 class="card-title mb-1">{{ key }}</h5>
+                                        <p class="card-text fs-5">{{ value | round(2) }}</p>
                                     </div>
                                 </div>
                                 {% endfor %}
                             </div>
 
-                            <!-- Prophet Chart & Explanation -->
-                            <div class="row mb-4">
+                            <!-- Prophet Chart & Insights -->
+                            <div class="row chart-container">
                                 <div class="col-md-8">
-                                    <img src="data:image/png;base64,{{ prophet_plot }}" class="img-fluid" alt="Prophet Chart">
+                                    <img src="data:image/png;base64,{{ prophet_plot }}" class="img-fluid" alt="Prophet Prediction">
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="card shadow-sm p-3">
+                                    <div class="card insights-card p-4">
                                         <h5 class="card-title">Prophet Model Insights</h5>
-                                        <p class="card-text">Prophet forecasts based on trends and seasonality, showing a stable pattern with slight changes. It’s great for daily stock data.</p>
+                                        <p class="card-text">Prophet leverages time-series trends and seasonality for robust forecasting.</p>
                                         <ul class="card-text">
-                                            <li>Indicates moderate price stability.</li>
-                                            <li>Follows a linear trend with minor ups and downs.</li>
-                                            <li>Predicts small changes over the next 5 days.</li>
+                                            <li>Stable price trends observed.</li>
+                                            <li>Linear growth with minor fluctuations.</li>
+                                            <li>Expect subtle shifts over 5 days.</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- XGBoost Chart & Explanation -->
-                            <div class="row mb-4">
+                            <!-- XGBoost Chart & Insights -->
+                            <div class="row chart-container">
                                 <div class="col-md-8">
-                                    <img src="data:image/png;base64,{{ xgboost_plot }}" class="img-fluid" alt="XGBoost Chart">
+                                    <img src="data:image/png;base64,{{ xgboost_plot }}" class="img-fluid" alt="XGBoost Prediction">
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="card shadow-sm p-3">
+                                    <div class="card insights-card p-4">
                                         <h5 class="card-title">XGBoost Model Insights</h5>
-                                        <p class="card-text">XGBoost uses technical indicators for precise predictions, reacting quickly to market shifts.</p>
+                                        <p class="card-text">XGBoost uses advanced technical indicators for dynamic predictions.</p>
                                         <ul class="card-text">
-                                            <li>Predicts sharper price movements.</li>
-                                            <li>Adapts to new trends fast.</li>
-                                            <li>Expect bigger changes soon.</li>
+                                            <li>Captures sharp market shifts.</li>
+                                            <li>Highly responsive to trends.</li>
+                                            <li>Anticipates notable changes.</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Next 5 Days Predictions -->
-                            <h3 class="text-center mb-3">Next 5 Days Prediction</h3>
+                            <!-- Predictions Table -->
+                            <h3 class="text-center mb-4">5-Day Forecast</h3>
                             <div class="row justify-content-center">
                                 <div class="col-md-8">
-                                    <table class="table table-striped table-hover shadow-sm">
-                                        <thead class="table-dark">
+                                    <table class="table pred-table">
+                                        <thead>
                                             <tr>
-                                                <th>Day</th>
-                                                <th>Prophet</th>
-                                                <th>XGBoost</th>
+                                                <th scope="col">Day</th>
+                                                <th scope="col">Prophet Prediction</th>
+                                                <th scope="col">XGBoost Prediction</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -174,8 +252,8 @@
                                                 {% for i in range(5) %}
                                                 <tr>
                                                     <td>Day {{ i+1 }}</td>
-                                                    <td>{{ prophet_preds[i] | round(4) | default('N/A') }}</td>
-                                                    <td>{{ xgboost_preds[i] | round(4) | default('N/A') }}</td>
+                                                    <td>{{ prophet_preds[i] | round(2) | default('N/A') }}</td>
+                                                    <td>{{ xgboost_preds[i] | round(2) | default('N/A') }}</td>
                                                 </tr>
                                                 {% endfor %}
                                             {% else %}
@@ -188,26 +266,26 @@
                                 </div>
                             </div>
 
-                            <div class="text-center mt-4">
-                                <a href="/" class="btn btn-primary">Back to Home</a>
+                            <!-- Back Button -->
+                            <div class="text-center mt-5 mb-4">
+                                <a href="/" class="btn btn-primary">Return to Dashboard</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4"></div>
                 </div>
             </div>
 
-            <!-- Footer -->
+            <!-- Footer (enhanced) -->
             <footer class="footer text-center text-sm-start d-print-none">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
-                            <div class="card mb-0 rounded-bottom-0">
+                            <div class="card mb-0 rounded-bottom-0 bg-dark text-light">
                                 <div class="card-body">
-                                    <p class="text-muted mb-0">
+                                    <p class="mb-0">
                                         © <script>document.write(new Date().getFullYear())</script> StockVision
-                                        <span class="text-muted d-none d-sm-inline-block float-end">
-                                            Ruramai Muchenga <i class="iconoir-heart text-danger"></i> Middlesex University
+                                        <span class="float-end d-none d-sm-inline-block">
+                                            Crafted by Ruramai Muchenga <i class="iconoir-heart text-danger"></i> Middlesex University
                                         </span>
                                     </p>
                                 </div>
@@ -219,11 +297,10 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
+    <!-- JavaScript (unchanged) -->
     <script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='libs/iconify-icon/iconify-icon.min.js') }}"></script>
     <script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='content.fxstreet.com/widgets-v2/beta/fxs-widgets.js') }}" defer></script>
     <script src="{{ url_for('static', filename='libs/@splidejs/splide/js/splide.min.js') }}"></script>
     <script src="{{ url_for('static', filename='libs/@splidejs/splide-extension-auto-scroll/js/splide-extension-auto-scroll.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
