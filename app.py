@@ -32,11 +32,13 @@ def get_stock_data(symbol):
     cache_file = os.path.join(CACHE_DIR, f"{symbol}.pkl")
     today = datetime.now().date()
     
+    # Check if cache exists and is from today
     if os.path.exists(cache_file):
         cache_time = datetime.fromtimestamp(os.path.getmtime(cache_file)).date()
         if cache_time == today:
             return joblib.load(cache_file)
     
+    # Fetch live data up to today
     start_date = (today - timedelta(days=5*365)).strftime('%Y-%m-%d')  # 5 years of data
     end_date = today.strftime('%Y-%m-%d')  # Today
     data = yf.download(symbol, start=start_date, end=end_date, auto_adjust=True)
@@ -44,6 +46,7 @@ def get_stock_data(symbol):
     if data.empty or 'Close' not in data.columns:
         return None
     
+    # Save to cache
     joblib.dump(data, cache_file)
     return data
 
@@ -72,28 +75,26 @@ def prophet_prediction(data):
         
         df = df[[date_col, close_col]].rename(columns={date_col: 'ds', close_col: 'y'})
         
-        model = Prophet(
-            changepoint_prior_scale=0.01,
-            yearly_seasonality=False,
-            weekly_seasonality=True,
-            daily_seasonality=True
-        )
+        model = Prophet()
         model.fit(df)
         
-        future = model.make_future_dataframe(periods=5, freq='B')
+        # Predict the next 5 business days
+        future = model.make_future_dataframe(periods=5, freq='B')  # 'B' for business days
         forecast = model.predict(future)
         predictions = forecast[['ds', 'yhat']].tail(5)
         
-        last_date = data.index[-1]
+        # Plotting: Last 10 actual + 5 predicted with dates
+        last_date = data.index[-1]  # Last date in the data
+        # Generate dates: 10 past + 5 future business days
         past_dates = pd.date_range(end=last_date, periods=10, freq='B')
         future_dates = pd.date_range(start=last_date + timedelta(days=1), periods=5, freq='B')
         all_dates = list(past_dates) + list(future_dates)
         date_labels = [d.strftime('%d/%m/%y') for d in all_dates]
         
         plt.figure(figsize=(10, 5))
-        actual_last_10 = df['y'].tail(10).values
-        predicted_5 = predictions['yhat'].values
-        x_indices = range(15)
+        actual_last_10 = df['y'].tail(10).values  # Last 10 actual prices
+        predicted_5 = predictions['yhat'].values  # Next 5 predicted prices
+        x_indices = range(15)  # 0-14 for 15 days
         plt.plot(x_indices[:10], actual_last_10, label='Actual', marker='o', color='#007bff')
         plt.plot(x_indices[10:], predicted_5, label='Predicted', marker='o', color='#ff9900')
         plt.title(f'Prophet: 5-Day Forecast', fontsize=14, pad=15)
@@ -141,55 +142,39 @@ def xgboost_prediction(data):
         if not all([close_col, open_col, high_col, low_col, volume_col]):
             return "XGBoost Error: Missing required columns", [], []
         
-        # Calculate indicators and minimize dropna
         df['MA5'] = df[close_col].rolling(window=5).mean()
         df['MA10'] = df[close_col].rolling(window=10).mean()
         df['RSI'] = ta.momentum.RSIIndicator(df[close_col], window=14).rsi()
         df['MACD'] = ta.trend.MACD(df[close_col]).macd()
-        
-        # Drop NaN values once after all indicators are calculated
         df = df.dropna()
-        if len(df) < 20:  # Ensure enough data for training
-            return "XGBoost Error: Not enough data after dropping NaNs", [], []
         
-        # Create target
         df['Target'] = df[close_col].shift(-1)
-        df = df.dropna()  # Drop rows where Target is NaN
+        df = df.dropna()
         
-        if len(df) < 20:
-            return "XGBoost Error: Not enough data after creating target", [], []
+        X = df[[open_col, high_col, low_col, close_col, volume_col, 'MA5', 'MA10', 'RSI', 'MACD']]
+        y = df['Target']
         
-        # Prepare features and target
-        features = [open_col, high_col, low_col, close_col, volume_col, 'MA5', 'MA10', 'RSI', 'MACD']
-        X = df[features].values
-        y = df['Target'].values
-        
-        # Adjust train-test split to ensure enough test data
-        train_size = max(1, int(len(df) * 0.8))  # At least 1 row for training
-        if len(df) - train_size < 5:  # Ensure at least 5 rows for testing
-            train_size = len(df) - 5
-        
+        train_size = int(len(df) * 0.8)
         X_train, X_test = X[:train_size], X[train_size:]
         y_train, y_test = y[:train_size], y[train_size:]
         
-        # Train XGBoost
-        model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=200, learning_rate=0.05)
+        model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100)
         model.fit(X_train, y_train)
         predictions = model.predict(X_test[-5:])
         
         # Plotting: Last 10 actual + 5 predicted with dates
-        last_date = data.index[-1]
+        last_date = data.index[-1]  # Last date in the data
         past_dates = pd.date_range(end=last_date, periods=10, freq='B')
         future_dates = pd.date_range(start=last_date + timedelta(days=1), periods=5, freq='B')
         all_dates = list(past_dates) + list(future_dates)
         date_labels = [d.strftime('%d/%m/%y') for d in all_dates]
         
         plt.figure(figsize=(10, 5))
-        actual_last_10 = y_test[-10:] if len(y_test) >= 10 else y_test  # Handle case where y_test < 10
-        predicted_5 = predictions
-        x_indices = range(15)
-        plt.plot(x_indices[:len(actual_last_10)], actual_last_10, label='Actual', marker='o', color='#007bff')
-        plt.plot(x_indices[10:15], predicted_5, label='Predicted', marker='o', color='#ff9900')
+        actual_last_10 = y_test.tail(10).values  # Last 10 actual prices
+        predicted_5 = predictions  # Next 5 predicted prices
+        x_indices = range(15)  # 0-14 for 15 days
+        plt.plot(x_indices[:10], actual_last_10, label='Actual', marker='o', color='#007bff')
+        plt.plot(x_indices[10:], predicted_5, label='Predicted', marker='o', color='#ff9900')
         plt.title(f'XGBoost: 5-Day Forecast', fontsize=14, pad=15)
         plt.xlabel('Date', fontsize=12)
         plt.ylabel('Price', fontsize=12)
@@ -215,6 +200,9 @@ def index():
         data = get_stock_data(stock_symbol)
         if data is None:
             return "Error: Failed to fetch stock data. Check the symbol."
+
+        # Remove the artificial date range assignment
+        # data.index = pd.date_range(start=data.index[0], periods=len(data), freq='B')
 
         prophet_result, prophet_preds, prophet_dates = prophet_prediction(data)
         xgboost_result, xgboost_preds, xgboost_dates = xgboost_prediction(data)
