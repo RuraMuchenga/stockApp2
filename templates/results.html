@@ -242,7 +242,7 @@
                                     <table class="table pred-table">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Day</th>
+                                                <th scope="col">Date</th>
                                                 <th scope="col">Prophet Prediction</th>
                                                 <th scope="col">XGBoost Prediction</th>
                                             </tr>
@@ -251,7 +251,7 @@
                                             {% if prophet_preds|length > 0 and xgboost_preds|length > 0 %}
                                                 {% for i in range(5) %}
                                                 <tr>
-                                                    <td>Day {{ i+1 }}</td>
+                                                    <td>{{ pred_dates[i] }}</td>
                                                     <td>{{ prophet_preds[i] | round(2) | default('N/A') }}</td>
                                                     <td>{{ xgboost_preds[i] | round(2) | default('N/A') }}</td>
                                                 </tr>
