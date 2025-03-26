@@ -33,6 +33,7 @@ def plot_to_base64():
     return base64.b64encode(img.getvalue()).decode('utf8')
 
 # ARIMA Model
+#predicts the next 5 days of stock prices, plots the results alongside the last 10 days of actual data, and returns the plot + predictions as a list.
 def arima_prediction(data):
     try:
         model = ARIMA(data['Close'], order=(2, 1, 0))
@@ -47,38 +48,59 @@ def arima_prediction(data):
     except Exception as e:
         return f"ARIMA Error: {e}", []
 
-# LSTM Model
+# Optimized LSTM Model
 def lstm_prediction(data):
     try:
+        # Scale data
         scaler = MinMaxScaler(feature_range=(0, 1))
         data_scaled = scaler.fit_transform(data['Close'].values.reshape(-1, 1))
+
+        # Create sequences with a smaller window
         X, y = [], []
-        for i in range(10, len(data_scaled)):
-            X.append(data_scaled[i-10:i, 0])
+        sequence_length = 5  # reduced from 10 to 5
+        for i in range(sequence_length, len(data_scaled)):
+            X.append(data_scaled[i-sequence_length:i, 0])
             y.append(data_scaled[i, 0])
+
+        # Convert to numpy arrays
         X, y = np.array(X), np.array(y)
         X = X.reshape(X.shape[0], X.shape[1], 1)
+
+        # LSTM model - fewer units, layers, and faster compile
         model = Sequential([
             Input(shape=(X.shape[1], 1)),
-            LSTM(units=50, return_sequences=True),
-            LSTM(units=50),
+            LSTM(units=16, return_sequences=True),  # reduced from 50 to 16
+            LSTM(units=8),  # reduced from 50 to 8
             Dense(1)
         ])
-        model.compile(optimizer='adam', loss='mse')
-        model.fit(X, y, epochs=5, batch_size=64, verbose=0)
+
+        # Compile with RMSprop (uses less memory than Adam)
+        model.compile(optimizer='rmsprop', loss='mse')
+
+        # Shorter training with smaller batches
+        model.fit(X, y, epochs=3, batch_size=32, verbose=0)  # 3 epochs, smaller batch
+
+        # Make predictions
         predictions = model.predict(X[-5:])
         predictions = scaler.inverse_transform(predictions)
+
+        # Plot the results
         plt.figure()
         plt.plot(data.index[-len(predictions):], data['Close'].iloc[-len(predictions):], label='Real Price')
         plt.plot(data.index[-5:], predictions, label='LSTM Predicted Price', color='orange')
         plt.title('LSTM Stock Price Prediction')
         plt.legend()
-        K.clear_session()  # Clear TensorFlow session to prevent memory buildup
+
+        # Clear session to prevent memory buildup
+        K.clear_session()
+
         return plot_to_base64(), predictions.flatten().tolist()
+
     except Exception as e:
         return f"LSTM Error: {e}", []
 
 # XGBoost Model
+#Creates a Target column that shifts the closing price one day forward (to predict the next day's price).
 def xgboost_prediction(data):
     try:
         data['Target'] = data['Close'].shift(-1)
