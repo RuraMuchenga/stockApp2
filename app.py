@@ -48,56 +48,116 @@ def arima_prediction(data):
     except Exception as e:
         return f"ARIMA Error: {e}", []
 
-# Optimized LSTM Model
+
+
+#lstm
 def lstm_prediction(data):
     try:
         # Scale data
         scaler = MinMaxScaler(feature_range=(0, 1))
         data_scaled = scaler.fit_transform(data['Close'].values.reshape(-1, 1))
-
-        # Create sequences with a smaller window
+        
+        # Prepare training data
         X, y = [], []
-        sequence_length = 5  # reduced from 10 to 5
-        for i in range(sequence_length, len(data_scaled)):
-            X.append(data_scaled[i-sequence_length:i, 0])
+        for i in range(10, len(data_scaled)):
+            X.append(data_scaled[i-10:i, 0])
             y.append(data_scaled[i, 0])
 
-        # Convert to numpy arrays
         X, y = np.array(X), np.array(y)
         X = X.reshape(X.shape[0], X.shape[1], 1)
 
-        # LSTM model - fewer units, layers, and faster compile
+        # Define the LSTM model
         model = Sequential([
             Input(shape=(X.shape[1], 1)),
-            LSTM(units=16, return_sequences=True),  # reduced from 50 to 16
-            LSTM(units=8),  # reduced from 50 to 8
+            LSTM(units=50, return_sequences=True),
+            LSTM(units=50),
             Dense(1)
         ])
 
-        # Compile with RMSprop (uses less memory than Adam)
-        model.compile(optimizer='rmsprop', loss='mse')
+        model.compile(optimizer='adam', loss='mse')
+        model.fit(X, y, epochs=5, batch_size=64, verbose=0)
 
-        # Shorter training with smaller batches
-        model.fit(X, y, epochs=3, batch_size=32, verbose=0)  # 3 epochs, smaller batch
+        # Save the model
+        model.save('lstm_model.h5')
+        print("✅ LSTM model saved as 'lstm_model.h5'!")
 
         # Make predictions
         predictions = model.predict(X[-5:])
         predictions = scaler.inverse_transform(predictions)
 
-        # Plot the results
+        # Plot results
         plt.figure()
         plt.plot(data.index[-len(predictions):], data['Close'].iloc[-len(predictions):], label='Real Price')
         plt.plot(data.index[-5:], predictions, label='LSTM Predicted Price', color='orange')
         plt.title('LSTM Stock Price Prediction')
         plt.legend()
 
-        # Clear session to prevent memory buildup
-        K.clear_session()
-
+        K.clear_session()  # Clear TensorFlow session to prevent memory buildup
         return plot_to_base64(), predictions.flatten().tolist()
 
     except Exception as e:
         return f"LSTM Error: {e}", []
+    
+
+
+
+def convert_model_to_tflite():
+    try:
+        # Load the trained Keras model
+        model = tf.keras.models.load_model('lstm_model.h5')
+
+        # Convert the model to TensorFlow Lite format
+        converter = tf.lite.TFLiteConverter.from_keras_model(model)
+        tflite_model = converter.convert()
+
+        # Save the converted model
+        with open('lstm_model.tflite', 'wb') as f:
+            f.write(tflite_model)
+
+        print("✅ Model successfully converted to TensorFlow Lite!")
+    except Exception as e:
+        print(f"Error converting model: {e}")
+
+
+def lstm_tflite_prediction(data):
+    try:
+        scaler = MinMaxScaler(feature_range=(0, 1))
+        data_scaled = scaler.fit_transform(data['Close'].values.reshape(-1, 1))
+
+        # Prepare test data
+        X = np.array([data_scaled[-10:].flatten()])
+        X = X.reshape(X.shape[0], X.shape[1], 1)
+
+        # Load TensorFlow Lite model
+        interpreter = tf.lite.Interpreter(model_path="lstm_model.tflite")
+        interpreter.allocate_tensors()
+
+        input_details = interpreter.get_input_details()
+        output_details = interpreter.get_output_details()
+
+        # Feed input data to the model
+        interpreter.set_tensor(input_details[0]['index'], X.astype(np.float32))
+
+        # Run prediction
+        interpreter.invoke()
+
+        # Get output
+        predictions = interpreter.get_tensor(output_details[0]['index'])
+        predictions = scaler.inverse_transform(predictions)
+
+        # Plot results
+        plt.figure()
+        plt.plot(data.index[-len(predictions):], data['Close'].iloc[-len(predictions):], label='Real Price')
+        plt.plot(data.index[-5:], predictions, label='TFLite LSTM Predicted Price', color='orange')
+        plt.title('TensorFlow Lite LSTM Stock Price Prediction')
+        plt.legend()
+
+        return plot_to_base64(), predictions.flatten().tolist()
+
+    except Exception as e:
+        return f"LSTM Lite Error: {e}", []
+
+
 
 # XGBoost Model
 #Creates a Target column that shifts the closing price one day forward (to predict the next day's price).
