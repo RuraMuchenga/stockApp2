@@ -1,212 +1,175 @@
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 from flask import Flask, render_template, request
 import yfinance as yf
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import io
 import base64
-from statsmodels.tsa.arima.model import ARIMA
-from sklearn.preprocessing import MinMaxScaler
-from keras.models import Sequential
-from keras.layers import Dense, LSTM, Input
+from prophet import Prophet
 import xgboost as xgb
+import ta
+import joblib
 import os
-import tensorflow as tf
-from keras import backend as K
-
-# Force TensorFlow to run on CPU only
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
-
-# Control TensorFlow memory growth
-physical_devices = tf.config.list_physical_devices('GPU')
-if physical_devices:
-    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+from datetime import datetime, timedelta
+import time
 
 app = Flask(__name__)
 
-# Helper function to convert plots to base64
+CACHE_DIR = 'cache'
+if not os.path.exists(CACHE_DIR):
+    os.makedirs(CACHE_DIR)
+
 def plot_to_base64():
     img = io.BytesIO()
-    plt.savefig(img, format='png')
+    plt.savefig(img, format='png', bbox_inches='tight')
     plt.close()
     img.seek(0)
     return base64.b64encode(img.getvalue()).decode('utf8')
 
-# ARIMA Model
-#predicts the next 5 days of stock prices, plots the results alongside the last 10 days of actual data, and returns the plot + predictions as a list.
-def arima_prediction(data):
+def get_stock_data(symbol):
+    cache_file = os.path.join(CACHE_DIR, f"{symbol}.pkl")
+    if os.path.exists(cache_file):
+        cache_time = datetime.fromtimestamp(os.path.getmtime(cache_file))
+        if datetime.now() - cache_time < timedelta(days=1):
+            return joblib.load(cache_file)
+    data = yf.download(symbol, start='2020-01-01', end='2025-12-31', auto_adjust=True)
+    if data.empty or 'Close' not in data.columns:
+        return None
+    joblib.dump(data, cache_file)
+    return data
+
+def prophet_prediction(data):
+    start_time = time.time()
     try:
-        model = ARIMA(data['Close'], order=(2, 1, 0))
-        model_fit = model.fit()
-        predictions = model_fit.forecast(steps=5)
-        plt.figure()
-        plt.plot(data.index[-10:], data['Close'][-10:], label='Actual Price')
-        plt.plot(data.index[-5:], predictions, label='ARIMA Predicted Price', color='orange')
-        plt.title('ARIMA Stock Price Prediction')
-        plt.legend()
-        return plot_to_base64(), predictions.tolist()
-    except Exception as e:
-        return f"ARIMA Error: {e}", []
-
-
-
-#lstm
-def lstm_prediction(data):
-    try:
-        # Scale data
-        scaler = MinMaxScaler(feature_range=(0, 1))
-        data_scaled = scaler.fit_transform(data['Close'].values.reshape(-1, 1))
+        df = data.reset_index()
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = [col[0] if col[1] == '' else f"{col[0]}_{col[1]}" for col in df.columns]
+        print(f"Prophet - Reset index took: {time.time() - start_time:.2f}s")
         
-        # Prepare training data
-        X, y = [], []
-        for i in range(10, len(data_scaled)):
-            X.append(data_scaled[i-10:i, 0])
-            y.append(data_scaled[i, 0])
-
-        X, y = np.array(X), np.array(y)
-        X = X.reshape(X.shape[0], X.shape[1], 1)
-
-        # Define the LSTM model
-        model = Sequential([
-            Input(shape=(X.shape[1], 1)),
-            LSTM(units=50, return_sequences=True),
-            LSTM(units=50),
-            Dense(1)
-        ])
-
-        model.compile(optimizer='adam', loss='mse')
-        model.fit(X, y, epochs=5, batch_size=64, verbose=0)
-
-        # Save the model
-        model.save('lstm_model.h5')
-        print("✅ LSTM model saved as 'lstm_model.h5'!")
-
-        # Make predictions
-        predictions = model.predict(X[-5:])
-        predictions = scaler.inverse_transform(predictions)
-
-        # Plot results
-        plt.figure()
-        plt.plot(data.index[-len(predictions):], data['Close'].iloc[-len(predictions):], label='Real Price')
-        plt.plot(data.index[-5:], predictions, label='LSTM Predicted Price', color='orange')
-        plt.title('LSTM Stock Price Prediction')
-        plt.legend()
-
-        K.clear_session()  # Clear TensorFlow session to prevent memory buildup
-        return plot_to_base64(), predictions.flatten().tolist()
-
+        date_col = None
+        for col in df.columns:
+            if 'date' in col.lower() or 'index' in col.lower():
+                date_col = col
+                break
+        if date_col is None:
+            date_col = df.columns[0]
+        
+        close_col = None
+        for col in df.columns:
+            if 'close' in col.lower():
+                close_col = col
+                break
+        if close_col is None:
+            return "Prophet Error: No 'Close' column found", []
+        
+        df = df[[date_col, close_col]].rename(columns={date_col: 'ds', close_col: 'y'})
+        print(f"Prophet - Data prep took: {time.time() - start_time:.2f}s")
+        
+        model = Prophet()
+        model.fit(df)
+        print(f"Prophet - Fit took: {time.time() - start_time:.2f}s")
+        
+        future = model.make_future_dataframe(periods=5)
+        forecast = model.predict(future)
+        predictions = forecast[['ds', 'yhat']].tail(5)
+        print(f"Prophet - Predict took: {time.time() - start_time:.2f}s")
+        
+        # Skip plotting for now
+        print(f"Prophet - Total time: {time.time() - start_time:.2f}s")
+        return "prophet_plot_placeholder", predictions['yhat'].tolist()
     except Exception as e:
-        return f"LSTM Error: {e}", []
-    
+        print(f"Prophet - Failed with detailed error: {str(e)} at {time.time() - start_time:.2f}s")
+        return f"Prophet Error: {str(e)}", []
 
-
-
-def convert_model_to_tflite():
-    try:
-        # Load the trained Keras model
-        model = tf.keras.models.load_model('lstm_model.h5')
-
-        # Convert the model to TensorFlow Lite format
-        converter = tf.lite.TFLiteConverter.from_keras_model(model)
-        tflite_model = converter.convert()
-
-        # Save the converted model
-        with open('lstm_model.tflite', 'wb') as f:
-            f.write(tflite_model)
-
-        print("✅ Model successfully converted to TensorFlow Lite!")
-    except Exception as e:
-        print(f"Error converting model: {e}")
-
-
-def lstm_tflite_prediction(data):
-    try:
-        scaler = MinMaxScaler(feature_range=(0, 1))
-        data_scaled = scaler.fit_transform(data['Close'].values.reshape(-1, 1))
-
-        # Prepare test data
-        X = np.array([data_scaled[-10:].flatten()])
-        X = X.reshape(X.shape[0], X.shape[1], 1)
-
-        # Load TensorFlow Lite model
-        interpreter = tf.lite.Interpreter(model_path="lstm_model.tflite")
-        interpreter.allocate_tensors()
-
-        input_details = interpreter.get_input_details()
-        output_details = interpreter.get_output_details()
-
-        # Feed input data to the model
-        interpreter.set_tensor(input_details[0]['index'], X.astype(np.float32))
-
-        # Run prediction
-        interpreter.invoke()
-
-        # Get output
-        predictions = interpreter.get_tensor(output_details[0]['index'])
-        predictions = scaler.inverse_transform(predictions)
-
-        # Plot results
-        plt.figure()
-        plt.plot(data.index[-len(predictions):], data['Close'].iloc[-len(predictions):], label='Real Price')
-        plt.plot(data.index[-5:], predictions, label='TFLite LSTM Predicted Price', color='orange')
-        plt.title('TensorFlow Lite LSTM Stock Price Prediction')
-        plt.legend()
-
-        return plot_to_base64(), predictions.flatten().tolist()
-
-    except Exception as e:
-        return f"LSTM Lite Error: {e}", []
-
-
-
-# XGBoost Model
-#Creates a Target column that shifts the closing price one day forward (to predict the next day's price).
 def xgboost_prediction(data):
+    start_time = time.time()
     try:
-        data['Target'] = data['Close'].shift(-1)
-        data = data.dropna()
-        X = data[['Open', 'High', 'Low', 'Close', 'Volume']]
-        y = data['Target']
-        train_size = int(len(data) * 0.8)
-        X_train, X_test, y_train, y_test = X[:train_size], X[train_size:], y[:train_size], y[train_size:]
+        df = data.copy()
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = [col[0] if col[1] == '' else f"{col[0]}_{col[1]}" for col in df.columns]
+        print(f"XGBoost - Reset index took: {time.time() - start_time:.2f}s")
+        
+        close_col = None
+        open_col = None
+        high_col = None
+        low_col = None
+        volume_col = None
+        for col in df.columns:
+            if 'close' in col.lower():
+                close_col = col
+            elif 'open' in col.lower():
+                open_col = col
+            elif 'high' in col.lower():
+                high_col = col
+            elif 'low' in col.lower():
+                low_col = col
+            elif 'volume' in col.lower():
+                volume_col = col
+        
+        if not all([close_col, open_col, high_col, low_col, volume_col]):
+            print(f"XGBoost - Missing columns at: {time.time() - start_time:.2f}s")
+            return "XGBoost Error: Missing required columns", []
+        
+        df['MA5'] = df[close_col].rolling(window=5).mean()
+        df['MA10'] = df[close_col].rolling(window=10).mean()
+        df['RSI'] = ta.momentum.RSIIndicator(df[close_col], window=14).rsi()
+        df['MACD'] = ta.trend.MACD(df[close_col]).macd()
+        df = df.dropna()
+        print(f"XGBoost - Indicators added took: {time.time() - start_time:.2f}s")
+        
+        df['Target'] = df[close_col].shift(-1)
+        df = df.dropna()
+        print(f"XGBoost - Target prep took: {time.time() - start_time:.2f}s")
+        
+        X = df[[open_col, high_col, low_col, close_col, volume_col, 'MA5', 'MA10', 'RSI', 'MACD']]
+        y = df['Target']
+        
+        train_size = int(len(df) * 0.8)
+        X_train, X_test = X[:train_size], X[train_size:]
+        y_train, y_test = y[:train_size], y[train_size:]
+        print(f"XGBoost - Data split took: {time.time() - start_time:.2f}s")
+        
         model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100)
         model.fit(X_train, y_train)
+        print(f"XGBoost - Model fit took: {time.time() - start_time:.2f}s")
+        
         predictions = model.predict(X_test[-5:])
-        plt.figure()
-        plt.plot(data.index[-len(y_test):], y_test, label='Real Price')
-        plt.plot(data.index[-5:], predictions, label='XGBoost Predicted Price', color='orange')
-        plt.title('XGBoost Stock Price Prediction')
-        plt.legend()
-        return plot_to_base64(), predictions.tolist()
+        print(f"XGBoost - Predict took: {time.time() - start_time:.2f}s")
+        
+        # Skip plotting for now
+        print(f"XGBoost - Total time: {time.time() - start_time:.2f}s")
+        return "xgboost_plot_placeholder", predictions.tolist()
     except Exception as e:
-        return f"XGBoost Error: {e}", []
+        print(f"XGBoost - Failed with detailed error: {str(e)} at {time.time() - start_time:.2f}s")
+        return f"XGBoost Error: {str(e)}", []
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         stock_symbol = request.form['stock_symbol'].upper()
-        try:
-            data = yf.download(stock_symbol, start='2020-01-01', end='2025-12-31', auto_adjust=True)
-            if data.empty or 'Close' not in data.columns:
-                return "Error: Failed to fetch stock data. Check the symbol."
+        data = get_stock_data(stock_symbol)
+        if data is None:
+            return "Error: Failed to fetch stock data. Check the symbol."
 
-            # Ensure DataFrame has proper datetime index with frequency
-            data.index = pd.date_range(start=data.index[0], periods=len(data), freq='B')
+        data.index = pd.date_range(start=data.index[0], periods=len(data), freq='B')
 
-            arima_plot, arima_preds = arima_prediction(data)
-            lstm_plot, lstm_preds = lstm_prediction(data)
-            xgboost_plot, xgboost_preds = xgboost_prediction(data)
+        prophet_result, prophet_preds = prophet_prediction(data)
+        xgboost_result, xgboost_preds = xgboost_prediction(data)
 
-            latest_data = data.iloc[-1]
-            stock_info = {col: round(latest_data[col], 2) for col in ['Open', 'High', 'Low', 'Close', 'Volume']}
+        if isinstance(prophet_result, str) and prophet_result.startswith("Prophet Error"):
+            return f"Prophet failed: {prophet_result}"
+        if isinstance(xgboost_result, str) and xgboost_result.startswith("XGBoost Error"):
+            return f"XGBoost failed: {xgboost_result}"
 
-            return render_template('results.html', stock_symbol=stock_symbol, stock_info=stock_info,
-                                   arima_plot=arima_plot, lstm_plot=lstm_plot, xgboost_plot=xgboost_plot,
-                                   arima_preds=arima_preds, lstm_preds=lstm_preds, xgboost_preds=xgboost_preds)
-        except Exception as e:
-            return f"Error: {e}"
+        latest_data = data.iloc[-1]
+        stock_info = {col: round(latest_data[col], 2) for col in ['Open', 'High', 'Low', 'Close', 'Volume']}
+
+        return render_template('results.html', stock_symbol=stock_symbol, stock_info=stock_info,
+                               prophet_plot=prophet_result, xgboost_plot=xgboost_result,
+                               prophet_preds=prophet_preds, xgboost_preds=xgboost_preds)
     return render_template('checkPrediction.html')
 
 if __name__ == "__main__":
-    # Increase Gunicorn timeout
-    app.run(host='0.0.0.0', port=8000, threaded=True)
+    app.run(host='0.0.0.0', port=8000, threaded=False)

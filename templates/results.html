@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" data-startbar="dark" data-bs-theme="light">
-
 <head>
     <meta charset="utf-8" />
     <title>Stock Vision - Dashboard Template</title>
@@ -8,70 +7,40 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-    <!-- App favicon -->
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-
     <link rel="stylesheet" href="{{ url_for('static', filename='libs/@splidejs/splide/css/splide.min.css') }}">
-
-    <!-- App css -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url_for('static', filename='css/app.min.css') }}" rel="stylesheet" type="text/css" />
-
     <style>
-        .stock-card {
-            color: #fff;
-            font-weight: bold;
-        }
-        .stock-card.open {
-            background-color: #28a745; /* Green */
-        }
-        .stock-card.high {
-            background-color: #ffc107; /* Yellow */
-        }
-        .stock-card.low {
-            background-color: #dc3545; /* Red */
-        }
-        .stock-card.close {
-            background-color: #007bff; /* Blue */
-        }
-        .stock-card.volume {
-            background-color: #6f42c1; /* Purple */
-        }
+        .stock-card { color: #fff; font-weight: bold; }
+        .stock-card.open { background-color: #28a745; }
+        .stock-card.high { background-color: #ffc107; }
+        .stock-card.low { background-color: #dc3545; }
+        .stock-card.close { background-color: #007bff; }
+        .stock-card.volume { background-color: #6f42c1; }
     </style>
 </head>
-
 <body>
-
-    <!-- Top Bar Start -->
+    <!-- Top Bar and Sidebar (keep as is) -->
     <div class="topbar d-print-none">
         <div class="container-fluid">
             <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">    
-
                 <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">                        
-                    <li>
-                        <button class="nav-link mobile-menu-btn nav-icon" id="togglemenu">
-                            <i class="iconoir-menu-scale"></i>
-                        </button>
-                    </li>              
+                    <li><button class="nav-link mobile-menu-btn nav-icon" id="togglemenu"><i class="iconoir-menu-scale"></i></button></li>              
                 </ul>
                 <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
-    
                     <li class="dropdown topbar-item">
-                        <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
-                            aria-haspopup="false" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                             <img src="{{ url_for('static', filename='images/users/avatar-1.jpg') }}" alt="" class="thumb-lg rounded-circle">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end py-0">
                             <div class="d-flex align-items-center dropdown-item py-2 bg-secondary-subtle">
-                                <div class="flex-shrink-0">
-                                    <img src="{{ url_for('static', filename='images/users/avatar-1.jpg') }}" alt="" class="thumb-md rounded-circle">
-                                </div>
+                                <div class="flex-shrink-0"><img src="{{ url_for('static', filename='images/users/avatar-1.jpg') }}" alt="" class="thumb-md rounded-circle"></div>
                                 <div class="flex-grow-1 ms-2 text-truncate align-self-center">
                                     <h6 class="my-0 fw-medium text-dark fs-13">Ruramai Muchenga</h6>
                                     <small class="text-muted mb-0">Fullstack Developer</small>
-                                </div><!--end media-body-->
+                                </div>
                             </div>
                             <div class="dropdown-divider mt-0"></div>
                             <small class="text-muted px-2 pb-1 d-block">Account</small>
@@ -81,276 +50,190 @@
                             <a class="dropdown-item text-danger" href="#"><i class="las la-power-off fs-18 me-1 align-text-bottom"></i> Logout</a>
                         </div>
                     </li>
-                </ul><!--end topbar-nav-->
+                </ul>
             </nav>
-            <!-- end navbar-->
         </div>
     </div>
 
-<!-- Top Bar End -->
-<!-- leftbar-tab-menu -->
-<div class="startbar d-print-none">
-    <!--start brand-->
-    <div class="brand">
-        <a href="{{ url_for('static', filename='index.html') }}" class="logo">
-            <span>
-                <!-- <img src="{{ url_for('static', filename='images/logo-sm.png') }}" alt="logo-small" class="logo-sm"> -->
-            </span>
-            <span class="">
-                <!-- <img src="{{ url_for('static', filename='images/logo-light.png') }}" alt="logo-large" class="logo-lg logo-light"> -->
-                <!-- <img src="{{ url_for('static', filename='images/logo-dark.png') }}" alt="logo-large" class="logo-lg logo-dark"> -->
-            </span>
-        </a>
-    </div>
-    <!--end brand-->
-    <!--start startbar-menu-->
-    <div class="startbar-menu">
-        <div class="startbar-collapse" id="startbarCollapse" data-simplebar>
-            <div class="d-flex align-items-start flex-column w-100">
-                <!-- Navigation -->
-                <ul class="navbar-nav mb-auto w-100">
-                    <li class="menu-label pt-0 mt-0">
-                        <span>Main Menu</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#sidebarForex" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                            aria-controls="sidebarForex">
-                            <i class="iconoir-dollar-circle menu-icon"></i>
-                            <span>USER DASHBOARD</span>
-                        </a>
-                        <div class="collapse " id="sidebarForex">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ url_for('static', filename='index.html') }}">User Dashboard</a>
-                                </li><!--end nav-item-->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ url_for('static', filename='forex-accounts.html') }}">Stock Info</a>
-                                </li><!--end nav-item-->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ url_for('static', filename='forex-copy-accounts.html') }}">Stock Predictions</a>
-                                </li><!--end nav-item-->
-                            </ul><!--end nav-->
-                        </div><!--end startbarForex-->
-                    </li><!--end nav-item-->
-                </ul><!--end navbar-nav--->
+    <div class="startbar d-print-none">
+        <div class="brand">
+            <a href="{{ url_for('static', filename='index.html') }}" class="logo"><span></span><span class=""></span></a>
+        </div>
+        <div class="startbar-menu">
+            <div class="startbar-collapse" id="startbarCollapse" data-simplebar>
+                <div class="d-flex align-items-start flex-column w-100">
+                    <ul class="navbar-nav mb-auto w-100">
+                        <li class="menu-label pt-0 mt-0"><span>Main Menu</span></li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#sidebarForex" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarForex">
+                                <i class="iconoir-dollar-circle menu-icon"></i><span>USER DASHBOARD</span>
+                            </a>
+                            <div class="collapse" id="sidebarForex">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item"><a class="nav-link" href="{{ url_for('static', filename='index.html') }}">User Dashboard</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ url_for('static', filename='forex-accounts.html') }}">Stock Info</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ url_for('static', filename='forex-copy-accounts.html') }}">Stock Predictions</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div><!--end startbar-collapse-->
-    </div><!--end startbar-menu-->    
-</div><!--end startbar-->
-<div class="startbar-overlay d-print-none"></div>
-<!-- end leftbar-tab-menu-->
+        </div>    
+    </div>
+    <div class="startbar-overlay d-print-none"></div>
 
-<div class="page-wrapper">
-    <!-- Page Content-->
-    <div class="page-content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card ">
-                        <div class="card-body ticker">
-                            <div class="splide" role="group" aria-label="Splide Basic HTML Example">
-                                <div class="splide__track overflow-hidden">
-                                    <ul class="list-unstyled splide__list mb-0">
-                                        <li class="list-item pair splide__slide"><span>EUR </span><span class="ms-1 up">0.84510</span></li>
-                                        <li class="list-item pair splide__slide"><span>TRY </span><span class="ms-1 down">36.7741</span></li>
-                                        <li class="list-item pair splide__slide"><span>GBP </span><span class="ms-1 down">0.8451</span></li>
-                                        <li class="list-item pair splide__slide"><span>JPY </span><span class="ms-1 up">199.84</span></li>
-                                        <li class="list-item pair splide__slide"><span>AUD </span><span class="ms-1 up">1.9190</span></li>
-                                        <li class="list-item pair splide__slide"><span>NZD </span><span class="ms-1 down">1.7501</span></li>
-                                        <li class="list-item pair splide__slide"><span>CHF </span><span class="ms-1 down">0.5458</span></li>
-                                        <li class="list-item pair splide__slide"><span>INR </span><span class="ms-1 up">81.07</span></li>
-                                        <li class="list-item pair splide__slide"><span>CAD </span><span class="ms-1 up">0.8410</span></li>
-                                        <li class="list-item pair splide__slide"><span>PLN </span><span class="ms-1 down">0.3803</span></li>
-                                        <li class="list-item pair splide__slide"><span>DKK </span><span class="ms-1 down">4.2630</span></li>
-                                        <li class="list-item pair splide__slide"><span>HUF </span><span class="ms-1 up">226.15</span></li>
-                                        <li class="list-item pair splide__slide"><span>ZAR </span><span class="ms-1 up">11.1726</span></li>
-                                        <li class="list-item pair splide__slide"><span>CZK </span><span class="ms-1 up">14.102</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div><!--end card-body-->
-                    </div><!--end card-->
-                </div><!--end col-->
-            </div><!--end row-->
-            <div class="row ">
-                <div class="col-12">
-                    <div class="container mt-4">
-                        <h1 class="text-center mb-4">Stock Prediction Results for {{ stock_symbol }}</h1>
-
-                        <!-- Stock Info Cards -->
-                        <div class="row text-center mb-4">
-                            {% for key, value in stock_info.items() %}
-                            <div class="col-md-2">
-                                <div class="card shadow-sm p-2 stock-card {{ key|lower }}">
-                                    <h5 class="card-title">{{ key }}</h5>
-                                    <!-- Access the value directly from the pandas Series -->
-                                    <p class="card-text fw-bold">{{ stock_symbol }} {{ value.values[0] | round(4) }}</p>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                   
-                    <!-- ARIMA Chart & Explanation -->
-                        <div class="row mb-4">
-                            <div class="col-md-8">
-                                <img src="data:image/png;base64,{{ arima_plot }}" class="img-fluid" alt="ARIMA Chart">
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card shadow-sm p-3">
-                                    <h5 class="card-title">ARIMA Model Insights</h5>
-                                    <p class="card-text">ARIMA is showing that the stock price has been following a predictable pattern, with slight fluctuations based on past trends. The forecast for the next days shows a stable trend, with small variations.</p>
-                                    <ul class="card-text">
-                                        <li>ARIMA indicates moderate price stability.</li>
-                                        <li>The price has been following a somewhat linear trend with minor fluctuations.</li>
-                                        <li>Short-term predictions suggest minimal change.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- LSTM Chart & Explanation -->
-                        <div class="row mb-4">
-                            <div class="col-md-8">
-                                <img src="data:image/png;base64,{{ lstm_plot }}" class="img-fluid" alt="LSTM Chart">
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card shadow-sm p-3">
-                                    <h5 class="card-title">LSTM Model Insights</h5>
-                                    <p class="card-text">LSTM shows more complex patterns in stock price movements, capturing long-term dependencies and trends. The forecast indicates potential volatility with a stronger long-term trend.</p>
-                                    <ul class="card-text">
-                                        <li>LSTM model indicates high volatility over the coming days.</li>
-                                        <li>Significant fluctuation is expected in short-term predictions.</li>
-                                        <li>The long-term trend appears to be upwards, but with significant shifts.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- XGBoost Chart & Explanation -->
-                        <div class="row mb-4">
-                            <div class="col-md-8">
-                                <img src="data:image/png;base64,{{ xgboost_plot }}" class="img-fluid" alt="XGBoost Chart">
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card shadow-sm p-3">
-                                    <h5 class="card-title">XGBoost Model Insights</h5>
-                                    <p class="card-text">XGBoost predicts stock price movements with more precision, showing sharp movements based on the data trends. The model provides a highly responsive forecast that can adapt to sudden shifts.</p>
-                                    <ul class="card-text">
-                                        <li>XGBoost model predicts abrupt shifts in stock price.</li>
-                                        <li>It adapts quickly to new data trends and signals.</li>
-                                        <li>Expect larger movements in the upcoming days.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Next 5 Days Predictions -->
-                        <h3 class="text-center mb-3">Next 5 Days Prediction</h3>
-                        <div class="row justify-content-center">
-                            <div class="col-md-8">
-                                <table class="table table-striped table-hover shadow-sm">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th>Day</th>
-                                            <th>ARIMA</th>
-                                            <th>LSTM</th>
-                                            <th>XGBoost</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for i in range(5) %}
-                                        <tr>
-                                            <td>Day {{ i+1 }}</td>
-                                            <td>{{ arima_preds[i] | round(4) }}</td>
-                                            <td>{{ lstm_preds[i] | round(4) }}</td>
-                                            <td>{{ xgboost_preds[i] | round(4) }}</td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <div class="text-center mt-4">
-                            <a href="/" class="btn btn-primary">Back to Home</a>
-                        </div>
-                        </div>
-                        <!--end card-->
-                        </div><!--end col-->
-                        <div class="col-xl-4"></div><!--end col-->
-                        </div><!--end row-->
-                        
-                        </div><!-- container -->
-                        
-                        <!--Start Footer-->
-                        <footer class="footer text-center text-sm-start d-print-none">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card mb-0 rounded-bottom-0">
-                                            <div class="card-body">
-                                                <p class="text-muted mb-0">
-                                                    ©
-                                                    <script> document.write(new Date().getFullYear()) </script>
-                                                    StockVision
-                                                    <span class="text-muted d-none d-sm-inline-block float-end">
-                                                        Ruramai Muchenga
-                                                        <i class="iconoir-heart text-danger"></i>
-                                                        Middlesex University
-                                                    </span>
-                                                </p>
-                                            </div>
-                                        </div>
+    <!-- Main Content -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body ticker">
+                                <div class="splide" role="group" aria-label="Splide Basic HTML Example">
+                                    <div class="splide__track overflow-hidden">
+                                        <ul class="list-unstyled splide__list mb-0">
+                                            <li class="list-item pair splide__slide"><span>EUR </span><span class="ms-1 up">0.84510</span></li>
+                                            <li class="list-item pair splide__slide"><span>TRY </span><span class="ms-1 down">36.7741</span></li>
+                                            <!-- Keep your ticker items -->
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </footer>
-                        <!--end footer-->
-                        
                         </div>
-                        <!-- end page content -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="container mt-4">
+                            <h1 class="text-center mb-4">Stock Prediction Results for {{ stock_symbol }}</h1>
+
+                            <!-- Stock Info Cards -->
+                            <div class="row text-center mb-4">
+                                {% for key, value in stock_info.items() %}
+                                <div class="col-md-2">
+                                    <div class="card shadow-sm p-2 stock-card {{ key|lower }}">
+                                        <h5 class="card-title">{{ key }}</h5>
+                                        <p class="card-text fw-bold">{{ stock_symbol }} {{ value | round(4) }}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Prophet Chart & Explanation -->
+                            <div class="row mb-4">
+                                <div class="col-md-8">
+                                    <img src="data:image/png;base64,{{ prophet_plot }}" class="img-fluid" alt="Prophet Chart">
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card shadow-sm p-3">
+                                        <h5 class="card-title">Prophet Model Insights</h5>
+                                        <p class="card-text">Prophet forecasts based on trends and seasonality, showing a stable pattern with slight changes. It’s great for daily stock data.</p>
+                                        <ul class="card-text">
+                                            <li>Indicates moderate price stability.</li>
+                                            <li>Follows a linear trend with minor ups and downs.</li>
+                                            <li>Predicts small changes over the next 5 days.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- XGBoost Chart & Explanation -->
+                            <div class="row mb-4">
+                                <div class="col-md-8">
+                                    <img src="data:image/png;base64,{{ xgboost_plot }}" class="img-fluid" alt="XGBoost Chart">
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card shadow-sm p-3">
+                                        <h5 class="card-title">XGBoost Model Insights</h5>
+                                        <p class="card-text">XGBoost uses technical indicators for precise predictions, reacting quickly to market shifts.</p>
+                                        <ul class="card-text">
+                                            <li>Predicts sharper price movements.</li>
+                                            <li>Adapts to new trends fast.</li>
+                                            <li>Expect bigger changes soon.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Next 5 Days Predictions -->
+                            <h3 class="text-center mb-3">Next 5 Days Prediction</h3>
+                            <div class="row justify-content-center">
+                                <div class="col-md-8">
+                                    <table class="table table-striped table-hover shadow-sm">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Day</th>
+                                                <th>Prophet</th>
+                                                <th>XGBoost</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if prophet_preds|length > 0 and xgboost_preds|length > 0 %}
+                                                {% for i in range(5) %}
+                                                <tr>
+                                                    <td>Day {{ i+1 }}</td>
+                                                    <td>{{ prophet_preds[i] | round(4) | default('N/A') }}</td>
+                                                    <td>{{ xgboost_preds[i] | round(4) | default('N/A') }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            {% else %}
+                                                <tr>
+                                                    <td colspan="3" class="text-center">No predictions available</td>
+                                                </tr>
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <a href="/" class="btn btn-primary">Back to Home</a>
+                            </div>
                         </div>
-                        
-                        <!-- Javascript -->
-                        <!-- vendor js -->
-                        <script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-                        <script src="{{ url_for('static', filename='libs/iconify-icon/iconify-icon.min.js') }}"></script>
-                        <script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }}"></script>
-                        <script src="{{ url_for('static', filename='content.fxstreet.com/widgets-v2/beta/fxs-widgets.js') }}" defer></script>
-                        <script src="{{ url_for('static', filename='libs/@splidejs/splide/js/splide.min.js') }}"></script>
-                        <script src="{{ url_for('static', filename='libs/@splidejs/splide-extension-auto-scroll/js/splide-extension-auto-scroll.min.js') }}"></script>
-                        <!-- <script src="assets/js/pages/index.init.js"></script> -->
-                        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-                        <script>
-                            const splide = new Splide( '.splide', {
-                                type   : 'loop',
-                                drag   : 'free',
-                                focus  : 'center',
-                                perPage: 14,
-                                direction:"ltr",
-                                autoScroll: {
-                                    speed: 0.7,
-                                    pauseOnHover: false,
-                                    pauseOnFocus: false,
-                                },
-                                breakpoints: {
-                                    1440: {
-                                        perPage: 12,
-                                    },
-                                    1024: {
-                                        perPage: 9,
-                                    },
-                                    768: {
-                                        perPage: 6,
-                                    },
-                                    640: {
-                                        perPage: 2,
-                                    },
-                                }
-                            } );
-                            splide.mount(window.splide.Extensions);
-                        </script>
-                        </body>
-                        <!--end body-->
-                        
-                        </html>
+                    </div>
+                    <div class="col-xl-4"></div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer text-center text-sm-start d-print-none">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card mb-0 rounded-bottom-0">
+                                <div class="card-body">
+                                    <p class="text-muted mb-0">
+                                        © <script>document.write(new Date().getFullYear())</script> StockVision
+                                        <span class="text-muted d-none d-sm-inline-block float-end">
+                                            Ruramai Muchenga <i class="iconoir-heart text-danger"></i> Middlesex University
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='libs/iconify-icon/iconify-icon.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='content.fxstreet.com/widgets-v2/beta/fxs-widgets.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='libs/@splidejs/splide/js/splide.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='libs/@splidejs/splide-extension-auto-scroll/js/splide-extension-auto-scroll.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+        const splide = new Splide('.splide', {
+            type: 'loop', drag: 'free', focus: 'center', perPage: 14, direction: "ltr",
+            autoScroll: { speed: 0.7, pauseOnHover: false, pauseOnFocus: false },
+            breakpoints: { 1440: { perPage: 12 }, 1024: { perPage: 9 }, 768: { perPage: 6 }, 640: { perPage: 2 } }
+        });
+        splide.mount(window.splide.Extensions);
+    </script>
+</body>
+</html>
