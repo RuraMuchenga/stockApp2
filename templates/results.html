@@ -199,7 +199,7 @@
         /* Sidebar Styling */
         .startbar {
             transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
+            transition: transform 0.极大 ease-in-out;
             position: fixed;
             top: 0;
             left: 0;
@@ -242,9 +242,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    
-
     <!-- Top Bar -->
     <div class="topbar d-print-none">
         <div class="container-fluid">
@@ -420,8 +417,6 @@
         </div>
     </div>
 
-    
-
     <!-- Javascript -->
     <script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='libs/iconify-icon/iconify-icon.min.js') }}"></script>
@@ -459,6 +454,12 @@
                                         <a class="nav-link" href="/#predictions">
                                             <i class="iconoir-dollar-circle menu-icon"></i>
                                             <span>Stock Predictions</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="https://news.google.com/search?q=stock%20market%20today&hl=en-US&gl=US&ceid=US%3Aen" target="_blank">
+                                            <i class="las la-newspaper menu-icon"></i>
+                                            <span>Recent News</span>
                                         </a>
                                     </li>
                                 </ul>
