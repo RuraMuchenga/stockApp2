@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <title>Stock Vision - Stock Price Predictor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Advanced Stock Price Prediction Dashboard" name="description" />
+    <meta content="Ruramai Muchenga" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- App css -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='css/app.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <style>
+        /* Global Styles */
+        html {
+            height: 100%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #1a1a1a;
+        }
+        .page-wrapper {
+            flex: 1 0 auto;
+            margin: 0;
+            padding: 0;
+        }
+        .page-content {
+            background: #1a1a1a;
+            padding: 0;
+        }
+
+        /* Header Styling */
+        .app-header {
+            background: #2c2c2c;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .app-header .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .app-header .logo img {
+            height: 40px;
+            margin-right: 0.5rem;
+        }
+
+        /* Top Bar Styling */
+        nav#topbar-custom.topbar-custom.d-flex.justify-content-between {
+            background: #1A1A1A;
+        }
+
+        /* Form Styling */
+        .form-container {
+            background: #2c2c2c;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+        .form-container h1 {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .form-container input {
+            background: #333333;
+            color: #ffffff;
+            border: 1px solid #444444;
+            padding: 0.75rem;
+            border-radius: 5px;
+            width: 100%;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-container input:focus {
+            outline: none;
+            border-color: #1e90ff;
+        }
+        .form-container input::placeholder {
+            color: #d1d1d1;
+        }
+        .form-container button {
+            background: #1e90ff;
+            color: #ffffff;
+            padding: 0.75rem;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background 0.3s;
+            border: none;
+            width: 100%;
+        }
+        .form-container button:hover {
+            background: #1c86ee;
+        }
+        .form-container button:disabled {
+            background: #555555;
+            cursor: not-allowed;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffffff;
+            border-top: 3px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer Styling */
+        footer {
+            flex-shrink: 0;
+            width: 100%;
+            background: #1a1a1a;
+            padding: 1rem 2rem;
+        }
+        footer p {
+            color: #d1d1d1;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Sidebar Styling */
+        .startbar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 1000;
+            width: 250px;
+            background: #2c2c2c;
+            color: #fff;
+        }
+        .startbar.active {
+            transform: translateX(0);
+        }
+        .startbar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .startbar-overlay.active {
+            display: block;
+        }
+
+        /* Remove padding and margins */
+        .container-fluid {
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: 0;
+            margin-right: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="topbar d-print-none">
+        <div class="container-fluid">
+            <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">    
+                <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+                    <li>
+                        <button class="nav-link mobile-menu-btn nav-icon" id="togglemenu">
+                            <i class="iconoir-menu-scale"></i>
+                        </button>
+                    </li>
+                </ul>
+                <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+                    <li class="dropdown topbar-item">
+                        <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
+                            aria-haspopup="false" aria-expanded="false">
+                            <img src="{{ url_for('static', filename='images/users/avatar-1.jpg') }}" alt="" class="thumb-lg rounded-circle">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end py-0">
+                            <div class="d-flex align-items-center dropdown-item py-2 bg-secondary-subtle">
+                                <div class="flex-shrink-0">
+                                    <img src="{{ url_for('static', filename='images/users/avatar-1.jpg') }}" alt="" class="thumb-md rounded-circle">
+                                </div>
+                                <div class="flex-grow-1 ms-2 text-truncate align-self-center">
+                                    <h6 class="my-0 fw-medium text-dark fs-13">Ruramai Muchenga</h6>
+                                    <small class="text-muted mb-0">Fullstack Developer</small>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider mt-0"></div>
+                            <small class="text-muted px-2 pb-1 d-block">Account</small>
+                            <a class="dropdown-item" href="#"><i class="las la-user fs-18 me-1 align-text-bottom"></i> Profile</a>
+                            <a class="dropdown-item" href="#"><i class="las la-cog fs-18 me-1 align-text-bottom"></i>Account Settings</a>
+                            <div class="dropdown-divider mb-0"></div>
+                            <a class="dropdown-item text-danger" href="{{ url_for('logout') }}" id="logout-link"><i class="las la-power-off fs-18 me-1 align-text-bottom"></i> Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-container">
+                            <h1>Stock Price Predictor</h1>
+                            <form action="/dashboard" method="post" id="predict-form">
+                                <input type="text" name="stock_symbol" placeholder="Enter stock symbol (e.g., AAPL)" required>
+                                <button type="submit">Predict</button>
+                                <div class="spinner" id="spinner"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer text-center text-sm-start d-print-none">
+        <div class="container-fluid">
+            <p class="mb-0">
+                © <script>document.write(new Date().getFullYear())</script> Stock Vision
+                <span class="float-end d-none d-sm-inline-block">
+                    Created by Ruramai Muchenga <i class="iconoir-heart text-danger"></i> Middlesex University
+                </span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Javascript -->
+    <script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='libs/iconify-icon/iconify-icon.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+        // Sidebar toggle functionality
+        document.getElementById('togglemenu').addEventListener('click', function() {
+            let sidebar = document.querySelector('.startbar');
+            let overlay = document.querySelector('.startbar-overlay');
+
+            if (!sidebar) {
+                sidebar = document.createElement('div');
+                sidebar.className = 'startbar d-print-none';
+                sidebar.innerHTML = `
+                    <div class="brand">
+                        <a href="/dashboard" class="logo">
+                            <span>Stock Vision</span>
+                        </a>
+                    </div>
+                    <div class="startbar-menu">
+                        <div class="startbar-collapse" id="startbarCollapse" data-simplebar>
+                            <div class="d-flex align-items-start flex-column w-100">
+                                <ul class="navbar-nav mb-auto w-100">
+                                    <li class="menu-label pt-0 mt-0">
+                                        <span>Main Menu</span>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/dashboard">
+                                            <i class="iconoir-home menu-icon"></i>
+                                            <span>Dashboard</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/dashboard#predictions">
+                                            <i class="iconoir-dollar-circle menu-icon"></i>
+                                            <span>Stock Predictions</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(sidebar);
+
+                overlay = document.createElement('div');
+                overlay.className = 'startbar-overlay d-print-none';
+                document.body.appendChild(overlay);
+            }
+
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        // Close sidebar when overlay is clicked
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('startbar-overlay')) {
+                const sidebar = document.querySelector('.startbar');
+                const overlay = document.querySelector('.startbar-overlay');
+                if (sidebar && overlay) {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                }
+            }
+        });
+
+        // Show spinner on form submit
+        document.getElementById('predict-form').addEventListener('submit', function() {
+            const button = this.querySelector('button');
+            const spinner = document.getElementById('spinner');
+            button.disabled = true;
+            spinner.style.display = 'block';
+        });
+
+        // Logout functionality
+        document.getElementById('logout-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            fetch('/logout', { method: 'GET' })
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url; // Redirect to login
+                    }
+                })
+                .catch(error => console.error('Logout failed:', error));
+        });
+    </script>
+</body>
+</html>

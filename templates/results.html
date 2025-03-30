@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <title>Stock Vision - {{ stock_symbol }} Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Advanced Stock Prediction Dashboard" name="description" />
+    <meta content="Ruramai Muchenga" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='css/app.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <style>
+        /* Global Styles */
+        html {
+            height: 100%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #1a1a1a;
+        }
+        .page-wrapper {
+            flex: 1 0 auto;
+            margin: 0;
+            padding: 0;
+        }
+        .page-content {
+            background: #1a1a1a;
+            padding: 0;
+        }
+
+        /* Header Styling */
+        .app-header {
+            background: #2c2c2c;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            margin-top: 60px; /* Adjust for fixed top bar */
+        }
+        .app-header .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .app-header .logo img {
+            height: 40px;
+            margin-right: 0.5rem;
+        }
+
+        /* Top Bar Styling */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: transform 0.3s ease-in-out;
+        }
+        .topbar.hidden {
+            transform: translateY(-100%);
+        }
+        nav#topbar-custom.topbar-custom.d-flex.justify-content-between {
+            background: #1A1A1A;
+        }
+
+        /* Main Content Styling */
+        .results-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 15px;
+        }
+
+        /* Enhanced Stock Cards */
+        .stock-card {
+            color: #fff;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 0.5s ease-in;
+        }
+        .stock-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+        .stock-card.open { background: linear-gradient(135deg, #28a745, #218838); }
+        .stock-card.high { background: linear-gradient(135deg, #ffc107, #e0a800); }
+        .stock-card.low { background: linear-gradient(135deg, #dc3545, #c82333); }
+        .stock-card.close { background: linear-gradient(135deg, #007bff, #0069d9); }
+        .stock-card.volume { background: linear-gradient(135deg, #6f42c1, #5a32a3); }
+
+        /* Chart Containers */
+        .chart-container {
+            background: #2c2c2c;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s ease-in;
+        }
+        .chart-container img {
+            border: 1px solid #444444;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        /* Insights Card */
+        .insights-card {
+            background: #333333;
+            border: none;
+            border-radius: 10px;
+            height: 100%;
+            padding: 1.5rem;
+        }
+        .insights-card h5 {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+        .insights-card p, .insights-card ul {
+            color: #d1d1d1;
+            font-size: 0.95rem;
+        }
+        .insights-card ul {
+            padding-left: 20px;
+        }
+
+        /* Prediction Table */
+        .pred-table {
+            background: #2c2c2c;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease-in;
+        }
+        .pred-table thead {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+        .pred-table tbody {
+            color: #e0e0e0;
+        }
+        .pred-table tbody tr:hover {
+            background: #3a3a3a;
+        }
+
+        /* General Styling */
+        h1, h3 {
+            color: #ffffff;
+            font-weight: 700;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .btn-primary {
+            background: #1e90ff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            transition: background 0.3s;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background: #1c86ee;
+        }
+
+        /* Footer Styling */
+        footer {
+            flex-shrink: 0;
+            width: 100%;
+            background: #1a1a1a;
+            padding: 1rem 2rem;
+        }
+        footer p {
+            color: #d1d1d1;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Sidebar Styling */
+        .startbar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 1000;
+            width: 250px;
+            background: #2c2c2c;
+            color: #fff;
+        }
+        .startbar.active {
+            transform: translateX(0);
+        }
+        .startbar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .startbar-overlay.active {
+            display: block;
+        }
+
+        /* Remove padding and margins */
+        .container-fluid {
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    
+
+    <!-- Top Bar -->
+    <div class="topbar d-print-none">
+        <div class="container-fluid">
+            <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">    
+                <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+                    <li>
+                        <button class="nav-link mobile-menu-btn nav-icon" id="togglemenu">
+                            <i class="iconoir-menu-scale"></i>
+                        </button>
+                    </li>
+                </ul>
+                <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+                    <li class="dropdown topbar-item">
+                        <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
+                            aria-haspopup="false" aria-expanded="false">
+                            <img src="{{ url_for('static', filename='images/users/avatar-1.jpg') }}" alt="" class="thumb-lg rounded-circle">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end py-0">
+                            <div class="d-flex align-items-center dropdown-item py-2 bg-secondary-subtle">
+                                <div class="flex-shrink-0">
+                                    <img src="{{ url_for('static', filename='images/users/avatar-1.jpg') }}" alt="" class="thumb-md rounded-circle">
+                                </div>
+                                <div class="flex-grow-1 ms-2 text-truncate align-self-center">
+                                    <h6 class="my-0 fw-medium text-dark fs-13">Ruramai Muchenga</h6>
+                                    <small class="text-muted mb-0">Fullstack Developer</small>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider mt-0"></div>
+                            <small class="text-muted px-2 pb-1 d-block">Account</small>
+                            <a class="dropdown-item" href="#"><i class="las la-user fs-18 me-1 align-text-bottom"></i> Profile</a>
+                            <a class="dropdown-item" href="#"><i class="las la-cog fs-18 me-1 align-text-bottom"></i>Account Settings</a>
+                            <div class="dropdown-divider mb-0"></div>
+                            <a class="dropdown-item text-danger" href="#"><i class="las la-power-off fs-18 me-1 align-text-bottom"></i> Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="results-container">
+                    <h1 class="text-center">Prediction Analysis for {{ stock_symbol }}</h1>
+
+                    <!-- Stock Info Cards -->
+                    <div class="row justify-content-center mb-5">
+                        {% for key, value in stock_info.items() %}
+                        <div class="col-md-2 col-sm-4 mb-3">
+                            <div class="card stock-card {{ key|lower }} p-3 text-center">
+                                <h5 class="card-title mb-1">{{ key }}</h5>
+                                <p class="card-text fs-5">{{ value | round(2) }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Prophet Chart & Insights -->
+                    <div class="row chart-container">
+                        <div class="col-md-8">
+                            <img src="data:image/png;base64,{{ prophet_plot }}" class="img-fluid" alt="Prophet Prediction">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card insights-card">
+                                <h5 class="card-title">Prophet Model Insights</h5>
+                                <p class="card-text">Prophet leverages time-series trends and seasonality for robust forecasting.</p>
+                                <ul class="card-text">
+                                    <li>Stable price trends observed.</li>
+                                    <li>Linear growth with minor fluctuations.</li>
+                                    <li>Expect subtle shifts over 5 days.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- XGBoost Chart & Insights -->
+                    <div class="row chart-container">
+                        <div class="col-md-8">
+                            <img src="data:image/png;base64,{{ xgboost_plot }}" class="img-fluid" alt="XGBoost Prediction">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card insights-card">
+                                <h5 class="card-title">XGBoost Model Insights</h5>
+                                <p class="card-text">XGBoost uses advanced technical indicators for dynamic predictions.</p>
+                                <ul class="card-text">
+                                    <li>Captures sharp market shifts.</li>
+                                    <li>Highly responsive to trends.</li>
+                                    <li>Anticipates notable changes.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LightGBM Chart & Insights -->
+                    <div class="row chart-container">
+                        <div class="col-md-8">
+                            <img src="data:image/png;base64,{{ lightgbm_plot }}" class="img-fluid" alt="LightGBM Prediction">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card insights-card">
+                                <h5 class="card-title">LightGBM Model Insights</h5>
+                                <p class="card-text">LightGBM provides efficient and accurate predictions using gradient boosting.</p>
+                                <ul class="card-text">
+                                    <li>Optimized for speed and scalability.</li>
+                                    <li>Handles non-linear patterns effectively.</li>
+                                    <li>Complements other models in the ensemble.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Combined Chart & Insights -->
+                    <div class="row chart-container">
+                        <div class="col-md-8">
+                            <img src="data:image/png;base64,{{ combined_plot }}" class="img-fluid" alt="Combined Prediction">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card insights-card">
+                                <h5 class="card-title">Combined Model Insights</h5>
+                                <p class="card-text">Combines Prophet, XGBoost, and LightGBM for a balanced forecast.</p>
+                                <ul class="card-text">
+                                    <li>Averages all models for stability.</li>
+                                    <li>Balances trend, technical, and boosting insights.</li>
+                                    <li>Provides a consensus prediction.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Predictions Table -->
+                    <h3 class="text-center">5-Day Forecast</h3>
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <table class="table pred-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Prophet Prediction</th>
+                                        <th scope="col">XGBoost Prediction</th>
+                                        <th scope="col">LightGBM Prediction</th>
+                                        <th scope="col">Combined Prediction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if prophet_preds|length > 0 and xgboost_preds|length > 0 and lightgbm_preds|length > 0 %}
+                                        {% for i in range(5) %}
+                                        <tr>
+                                            <td>{{ pred_dates[i] }}</td>
+                                            <td>{{ prophet_preds[i] | round(2) | default('N/A') }}</td>
+                                            <td>{{ xgboost_preds[i] | round(2) | default('N/A') }}</td>
+                                            <td>{{ lightgbm_preds[i] | round(2) | default('N/A') }}</td>
+                                            <td>{{ combined_preds[i] | round(2) | default('N/A') }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="5" class="text-center">No predictions available</td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Back Button -->
+                    <div class="text-center mt-5 mb-4">
+                        <a href="/" class="btn btn-primary">Return to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Javascript -->
+    <script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='libs/iconify-icon/iconify-icon.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+        // Sidebar toggle functionality
+        document.getElementById('togglemenu').addEventListener('click', function() {
+            let sidebar = document.querySelector('.startbar');
+            let overlay = document.querySelector('.startbar-overlay');
+
+            if (!sidebar) {
+                sidebar = document.createElement('div');
+                sidebar.className = 'startbar d-print-none';
+                sidebar.innerHTML = `
+                    <div class="brand">
+                        <a href="/" class="logo">
+                            <span>Stock Vision</span>
+                        </a>
+                    </div>
+                    <div class="startbar-menu">
+                        <div class="startbar-collapse" id="startbarCollapse" data-simplebar>
+                            <div class="d-flex align-items-start flex-column w-100">
+                                <ul class="navbar-nav mb-auto w-100">
+                                    <li class="menu-label pt-0 mt-0">
+                                        <span>Main Menu</span>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/">
+                                            <i class="iconoir-home menu-icon"></i>
+                                            <span>Dashboard</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/#predictions">
+                                            <i class="iconoir-dollar-circle menu-icon"></i>
+                                            <span>Stock Predictions</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(sidebar);
+
+                overlay = document.createElement('div');
+                overlay.className = 'startbar-overlay d-print-none';
+                document.body.appendChild(overlay);
+            }
+
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        // Close sidebar when overlay is clicked
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('startbar-overlay')) {
+                const sidebar = document.querySelector('.startbar');
+                const overlay = document.querySelector('.startbar-overlay');
+                if (sidebar && overlay) {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                }
+            }
+        });
+
+        // Hide top bar on scroll
+        window.addEventListener('scroll', function() {
+            const topbar = document.querySelector('.topbar');
+            const scrollPosition = window.scrollY;
+
+            if (scrollPosition > 50) { // Hide after scrolling 50px
+                topbar.classList.add('hidden');
+            } else {
+                topbar.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

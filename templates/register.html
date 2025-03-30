@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-startbar="dark" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <title>StockVision | Register</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='assets/images/favicon.ico') }}">
+        <!-- App css -->
+        <link href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ url_for('static', filename='assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ url_for('static', filename='assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
+    </head>
+<body>
+    <div class="container-fluid">
+        <div class="row vh-100 d-flex justify-content-center">
+            <div class="col-12 align-self-center">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 col-xl-6 mx-auto">
+                            <div class="card">
+                                <div class="card-body p-0 bg-black auth-header-box rounded-top">
+                                    <div class="text-center p-3">
+                                        <a href="index.html" class="logo logo-admin">
+                                            <img src="assets/images/logo-sm.png" height="50" alt="logo" class="auth-logo">
+                                        </a>
+                                        <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Create an account</h4>   
+                                        <p class="text-muted fw-medium mb-0">Enter your details to create your account today.</p>  
+                                    </div>
+                                </div>
+                                <div class="card-body pt-0">                                    
+                                    <form class="my-4" id="register-form">            
+                                        <div class="form-group mb-2">
+                                            <label class="form-label" for="username">Username</label>
+                                            <input type="text" class="form-control" id="username" placeholder="Enter username" required>                               
+                                        </div>
+                                        <div class="form-group mb-2">
+                                            <label class="form-label" for="useremail">Email</label>
+                                            <input type="email" class="form-control" id="useremail" placeholder="Enter email" required>                               
+                                        </div>
+                                        <div class="form-group mb-2">
+                                            <label class="form-label" for="userpassword">Password</label>                                            
+                                            <input type="password" class="form-control" id="userpassword" placeholder="Enter password" required>                            
+                                        </div>
+                                        <div class="form-group mb-2">
+                                            <label class="form-label" for="Confirmpassword">Confirm Password</label>                                            
+                                            <input type="password" class="form-control" id="Confirmpassword" placeholder="Enter Confirm password" required>                            
+                                        </div>
+                                        <div class="form-group mb-2">
+                                            <label class="form-label" for="mobileNo">Mobile Number</label>
+                                            <input type="tel" class="form-control" id="mobileNo" placeholder="Enter Mobile Number" required>                               
+                                        </div>
+                                        <div class="form-group row mt-3">
+                                            <div class="col-12">
+                                                <div class="form-check form-switch form-switch-success">
+                                                    <input class="form-check-input" type="checkbox" id="customSwitchSuccess" required>
+                                                    <label class="form-check-label" for="customSwitchSuccess">By registering you agree to the StockVision <a href="#" class="text-primary">Terms of Use</a></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-0 row">
+                                            <div class="col-12">
+                                                <div class="d-grid mt-3">
+                                                    <button class="btn btn-primary" type="submit">Register <i class="fas fa-sign-in-alt ms-1"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>                         
+                                    </form>
+                                    <div id="error-message" class="text-danger text-center mt-2"></div>
+                                    <div class="text-center mt-3">
+                                        <p class="text-muted">Already have an account? <a href="login.html" class="text-primary ms-2">Log in</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>                                        
+    </div>
+
+    <!-- Firebase Modular SDK -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        // Your Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCXs65dj5o0Hd3MeggR8CzF5PIUt7fQwaI",
+            authDomain: "stockvision-9e584.firebaseapp.com",
+            projectId: "stockvision-9e584",
+            storageBucket: "stockvision-9e584.firebasestorage.app",
+            messagingSenderId: "667063932009",
+            appId: "1:667063932009:web:eb6f313f594c092adf3ef8",
+            measurementId: "G-DYVSB0BML2"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Form handling
+        document.getElementById("register-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("useremail").value;
+            const password = document.getElementById("userpassword").value;
+            const confirmPassword = document.getElementById("Confirmpassword").value;
+            const mobileNo = document.getElementById("mobileNo").value;
+            const termsAccepted = document.getElementById("customSwitchSuccess").checked;
+            const errorMessage = document.getElementById("error-message");
+
+            errorMessage.textContent = "";
+
+            // Basic validation
+            if (password !== confirmPassword) {
+                errorMessage.textContent = "Passwords don’t match!";
+                return;
+            }
+            if (!termsAccepted) {
+                errorMessage.textContent = "You need to agree to the terms!";
+                return;
+            }
+
+            try {
+                // Create user
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Save extra data to Firestore
+                await setDoc(doc(db, "users", user.uid), {
+                    username: username,
+                    email: email,
+                    mobileNo: mobileNo,
+                    createdAt: serverTimestamp()
+                });
+
+                alert("Yay! You’re registered! Go log in now.");
+                window.location.href = "login.html";
+            } catch (error) {
+                errorMessage.textContent = "Oops! " + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
