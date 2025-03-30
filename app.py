@@ -760,8 +760,14 @@ import time
 import firebase_admin
 from firebase_admin import credentials, auth
 
+import os
+import json  # Add this line if it’s missing!
+from firebase_admin import credentials, auth
+import firebase_admin
+from flask import Flask
+
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'  # Change this to something random!
+app.secret_key = 'your-secret-key-here'  # Keep this unique!
 
 # Load Firebase credentials
 cred_path = os.getenv("FIREBASE_CRED_PATH")
@@ -775,6 +781,7 @@ else:
         raise FileNotFoundError("Firebase credentials not found. Set FIREBASE_CRED_PATH or FIREBASE_SERVICE_ACCOUNT_KEY.")
 
 firebase_admin.initialize_app(cred)
+
 
 CACHE_DIR = 'cache'
 if not os.path.exists(CACHE_DIR):
