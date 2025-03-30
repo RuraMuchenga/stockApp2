@@ -1,18 +1,106 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-startbar="dark" data-bs-theme="light">
-    <head>
-        <meta charset="utf-8" />
-        <title>StockVision | Register</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <!-- App favicon -->
-        <link rel="shortcut icon" href="{{ url_for('static', filename='assets/images/favicon.ico') }}">
-        <!-- App css -->
-        <link href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ url_for('static', filename='assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ url_for('static', filename='assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
-    </head>
+<html lang="en" dir="ltr" data-startbar="dark" data-bs-theme="dark">
+    <!DOCTYPE html>
+    <html lang="en" dir="ltr" data-startbar="dark" data-bs-theme="dark">
+        <head>
+            <meta charset="utf-8" />
+            <title>StockVision | Register</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta content="Advanced Stock Prediction Platform" name="description" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <link rel="shortcut icon" href="{{ url_for('static', filename='assets/images/favicon.ico') }}">
+            <link href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ url_for('static', filename='assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ url_for('static', filename='assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+            <!-- Fallback: Load Line Awesome directly -->
+            <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+        
+            <style>
+                body {
+                    background: #1a1a1a;
+                    font-family: 'Poppins', sans-serif;
+                    color: #d1d1d1;
+                }
+                .card {
+                    background: #2c2c2c;
+                    border: none;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                }
+                .auth-header-box {
+                    background: #2c2c2c !important;
+                    border-bottom: 1px solid #3a3a3a;
+                }
+                .form-control {
+                    background: #333333;
+                    border: 1px solid #444444;
+                    color: #d1d1d1;
+                }
+                .form-control:focus {
+                    background: #3a3a3a;
+                    border-color: #1e90ff;
+                    color: #fff;
+                }
+                .btn-primary {
+                    background: #1e90ff;
+                    border: none;
+                    border-radius: 25px;
+                    font-weight: 600;
+                    transition: background 0.3s;
+                }
+                .btn-primary:hover {
+                    background: #1c86ee;
+                }
+                .text-muted {
+                    color: #a0a0a0 !important;
+                }
+                .text-primary {
+                    color: #1e90ff !important;
+                }
+                .success-popup {
+                    display: none;
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: #28a745;
+                    color: #fff;
+                    padding: 20px 30px;
+                    border-radius: 10px;
+                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+                    z-index: 1000;
+                    text-align: center;
+                    animation: popupFadeIn 0.5s ease-in-out;
+                }
+                .success-popup i {
+                    font-size: 32px;
+                    margin-bottom: 10px;
+                }
+                .success-popup h5 {
+                    font-weight: 600;
+                    margin: 10px 0;
+                }
+                .success-popup .btn {
+                    margin-top: 15px;
+                    padding: 8px 20px;
+                }
+                .overlay {
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.7);
+                    z-index: 999;
+                }
+                @keyframes popupFadeIn {
+                    from { opacity: 0; transform: translate(-50%, -60%); }
+                    to { opacity: 1; transform: translate(-50%, -50%); }
+                }
+            </style>
+        </head>
 <body>
     <div class="container-fluid">
         <div class="row vh-100 d-flex justify-content-center">
@@ -21,56 +109,53 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6 col-xl-6 mx-auto">
                             <div class="card">
-                                <div class="card-body p-0 bg-black auth-header-box rounded-top">
+                                <div class="card-body p-0 auth-header-box rounded-top">
                                     <div class="text-center p-3">
-                                        <a href="index.html" class="logo logo-admin">
-                                            <img src="assets/images/logo-sm.png" height="50" alt="logo" class="auth-logo">
-                                        </a>
-                                        <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Create an account</h4>   
-                                        <p class="text-muted fw-medium mb-0">Enter your details to create your account today.</p>  
+                                        <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Create an Account</h4>   
+                                        <p class="text-muted fw-medium mb-0">Join StockVision today—enter your details to get started.</p>  
                                     </div>
                                 </div>
                                 <div class="card-body pt-0">                                    
                                     <form class="my-4" id="register-form">            
-                                        <div class="form-group mb-2">
+                                        <div class="form-group mb-3">
                                             <label class="form-label" for="username">Username</label>
                                             <input type="text" class="form-control" id="username" placeholder="Enter username" required>                               
                                         </div>
-                                        <div class="form-group mb-2">
-                                            <label class="form-label" for="useremail">Email</label>
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="useremail">Email Address</label>
                                             <input type="email" class="form-control" id="useremail" placeholder="Enter email" required>                               
                                         </div>
-                                        <div class="form-group mb-2">
+                                        <div class="form-group mb-3">
                                             <label class="form-label" for="userpassword">Password</label>                                            
-                                            <input type="password" class="form-control" id="userpassword" placeholder="Enter password" required>                            
+                                            <input type="password" class="form-control" id="userpassword" placeholder="Enter password" minlength="6" required>                            
                                         </div>
-                                        <div class="form-group mb-2">
+                                        <div class="form-group mb-3">
                                             <label class="form-label" for="Confirmpassword">Confirm Password</label>                                            
-                                            <input type="password" class="form-control" id="Confirmpassword" placeholder="Enter Confirm password" required>                            
+                                            <input type="password" class="form-control" id="Confirmpassword" placeholder="Confirm password" minlength="6" required>                            
                                         </div>
-                                        <div class="form-group mb-2">
+                                        <div class="form-group mb-3">
                                             <label class="form-label" for="mobileNo">Mobile Number</label>
-                                            <input type="tel" class="form-control" id="mobileNo" placeholder="Enter Mobile Number" required>                               
+                                            <input type="tel" class="form-control" id="mobileNo" placeholder="Enter mobile number" pattern="[0-9]{10}" required>                               
                                         </div>
                                         <div class="form-group row mt-3">
                                             <div class="col-12">
                                                 <div class="form-check form-switch form-switch-success">
                                                     <input class="form-check-input" type="checkbox" id="customSwitchSuccess" required>
-                                                    <label class="form-check-label" for="customSwitchSuccess">By registering you agree to the StockVision <a href="#" class="text-primary">Terms of Use</a></label>
+                                                    <label class="form-check-label" for="customSwitchSuccess">I agree to the StockVision <a href="#" class="text-primary">Terms of Use</a> and <a href="#" class="text-primary">Privacy Policy</a></label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group mb-0 row">
                                             <div class="col-12">
-                                                <div class="d-grid mt-3">
+                                                <div class="d-grid mt-4">
                                                     <button class="btn btn-primary" type="submit">Register <i class="fas fa-sign-in-alt ms-1"></i></button>
                                                 </div>
                                             </div>
                                         </div>                         
                                     </form>
-                                    <div id="error-message" class="text-danger text-center mt-2"></div>
+                                    <div id="error-message" class="text-danger text-center mt-3"></div>
                                     <div class="text-center mt-3">
-                                        <p class="text-muted">Already have an account? <a href="login.html" class="text-primary ms-2">Log in</a></p>
+                                        <p class="text-muted">Already have an account? <a href="/login" class="text-primary ms-2">Log in</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -81,14 +166,20 @@
         </div>                                        
     </div>
 
+    <!-- Success Popup -->
+    <div class="overlay" id="success-overlay"></div>
+    <div class="success-popup" id="success-popup">
+        <i class="las la-check-circle"></i>
+        <h5>Registration Successful!</h5>
+        <p>Your StockVision account is ready. Welcome aboard!</p>
+        <a href="/login" class="btn btn-light">Login Now</a>
+    </div>
     <!-- Firebase Modular SDK -->
     <script type="module">
-        // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-        // Your Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyCXs65dj5o0Hd3MeggR8CzF5PIUt7fQwaI",
             authDomain: "stockvision-9e584.firebaseapp.com",
@@ -99,12 +190,10 @@
             measurementId: "G-DYVSB0BML2"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Form handling
         document.getElementById("register-form").addEventListener("submit", async (e) => {
             e.preventDefault();
 
@@ -115,25 +204,26 @@
             const mobileNo = document.getElementById("mobileNo").value;
             const termsAccepted = document.getElementById("customSwitchSuccess").checked;
             const errorMessage = document.getElementById("error-message");
+            const successPopup = document.getElementById("success-popup");
+            const successOverlay = document.getElementById("success-overlay");
 
             errorMessage.textContent = "";
+            successPopup.style.display = "none";
+            successOverlay.style.display = "none";
 
-            // Basic validation
             if (password !== confirmPassword) {
                 errorMessage.textContent = "Passwords don’t match!";
                 return;
             }
             if (!termsAccepted) {
-                errorMessage.textContent = "You need to agree to the terms!";
+                errorMessage.textContent = "You must agree to the terms!";
                 return;
             }
 
             try {
-                // Create user
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Save extra data to Firestore
                 await setDoc(doc(db, "users", user.uid), {
                     username: username,
                     email: email,
@@ -141,8 +231,10 @@
                     createdAt: serverTimestamp()
                 });
 
-                alert("Yay! You’re registered! Go log in now.");
-                window.location.href = "login.html";
+                successPopup.style.display = "block";
+                successOverlay.style.display = "block";
+                document.getElementById("register-form").style.display = "none";
+                errorMessage.style.display = "none";
             } catch (error) {
                 errorMessage.textContent = "Oops! " + error.message;
             }
