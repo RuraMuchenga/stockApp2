@@ -1,0 +1,174 @@
+
+.rtl {
+  direction: rtl; 
+}
+
+.ltr {
+  direction: ltr; 
+}
+
+.rtl .switcher{
+  right: 60px;
+  left: inherit;
+}
+
+.rtl .switcher .switch_menu{
+  left: inherit;
+  right: 0px;
+}
+
+.rtl .owl-carousel{
+  direction: ltr;
+}
+
+.rtl .scroll-to-top .scroll-bar{
+  margin-right: 0px;
+  margin-left: 10px;
+}
+
+.rtl .main-menu .navigation > li{
+  float: right;
+}
+
+.rtl .main-menu .navigation > li:first-child{
+  margin-left: 15px !important;
+  margin-right: 0px;
+}
+
+.rtl .main-menu .navigation > li:last-child{
+  margin-right: 15px !important;
+  margin-left: 0px;
+}
+
+.rtl .main-menu .navigation > li > ul > li > a, 
+.rtl .main-menu .navigation > li > .megamenu li > a{
+  text-align: right;
+}
+
+.rtl .main-menu .navigation li.dropdown .megamenu li h4{
+  text-align: right;
+}
+
+.rtl .main-menu .navigation > li > ul > li > ul > li > a{
+  text-align: right;
+}
+
+.rtl .main-menu .navigation > li > ul > li.dropdown > a:after{
+  right: inherit;
+  left: 20px;
+  content: "\f104";
+}
+
+.rtl .mobile-menu{
+  text-align: right;
+}
+
+.rtl .mobile-menu .nav-logo{
+  text-align: right;
+}
+
+.rtl .mobile-menu .navigation li > a:before{
+  left: inherit;
+  right: 0px;
+}
+
+.rtl .mobile-menu .navigation li.dropdown .dropdown-btn{
+  right: inherit;
+  left: 6px;
+}
+
+.rtl .mobile-menu .navigation li.dropdown .dropdown-btn.open{
+  transform: rotate(-90deg);
+}
+
+.rtl .scroll-to-top{
+  right: inherit;
+  left: 30px;
+}
+
+.rtl .list-style-one li{
+  padding-left: 0px;
+  padding-right: 40px;
+}
+
+.rtl .list-style-one li:before,
+.rtl .list-style-one li:after{
+  left: inherit;
+  right: 0px;
+}
+
+.rtl .slide-text{
+  direction: ltr;
+}
+
+.rtl .dueal-section .bg-color{
+  right: inherit;
+  left: 0px;
+}
+
+.rtl .dueal-section.alternat-2 .content_block_three .content-box{
+  margin-left: 150px;
+  margin-right: -150px;
+}
+
+.rtl .dueal-section .testimonial-content{
+  margin-left: -70px;
+  margin-right: 130px;
+}
+
+.rtl .dueal-section.alternat-3 .content_block_three .content-box{
+  margin-left: 100px;
+  margin-right: -100px;
+}
+
+.rtl .nice-select .list li{
+  text-align: right;
+}
+
+.rtl .nice-select:before{
+  right: inherit;
+  left: 25px;
+}
+
+.rtl .select_wrap .default_option:before{
+  right: inherit;
+  left: 24px;
+}
+
+.rtl .select_wrap .option .icon{
+  margin-right: 0px;
+  margin-left: 12px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

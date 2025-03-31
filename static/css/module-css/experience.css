@@ -1,0 +1,139 @@
+/* Contact Section Styling */
+.experience-section {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+    position: relative;
+    padding: 100px 0;
+}
+
+.experience-section .inner-container {
+    position: relative;
+    z-index: 1;
+}
+
+.experience-section .shape {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    opacity: 0.1;
+    transform: translateY(-10%) scale(1.2);
+}
+
+.experience-section .contact-details {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.experience-section .contact-column {
+    margin-bottom: 40px;
+}
+
+.experience-section .contact-box {
+    background: #252525;
+    padding: 30px 20px;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.experience-section .contact-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.experience-section .contact-icon {
+    font-size: 40px;
+    color: #00b4d8;
+    margin-bottom: 20px;
+    transition: color 0.3s ease;
+}
+
+.experience-section .contact-box:hover .contact-icon {
+    color: #00e6ff;
+}
+
+.experience-section .contact-box h4 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.experience-section .contact-box p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.experience-section .contact-link {
+    color: #ffffff;
+    text-decoration: none;
+    word-break: break-word;
+    transition: color 0.3s ease;
+}
+
+.experience-section .contact-link:hover {
+    color: #00e6ff;
+    text-decoration: none;
+}
+
+.experience-section .btn-box {
+    margin-top: 50px;
+}
+
+.experience-section .btn-one {
+    padding: 14px 35px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 8px;
+    background: #00b4d8;
+    border: none;
+    transition: background 0.3s ease;
+}
+
+.experience-section .btn-one:hover {
+    background: #00e6ff;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991px) {
+    .experience-section .contact-box {
+        min-height: 180px;
+    }
+    .experience-section .contact-icon {
+        font-size: 36px;
+    }
+    .experience-section .contact-box h4 {
+        font-size: 20px;
+    }
+    .experience-section .contact-box p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 767px) {
+    .experience-section {
+        padding: 80px 0;
+    }
+    .experience-section .contact-box {
+        min-height: 160px;
+    }
+    .experience-section .btn-box {
+        margin-top: 40px;
+    }
+}

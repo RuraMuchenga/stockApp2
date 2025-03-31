@@ -1,147 +1,192 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-startbar="dark" data-bs-theme="light">
-    <head>
-        <meta charset="utf-8" />
-        <title>StockVision | StockVision - Admin & Dashboard Template</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <!-- App favicon -->
-        <link rel="shortcut icon" href="{{ url_for('static', filename='assets/images/favicon.ico') }}">
-        <!-- App css -->
-        <link href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ url_for('static', filename='assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ url_for('static', filename='assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
-    </head>
-    <body>
-        <div class="container-fluid">
-            <div class="row vh-100 d-flex justify-content-center">
-                <div class="col-12 align-self-center">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6 col-lg-6 col-xl-6 mx-auto">
-                                <div class="card">
-                                    <div class="card-body p-0 bg-black auth-header-box rounded-top">
-                                        <div class="text-center p-3">
-                                            <a href="{{ url_for('index') }}" class="logo logo-admin">
-                                                <img src="{{ url_for('static', filename='assets/images/logo-sm.png') }}" height="50" alt="logo" class="auth-logo">
-                                            </a>
-                                            <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Let's Get Started StockVision</h4>   
-                                            <p class="text-muted fw-medium mb-0">Sign in to continue to StockVision.</p>  
-                                        </div>
+<html lang="en" dir="ltr" data-startbar="dark" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <title>StockVision | Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Advanced Stock Prediction Platform" name="description" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='assets2/images/favicon.ico') }}">
+    <link href="{{ url_for('static', filename='assets2/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='assets2/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='assets2/css/app.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background: #1a1a1a;
+            font-family: 'Poppins', sans-serif;
+            color: #d1d1d1;
+        }
+        .card {
+            background: #2c2c2c;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .auth-header-box {
+            background: #2c2c2c !important;
+            border-bottom: 1px solid #3a3a3a;
+        }
+        .form-control {
+            background: #333333;
+            border: 1px solid #444444;
+            color: #d1d1d1;
+        }
+        .form-control:focus {
+            background: #3a3a3a;
+            border-color: #1e90ff;
+            color: #fff;
+        }
+        .btn-primary {
+            background: #1e90ff;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .btn-primary:hover {
+            background: #1c86ee;
+        }
+        .text-muted {
+            color: #a0a0a0 !important;
+        }
+        .text-primary {
+            color: #1e90ff !important;
+        }
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+        .social-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row vh-100 d-flex justify-content-center">
+            <div class="col-12 align-self-center">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 col-xl-6 mx-auto">
+                            <div class="card">
+                                <div class="card-body p-0 auth-header-box rounded-top">
+                                    <div class="text-center p-3">
+                                        <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Welcome Back</h4>   
+                                        <p class="text-muted fw-medium mb-0">Sign in to access StockVision.</p>  
                                     </div>
-                                    <div class="card-body pt-0">                                    
-                                        <form class="my-4" id="login-form">            
-                                            <div class="form-group mb-2">
-                                                <label class="form-label" for="useremail">Email</label>
-                                                <input type="email" class="form-control" id="useremail" placeholder="Enter email" required>                               
-                                            </div><!--end form-group--> 
-                                            <div class="form-group">
-                                                <label class="form-label" for="userpassword">Password</label>                                            
-                                                <input type="password" class="form-control" id="userpassword" placeholder="Enter password" required>                            
-                                            </div><!--end form-group--> 
-                                            <div class="form-group row mt-3">
-                                                <div class="col-sm-6">
-                                                    <div class="form-check form-switch form-switch-success">
-                                                        <input class="form-check-input" type="checkbox" id="customSwitchSuccess">
-                                                        <label class="form-check-label" for="customSwitchSuccess">Remember me</label>
-                                                    </div>
-                                                </div><!--end col--> 
-                                                <div class="col-sm-6 text-end">
-                                                    <a href="auth-recover-pw.html" class="text-muted font-13"><i class="dripicons-lock"></i> Forgot password?</a>                                    
-                                                </div><!--end col--> 
-                                            </div><!--end form-group--> 
-                                            <div class="form-group mb-0 row">
-                                                <div class="col-12">
-                                                    <div class="d-grid mt-3">
-                                                        <button class="btn btn-primary" type="submit">Log In <i class="fas fa-sign-in-alt ms-1"></i></button>
-                                                    </div>
-                                                </div><!--end col--> 
-                                            </div> <!--end form-group-->                           
-                                        </form><!--end form-->
-                                        <div id="error-message" class="text-danger text-center mt-2"></div>
-                                        <div class="text-center mb-2">
-                                            <p class="text-muted">Don't have an account? <a href="{{ url_for('register_page') }}" class="text-primary ms-2">Free Register</a></p>
-                                            <h6 class="px-3 d-inline-block">Or Login With</h6>
+                                </div>
+                                <div class="card-body pt-0">                                    
+                                    <form class="my-4" id="login-form">            
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="useremail">Email Address</label>
+                                            <input type="email" class="form-control" id="useremail" placeholder="Enter email" required>                               
                                         </div>
-                                        <div class="d-flex justify-content-center">
-                                            <a href="#" class="d-flex justify-content-center align-items-center thumb-md bg-blue-subtle text-blue rounded-circle me-2">
-                                                <i class="fab fa-facebook align-self-center"></i>
-                                            </a>
-                                            <a href="#" class="d-flex justify-content-center align-items-center thumb-md bg-info-subtle text-info rounded-circle me-2">
-                                                <i class="fab fa-twitter align-self-center"></i>
-                                            </a>
-                                            <a href="#" class="d-flex justify-content-center align-items-center thumb-md bg-danger-subtle text-danger rounded-circle">
-                                                <i class="fab fa-google align-self-center"></i>
-                                            </a>
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="userpassword">Password</label>                                            
+                                            <input type="password" class="form-control" id="userpassword" placeholder="Enter password" minlength="6" required>                            
                                         </div>
-                                    </div><!--end card-body-->
-                                </div><!--end card-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </div><!--end card-body-->
-                </div><!--end col-->
-            </div><!--end row-->                                        
-        </div><!-- container -->
+                                        <div class="form-group row mt-3">
+                                            <div class="col-sm-6">
+                                                <div class="form-check form-switch form-switch-success">
+                                                    <input class="form-check-input" type="checkbox" id="customSwitchSuccess">
+                                                    <label class="form-check-label" for="customSwitchSuccess">Remember me</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 text-end">
+                                                <a href="/recover-password" class="text-muted font-13"><i class="dripicons-lock"></i> Forgot password?</a>                                    
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-0 row">
+                                            <div class="col-12">
+                                                <div class="d-grid mt-4">
+                                                    <button class="btn btn-primary" type="submit">Log In <i class="fas fa-sign-in-alt ms-1"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>                           
+                                    </form>
+                                    <div id="error-message" class="text-danger text-center mt-3"></div>
+                                    <div class="text-center mt-3">
+                                        <p class="text-muted">Don’t have an account? <a href="/register" class="text-primary ms-2">Register Now</a></p>
+                                        <h6 class="px-3 d-inline-block">Or Login With</h6>
+                                    </div>
+                                    <div class="d-flex justify-content-center mt-2">
+                                        <a href="#" class="social-btn bg-blue-subtle text-blue rounded-circle me-2">
+                                            <i class="fab fa-facebook"></i>
+                                        </a>
+                                        <a href="#" class="social-btn bg-info-subtle text-info rounded-circle me-2">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                        <a href="#" class="social-btn bg-danger-subtle text-danger rounded-circle">
+                                            <i class="fab fa-google"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>                                        
+    </div>
 
-        <!-- Javascript -->
-        <script src="{{ url_for('static', filename='assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='assets/libs/iconify-icon/iconify-icon.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='assets/libs/simplebar/simplebar.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='assets/js/app.js') }}"></script>
-        
-        <!-- Firebase Modular SDK -->
-        <script type="module">
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-            import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-        
-            const firebaseConfig = {
-                apiKey: "AIzaSyCXs65dj5o0Hd3MeggR8CzF5PIUt7fQwaI",
-                authDomain: "stockvision-9e584.firebaseapp.com",
-                projectId: "stockvision-9e584",
-                storageBucket: "stockvision-9e584.firebasestorage.app",
-                messagingSenderId: "667063932009",
-                appId: "1:667063932009:web:eb6f313f594c092adf3ef8",
-                measurementId: "G-DYVSB0BML2"
-            };
-        
-            const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
-        
-            document.getElementById("login-form").addEventListener("submit", async (e) => {
-                e.preventDefault();
-        
-                const email = document.getElementById("useremail").value;
-                const password = document.getElementById("userpassword").value;
-                const errorMessage = document.getElementById("error-message");
-        
-                errorMessage.textContent = "";
-        
-                try {
-                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                    const idToken = await userCredential.user.getIdToken();
-                    console.log("ID Token:", idToken);
+    <!-- Javascript -->
+    <script src="{{ url_for('static', filename='assets2/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets2/libs/iconify-icon/iconify-icon.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets2/libs/simplebar/simplebar.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets2/js/app.js') }}"></script>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-                    const response = await fetch('/auth/login', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: new URLSearchParams({ 'id_token': idToken })
-                    });
-        
-                    console.log("Response Status:", response.status);
-        
-                    if (response.redirected) {
-                        window.location.href = response.url;
-                    } else {
-                        const text = await response.text();
-                        console.log("Server Response:", text);
-                        errorMessage.textContent = "Login failed on server: " + text;
-                    }
-                } catch (error) {
-                    errorMessage.textContent = "Oops! " + error.message;
-                    console.error("Firebase Error:", error);
+        const firebaseConfig = {
+            apiKey: "AIzaSyCXs65dj5o0Hd3MeggR8CzF5PIUt7fQwaI",
+            authDomain: "stockvision-9e584.firebaseapp.com",
+            projectId: "stockvision-9e584",
+            storageBucket: "stockvision-9e584.firebasestorage.app",
+            messagingSenderId: "667063932009",
+            appId: "1:667063932009:web:eb6f313f594c092adf3ef8",
+            measurementId: "G-DYVSB0BML2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.getElementById("login-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById("useremail").value;
+            const password = document.getElementById("userpassword").value;
+            const errorMessage = document.getElementById("error-message");
+
+            errorMessage.textContent = "";
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const idToken = await userCredential.user.getIdToken();
+
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ 'id_token': idToken })
+                });
+
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    const text = await response.text();
+                    errorMessage.textContent = "Login failed: " + text;
                 }
-            });
-        </script>
-    </body>
+            } catch (error) {
+                errorMessage.textContent = "Oops! " + error.message;
+            }
+        });
+    </script>
+</body>
 </html>

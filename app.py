@@ -731,19 +731,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -1082,6 +1069,29 @@ def logout():
     session.pop('id_token', None)
     print("Logged out")
     return redirect(url_for('home'))  # Redirect to index.html after logout
+
+from flask_mail import Mail, Message
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'ruramaimuchenga@gmail.com'
+app.config['MAIL_PASSWORD'] = 'your-app-password'  # Use an App Password if 2FA is on
+mail = Mail(app)
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        subject = request.form['subject']
+        message = request.form['message']
+        
+        msg = Message(subject, sender=email, recipients=['ruramaimuchenga@gmail.com'])
+        msg.body = f"From: {name} ({email})\n\n{message}"
+        mail.send(msg)
+        return redirect(url_for('contact'))  # Redirect after sending
+    return render_template('contact.html')
 
 # Debug route to test static files
 @app.route('/test_static/<path:filename>')

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-    <title>STOCKVISION AI</title>
+    <title>StockVision AI</title>
 
     <!-- Fav Icon -->
     <link rel="icon" href="{{ url_for('static', filename='images/icons/favicon.ico') }}" type="image/x-icon">
@@ -15,24 +16,38 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
     <!-- Stylesheets -->
-    <link href="{{ url_for('static', filename='css/font-awesome-all.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/flaticon.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/owl.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/jquery.fancybox.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/animate.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/odometer.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/elpath.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/color.css') }}" id="jssDefault" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/module-css/header.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/module-css/banner.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/module-css/footer.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/responsive.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/font-awesome-all.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/flaticon.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/owl.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/jquery.fancybox.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/animate.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/nice-select.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/odometer.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/elpath.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/color.css') }}" id="jssDefault" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/rtl.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/dark.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/header.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/banner.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/clients.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/process.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/trading.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/platform.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/funfact.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/apps.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/about.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/working.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/experience.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/news.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/subscribe.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/footer.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/responsive.css') }}" rel="stylesheet">
 </head>
 
-<body>
-    <div class="boxed_wrapper home_5 ltr">
+<body class="dark-mode">
+    <div class="boxed_wrapper dark_home ltr">
         <!-- preloader -->
         <div class="loader-wrap">
             <div class="preloader">
@@ -53,21 +68,21 @@
                             <span data-text-preloader="O" class="letters-loading">O</span>
                             <span data-text-preloader="N" class="letters-loading">N</span>
                         </div>
-                    </div>  
+                    </div>
                 </div>
             </div>
         </div>
         <!-- preloader end -->
 
         <!-- main header -->
-        <header class="main-header header-style-five">
+        <header class="main-header header-style-four">
             <div class="header-lower">
-                <div class="large-container">
+                <div class="auto-container">
                     <div class="outer-box">
                         <figure class="logo-box">
-                            <a href="{{ url_for('home') }}" style="text-decoration: none; color: black; font-size: 24px; font-weight: bold;">
-                                StockVision AI
-                            </a>
+                            <h1 style="font-size: 28px; font-weight: 700; margin: 0; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">
+                                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">StockVisionAI</a>
+                            </h1>
                         </figure>
                         <div class="menu-area">
                             <div class="mobile-nav-toggler">
@@ -78,10 +93,10 @@
                             <nav class="main-menu navbar-expand-md navbar-light clearfix">
                                 <div class="collapse navbar-collapse show clearfix" id="navbarSupportedContent">
                                     <ul class="navigation clearfix">
-                                        <li><a href="{{ url_for('home') }}">Home</a></li> 
-                                        <li><a href="about.html">About</a></li> 
-                                        <li><a href="https://ruramaimuchenga.wixsite.com/final-year-school--1" target="_blank">Blog</a></li> 
-                                        <li><a href="contact.html">Contact</a></li> 
+                                        <li class="current"><a href="{{ url_for('home') }}">Home</a></li>
+                                        <li><a href="#about-section">About</a></li>
+                                        <li><a href="https://ruramaimuchenga.wixsite.com/final-year-school--1" target="_blank">Blog</a></li>
+                                        <li><a href="#contact-section">Contact</a></li>
                                     </ul>
                                 </div>
                             </nav>
@@ -95,12 +110,12 @@
 
             <!--sticky Header-->
             <div class="sticky-header">
-                <div class="large-container">
+                <div class="auto-container">
                     <div class="outer-box">
                         <figure class="logo-box">
-                            <a href="{{ url_for('home') }}" style="text-decoration: none; color: black; font-size: 24px; font-weight: bold;">
-                                StockVision AI
-                            </a>
+                            <h1 style="font-size: 28px; font-weight: 700; margin: 0; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">
+                                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">StockVisionAI</a>
+                            </h1>
                         </figure>
                         <div class="menu-area">
                             <nav class="main-menu clearfix">
@@ -108,7 +123,6 @@
                             </nav>
                         </div>
                         <div class="menu-right-content">
-                            <div class="search-btn mr_25"><button class="search-toggler"><i class="icon-10"></i></button></div>
                             <div class="btn-box"><a href="{{ url_for('register_page') }}" class="theme-btn btn-one">Open Account</a></div>
                         </div>
                     </div>
@@ -117,51 +131,225 @@
         </header>
         <!-- main-header end -->
 
-        <!-- banner-style-five -->
-        <section class="banner-style-five p_relative">
-            <div class="large-container">
-                <div class="banner-carousel owl-theme owl-carousel owl-nav-none owl-dots-none">
-                    <div class="slide-item p_relative">
-                        <div class="bg-layer" style="background-image: url({{ url_for('static', filename='images/banner/banner-4.webp') }});"></div>
-                        <div class="shape" style="background-image: url({{ url_for('static', filename='images/shape/shape-29.png') }});"></div>
-                        <div class="inner-container">
-                            <div class="row align-items-center">
-                                <div class="col-lg-6 col-md-12 col-sm-12 content-column">
-                                    <div class="content-box">
-                                        <h2>StockVision AI</h2>
-                                        <p>An advanced ML driven platform which empowers traders and investors to make better financial decisions.</p>
-                                        <div class="btn-box">
-                                            <a href="{{ url_for('register_page') }}" class="theme-btn btn-one mr_15">Create Account</a>
-                                            <a href="{{ url_for('login_page') }}" class="theme-btn btn-two">Login</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-12 col-sm-12 image-column">
-                                    <div class="image-box ml_150">
-                                        <figure class="image"><img src="{{ url_for('static', filename='images/banner/banner-img-8.png') }}" alt=""></figure>
-                                    </div>
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <div class="menu-backdrop"></div>
+            <div class="close-btn"><i class="fas fa-times"></i></div>
+            <nav class="menu-box">
+                <div class="nav-logo"><a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='assets/images/logo-2.png') }}" alt="" title=""></a></div>
+                <div class="menu-outer"><!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header--></div>
+                <div class="contact-info">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        <li>Chicago 12, Melborne City, USA</li>
+                        <li><a href="tel:+8801682648101">+88 01682648101</a></li>
+                        <li><a href="mailto:info@stockvisionai.com">info@stockvisionai.com</a></li>
+                    </ul>
+                </div>
+                <div class="social-links">
+                    <ul class="clearfix">
+                        <li><a href="{{ url_for('home') }}"><span class="fab fa-twitter"></span></a></li>
+                        <li><a href="{{ url_for('home') }}"><span class="fab fa-facebook-square"></span></a></li>
+                        <li><a href="{{ url_for('home') }}"><span class="fab fa-pinterest-p"></span></a></li>
+                        <li><a href="{{ url_for('home') }}"><span class="fab fa-instagram"></span></a></li>
+                        <li><a href="{{ url_for('home') }}"><span class="fab fa-youtube"></span></a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <!-- End Mobile Menu -->
+
+        <!-- banner-style-four -->
+        <section class="banner-style-four pt_160 pb_100">
+            <div class="pattern-layer" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-20.png') }});"></div>
+            <div class="shape">
+                <div class="shape-1 rotate-me" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-21.png') }});"></div>
+                <div class="shape-2 rotate-me" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-22.png') }});"></div>
+            </div>
+            <div class="auto-container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-12 col-sm-12 content-column">
+                        <div class="content_block_six">
+                            <div class="content-box mr_30">
+                                <span class="sub-title mb_20">Trade Now</span>
+                                <h2>The Ultimate <span>StockVision AI</span> Experience</h2>
+                                <p>An advanced ML-driven platform empowering traders and investors to make smarter financial decisions.</p>
+                                <div class="btn-box">
+                                    <a href="{{ url_for('register_page') }}" class="theme-btn btn-one mr_15">Create Account</a>
+                                    <a href="{{ url_for('login_page') }}" class="theme-btn btn-two">Login</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="slide-item p_relative">
-                        <div class="bg-layer" style="background-image: url({{ url_for('static', filename='images/banner/banner-6.webp') }});"></div>
-                        <div class="shape" style="background-image: url({{ url_for('static', filename='images/shape/shape-29.png') }});"></div>
-                        <div class="inner-container">
+                    <div class="col-lg-6 col-md-12 col-sm-12 image-column">
+                        <div class="image-box">
+                            <figure class="image float-bob-y"><img src="{{ url_for('static', filename='assets/images/banner/banner-img-7.png') }}" alt=""></figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- banner-style-four end -->
+
+        <!-- process-section -->
+        <section class="process-section pt_100 pb_100">
+            <div class="pattern-layer" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-24.png') }});"></div>
+            <div class="auto-container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-12 col-sm-12 image-column">
+                        <div class="image_block_one">
+                            <div class="image-box pr_130 mr_40 pl_150">
+                                <figure class="image image-1"><img src="{{ url_for('static', filename='assets/images/resource/mockup-2.png') }}" alt=""></figure>
+                                <figure class="image image-2 p_absolute r_0 b_50"><img src="{{ url_for('static', filename='assets/images/resource/dashboard-3.png') }}" alt=""></figure>
+                                <div class="content-one">
+                                    <div class="shape" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-23.png') }});"></div>
+                                    <span>Sales</span>
+                                    <h3>1.25 kk</h3>
+                                    <p>Washington, D.C.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12 content-column">
+                        <div class="content-box">
+                            <div class="process-block-one">
+                                <div class="inner-box">
+                                    <div class="shape" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-3.png') }});"></div>
+                                    <span class="count-text">1</span>
+                                    <h3>Sign up, It's Free!</h3>
+                                    <p>Get started with StockVision AI by creating your free account today.</p>
+                                </div>
+                            </div>
+                            <div class="process-block-one">
+                                <div class="inner-box">
+                                    <div class="shape" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-3.png') }});"></div>
+                                    <span class="count-text">2</span>
+                                    <h3>Analyze & Invest</h3>
+                                    <p>Use our ML-driven tools to find the best opportunities and invest with confidence.</p>
+                                </div>
+                            </div>
+                            <div class="process-block-one">
+                                <div class="inner-box">
+                                    <div class="shape" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-3.png') }});"></div>
+                                    <span class="count-text">3</span>
+                                    <h3>Track Your Profits</h3>
+                                    <p>Monitor your investments and withdraw profits effortlessly with StockVision AI.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- process-section end -->
+
+        <!-- trading-style-four -->
+        <section class="trading-style-four pt_0 pb_100" id="about-section">
+            <div class="auto-container">
+                <div class="sec-title light centred pb_60">
+                    <span class="sub-title mb_14">Learn More</span>
+                    <h2>About StockVision AI</h2>
+                </div>
+                <div class="tabs-box">
+                    <ul class="tab-btns tab-buttons clearfix">
+                        <li class="tab-btn active-btn" data-tab="#tab-11">
+                            <div class="icon-box"><i class="icon-20"></i></div>
+                            <h4>Financial Markets</h4>
+                        </li>
+                        <li class="tab-btn" data-tab="#tab-12">
+                            <div class="icon-box"><i class="icon-21"></i></div>
+                            <h4>AI Insights</h4>
+                        </li>
+                        <li class="tab-btn" data-tab="#tab-13">
+                            <div class="icon-box"><i class="icon-22"></i></div>
+                            <h4>Tools Overview</h4>
+                        </li>
+                        <li class="tab-btn" data-tab="#tab-14">
+                            <div class="icon-box"><i class="icon-23"></i></div>
+                            <h4>Platform Benefits</h4>
+                        </li>
+                    </ul>
+                    <div class="tabs-content">
+                        <div class="tab active-tab" id="tab-11">
                             <div class="row align-items-center">
                                 <div class="col-lg-6 col-md-12 col-sm-12 content-column">
-                                    <div class="content-box">
-                                        <h2>StockVision AI</h2>
-                                        <p>An advanced ML driven platform which empowers traders and investors to make better financial decisions.</p>
-                                        <div class="btn-box">
-                                            <a href="{{ url_for('register_page') }}" class="theme-btn btn-one mr_15">Create Account</a>
-                                            <a href="{{ url_for('login_page') }}" class="theme-btn btn-two">Login</a>
+                                    <div class="content_block_three">
+                                        <div class="content-box mr_30">
+                                            <h2>Financial Markets</h2>
+                                            <p>StockVision AI provides real-time insights into global financial markets using advanced machine learning.</p>
+                                            <div class="btn-box">
+                                                <a href="{{ url_for('register_page') }}" class="theme-btn btn-one mr_20">Start Trading</a>
+                                                <a href="{{ url_for('home') }}" class="theme-btn btn-two">Learn More</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-12 col-sm-12 image-column">
-                                    <div class="image-box ml_150">
-                                        <figure class="image"><img src="{{ url_for('static', filename='images/banner/banner-img-8.png') }}" alt=""></figure>
+                                    <div class="image-box ml_70">
+                                        <figure class="image"><img src="{{ url_for('static', filename='assets/images/resource/dashboard-2.png') }}" alt=""></figure>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab" id="tab-12">
+                            <div class="row align-items-center">
+                                <div class="col-lg-6 col-md-12 col-sm-12 content-column">
+                                    <div class="content_block_three">
+                                        <div class="content-box mr_30">
+                                            <h2>AI Insights</h2>
+                                            <p>Leverage cutting-edge AI to predict market trends and optimize your trading strategy.</p>
+                                            <div class="btn-box">
+                                                <a href="{{ url_for('register_page') }}" class="theme-btn btn-one mr_20">Start Trading</a>
+                                                <a href="{{ url_for('home') }}" class="theme-btn btn-two">Learn More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-12 col-sm-12 image-column">
+                                    <div class="image-box ml_70">
+                                        <figure class="image"><img src="{{ url_for('static', filename='assets/images/resource/dashboard-2.png') }}" alt=""></figure>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab" id="tab-13">
+                            <div class="row align-items-center">
+                                <div class="col-lg-6 col-md-12 col-sm-12 content-column">
+                                    <div class="content_block_three">
+                                        <div class="content-box mr_30">
+                                            <h2>Tools Overview</h2>
+                                            <p>Explore our suite of tools designed to simplify trading and maximize returns.</p>
+                                            <div class="btn-box">
+                                                <a href="{{ url_for('register_page') }}" class="theme-btn btn-one mr_20">Start Trading</a>
+                                                <a href="{{ url_for('home') }}" class="theme-btn btn-two">Learn More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-12 col-sm-12 image-column">
+                                    <div class="image-box ml_70">
+                                        <figure class="image"><img src="{{ url_for('static', filename='assets/images/resource/dashboard-2.png') }}" alt=""></figure>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab" id="tab-14">
+                            <div class="row align-items-center">
+                                <div class="col-lg-6 col-md-12 col-sm-12 content-column">
+                                    <div class="content_block_three">
+                                        <div class="content-box mr_30">
+                                            <h2>Platform Benefits</h2>
+                                            <p>Enjoy a user-friendly interface, real-time data, and AI-driven insights with StockVision AI.</p>
+                                            <div class="btn-box">
+                                                <a href="{{ url_for('register_page') }}" class="theme-btn btn-one mr_20">Start Trading</a>
+                                                <a href="{{ url_for('home') }}" class="theme-btn btn-two">Learn More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-12 col-sm-12 image-column">
+                                    <div class="image-box ml_70">
+                                        <figure class="image"><img src="{{ url_for('static', filename='assets/images/resource/dashboard-2.png') }}" alt=""></figure>
                                     </div>
                                 </div>
                             </div>
@@ -170,7 +358,191 @@
                 </div>
             </div>
         </section>
-        <!-- banner-style-five end -->
+        <!-- trading-style-four end -->
+
+        <!-- apps-section -->
+        <section class="apps-section">
+            <div class="pattern-layer" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-27.png') }});"></div>
+            <div class="auto-container">
+                <div class="inner-container">
+                    <div class="shape" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-4.png') }});"></div>
+                    <figure class="image-layer"><img src="{{ url_for('static', filename='assets/images/resource/mockup-3.png') }}" alt=""></figure>
+                    <div class="content_block_two">
+                        <div class="content-box">
+                            <div class="sec-title light pb_40">
+                                <span class="sub-title mb_14">Download App</span>
+                                <h2>Download StockVision AI App</h2>
+                                <p>Access advanced trading tools on the go with the StockVision AI mobile app.</p>
+                            </div>
+                            <ul class="download-list clearfix">
+                                <li><a href="{{ url_for('home') }}"><i class="fab fa-apple"></i></a></li>
+                                <li><a href="{{ url_for('static', filename='assets/images/icons/icon-2.png') }}"><img src="{{ url_for('static', filename='assets/images/icons/icon-2.png') }}" alt=""></a></li>
+                                <li><a href="{{ url_for('home') }}"><i class="fab fa-android"></i></a></li>
+                                <li><a href="{{ url_for('static', filename='assets/images/icons/icon-6.png') }}"><img src="{{ url_for('static', filename='assets/images/icons/icon-6.png') }}" alt=""></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- apps-section end -->
+
+        <!-- working-section -->
+        <section class="working-section pt_100 pb_100">
+            <div class="pattern-layer" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-28.png') }});"></div>
+            <div class="auto-container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-12 col-sm-12 video-column">
+                        <div class="video_block_one">
+                            <div class="video-box z_1 p_relative pl_50 pb_50 centred">
+                                <div class="video-inner" style="background-image: url({{ url_for('static', filename='assets/images/resource/video-2.jpg') }});">
+                                    <div class="video-content">
+                                        <div class="curve-text">
+                                            <span class="curved-circle">watch the video right now </span>
+                                        </div>
+                                        <a href="https://www.youtube.com/watch?v=nfP5N9Yc72A&t=28s" class="lightbox-image video-btn" data-caption=""><i class="icon-11"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12 content-column">
+                        <div class="content_block_nine">
+                            <div class="content-box ml_70">
+                                <div class="sec-title light pb_35">
+                                    <span class="sub-title mb_10">Easy Steps</span>
+                                    <h2>How StockVision AI Works</h2>
+                                </div>
+                                <div class="inner-box">
+                                    <div class="single-item">
+                                        <span class="count-text">1</span>
+                                        <h3><a href="{{ url_for('register_page') }}">Sign up, It's Free!</a></h3>
+                                        <p>Get started with StockVision AI by creating your free account today.</p>
+                                    </div>
+                                    <div class="single-item">
+                                        <span class="count-text">2</span>
+                                        <h3><a href="{{ url_for('home') }}">Analyze & Invest</a></h3>
+                                        <p>Use our ML-driven tools to find the best opportunities and invest with confidence.</p>
+                                    </div>
+                                    <div class="single-item">
+                                        <span class="count-text">3</span>
+                                        <h3><a href="{{ url_for('home') }}">Track Your Profits</a></h3>
+                                        <p>Monitor your investments and withdraw profits effortlessly with StockVision AI.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- working-section end -->
+
+        <!-- experience-section -->
+        <section class="experience-section" id="contact-section">
+            <div class="auto-container">
+                <div class="inner-container">
+                    <div class="shape" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-19.png') }});"></div>
+                    <div class="sec-title light centred pb_60">
+                        <span class="sub-title mb_20">Get in Touch</span>
+                        <h2>Contact StockVision AI</h2>
+                        <p>Connect with Ruramai Muchenga, the visionary behind StockVision AI, for inquiries, collaborations, or support.</p>
+                    </div>
+                    <div class="contact-details centred">
+                        <div class="row clearfix">
+                            <div class="col-lg-3 col-md-6 col-sm-12 contact-column">
+                                <div class="contact-box">
+                                    <i class="fas fa-envelope contact-icon"></i>
+                                    <h4>Email</h4>
+                                    <p><a href="mailto:ruramaimuchenga@gmail.com" class="contact-link">ruramaimuchenga@gmail.com</a></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12 contact-column">
+                                <div class="contact-box">
+                                    <i class="fab fa-linkedin contact-icon"></i>
+                                    <h4>LinkedIn</h4>
+                                    <p><a href="https://www.linkedin.com/in/ruramai-muchenga-a20454165/" target="_blank" class="contact-link">Ruramai Muchenga</a></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12 contact-column">
+                                <div class="contact-box">
+                                    <i class="fab fa-github contact-icon"></i>
+                                    <h4>GitHub</h4>
+                                    <p><a href="https://github.com/RuraMuchenga" target="_blank" class="contact-link">RuraMuchenga</a></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12 contact-column">
+                                <div class="contact-box">
+                                    <i class="fas fa-briefcase contact-icon"></i>
+                                    <h4>Portfolio</h4>
+                                    <p><a href="https://rura-muchenga-portfolio.vercel.app/" target="_blank" class="contact-link">View Portfolio</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-box centred mt_50">
+                        <a href="mailto:ruramaimuchenga@gmail.com" class="theme-btn btn-one">Send a Message</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- experience-section end -->
+
+        <!-- news-section -->
+        <section class="news-section pt_100 pb_70">
+            <div class="pattern-layer" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-27.png') }});"></div>
+            <div class="auto-container">
+                <div class="sec-title centred light pb_60">
+                    <span class="sub-title mb_14">Media Center</span>
+                    <h2>Latest StockVision AI Updates</h2>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-lg-4 col-md-6 col-sm-12 news-block">
+                        <div class="news-block-one wow fadeInUp animated" data-wow-delay="00ms" data-wow-duration="1500ms">
+                            <div class="inner-box">
+                                <span class="post-date">20TH April, 2024</span>
+                                <h3><a href="blog-details.html">USD/JPY Stages the more upsides can Bulls Aim for 160x Bonus?</a></h3>
+                                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
+                                <div class="link"><a href="blog-details.html">Read More</a></div>
+                            </div>
+                            <div class="author-box">
+                                <figure class="author-thumb"><img src="{{ url_for('static', filename='assets/images/resource/testimonial-1.png') }}" alt=""></figure>
+                                <span>Daniel Marcon</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 news-block">
+                        <div class="news-block-one wow fadeInUp animated" data-wow-delay="300ms" data-wow-duration="1500ms">
+                            <div class="inner-box">
+                                <span class="post-date">19TH April, 2024</span>
+                                <h3><a href="blog-details.html">Nemo's Eurovision win fires up Swiss advocates</a></h3>
+                                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
+                                <div class="link"><a href="blog-details.html">Read More</a></div>
+                            </div>
+                            <div class="author-box">
+                                <figure class="author-thumb"><img src="{{ url_for('static', filename='assets/images/resource/testimonial-2.png') }}" alt=""></figure>
+                                <span>Robert Henry</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 news-block">
+                        <div class="news-block-one wow fadeInUp animated" data-wow-delay="600ms" data-wow-duration="1500ms">
+                            <div class="inner-box">
+                                <span class="post-date">18TH April, 2024</span>
+                                <h3><a href="blog-details.html">Wall St Week Ahead-Earnings bolster US stocks</a></h3>
+                                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
+                                <div class="link"><a href="blog-details.html">Read More</a></div>
+                            </div>
+                            <div class="author-box">
+                                <figure class="author-thumb"><img src="{{ url_for('static', filename='assets/images/resource/testimonial-3.png') }}" alt=""></figure>
+                                <span>Victor Classic</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- news-section end -->
 
         <!-- main-footer -->
         <footer class="main-footer">
@@ -179,7 +551,7 @@
                     <div class="bottom-inner">
                         <p>Ruramai Muchenga © 2025 <a href="{{ url_for('home') }}">StockVision AI</a>. All rights reserved.</p>
                         <ul class="social-links">
-                            <li><h5>Follow Me On:</h5></li>
+                            <li><h5>Follow Us On:</h5></li>
                             <li><a href="{{ url_for('home') }}"><i class="icon-12"></i></a></li>
                             <li><a href="{{ url_for('home') }}"><i class="icon-13"></i></a></li>
                             <li><a href="{{ url_for('home') }}"><i class="icon-14"></i></a></li>
@@ -200,20 +572,193 @@
     </div>
 
     <!-- jquery plugins -->
-    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/owl.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/wow.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.fancybox.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/appear.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/isotope.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/scrolltop.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/odometer.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.lettering.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.circleType.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/owl.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/wow.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery.fancybox.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/appear.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/isotope.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/parallax-scroll.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery.nice-select.min.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='assets/js/scrolltop.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/language.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery-ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/odometer.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery.lettering.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery.circleType.js') }}"></script>
 
     <!-- main-js -->
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/script.js') }}"></script>
+
+    <!-- Smooth Scroll Script for About and Contact Links -->
+    <script>
+        $(document).ready(function() {
+            $('a[href="#about-section"], a[href="#contact-section"]').on('click', function(event) {
+                event.preventDefault();
+                var target = $(this).attr('href');
+                $('html, body').animate({
+                    scrollTop: $(target).offset().top - 70
+                }, 800);
+            });
+        });
+    </script>
+
+    <!-- Inline CSS -->
+    <style>
+        /* Dark Mode Base */
+        body.dark-mode {
+            background-color: #1a1a1a !important;
+            color: #ffffff !important;
+        }
+        .boxed_wrapper.dark_home {
+            background-color: #1a1a1a !important;
+        }
+        .main-header, .sticky-header, .banner-style-four, .process-section, .trading-style-four, .apps-section, .working-section, .experience-section, .news-section, .main-footer {
+            background-color: #1a1a1a !important;
+            color: #ffffff !important;
+        }
+
+        /* Contact Section Styling */
+        .experience-section {
+            background-color: #1a1a1a !important;
+            color: #ffffff !important;
+            position: relative;
+            padding: 100px 0;
+        }
+
+        .experience-section .inner-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .experience-section .shape {
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.1;
+            transform: translateY(-10%) scale(1.2);
+        }
+
+        .experience-section .contact-details {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .experience-section .contact-column {
+            margin-bottom: 40px;
+        }
+
+        .experience-section .contact-box {
+            background: #252525;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .experience-section .contact-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .experience-section .contact-icon {
+            font-size: 40px;
+            color: #00b4d8;
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .experience-section .contact-box:hover .contact-icon {
+            color: #00e6ff;
+        }
+
+        .experience-section .contact-box h4 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .experience-section .contact-box p {
+            margin: 0;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .experience-section .contact-link {
+            color: #ffffff;
+            text-decoration: none;
+            word-break: break-word;
+            transition: color 0.3s ease;
+        }
+
+        .experience-section .contact-link:hover {
+            color: #00e6ff;
+            text-decoration: none;
+        }
+
+        .experience-section .btn-box {
+            margin-top: 50px;
+        }
+
+        .experience-section .btn-one {
+            padding: 14px 35px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 8px;
+            background: #00b4d8;
+            border: none;
+            transition: background 0.3s ease;
+        }
+
+        .experience-section .btn-one:hover {
+            background: #00e6ff;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 991px) {
+            .experience-section .contact-box {
+                min-height: 180px;
+            }
+            .experience-section .contact-icon {
+                font-size: 36px;
+            }
+            .experience-section .contact-box h4 {
+                font-size: 20px;
+            }
+            .experience-section .contact-box p {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .experience-section {
+                padding: 80px 0;
+            }
+            .experience-section .contact-box {
+                min-height: 160px;
+            }
+            .experience-section .btn-box {
+                margin-top: 40px;
+            }
+        }
+    </style>
 </body>
 </html>
