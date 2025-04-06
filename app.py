@@ -1,6 +1,7 @@
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import json
 from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
 import yfinance as yf
 import pandas as pd
