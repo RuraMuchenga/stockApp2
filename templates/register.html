@@ -1,180 +1,307 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-startbar="dark" data-bs-theme="dark">
-    <!DOCTYPE html>
-    <html lang="en" dir="ltr" data-startbar="dark" data-bs-theme="dark">
-        <head>
-            <meta charset="utf-8" />
-            <title>StockVision | Register</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-            <meta content="Advanced Stock Prediction Platform" name="description" />
-            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-            <link rel="shortcut icon" href="{{ url_for('static', filename='assets2/images/favicon.ico') }}">
-            <link href="{{ url_for('static', filename='assets2/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-            <link href="{{ url_for('static', filename='assets2/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-            <link href="{{ url_for('static', filename='assets2/css/app.min.css') }}" rel="stylesheet" type="text/css" />
-            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-            <!-- Fallback: Load Line Awesome directly -->
-            <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-        
-            <style>
-                body {
-                    background: #1a1a1a;
-                    font-family: 'Poppins', sans-serif;
-                    color: #d1d1d1;
-                }
-                .card {
-                    background: #2c2c2c;
-                    border: none;
-                    border-radius: 10px;
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-                }
-                .auth-header-box {
-                    background: #2c2c2c !important;
-                    border-bottom: 1px solid #3a3a3a;
-                }
-                .form-control {
-                    background: #333333;
-                    border: 1px solid #444444;
-                    color: #d1d1d1;
-                }
-                .form-control:focus {
-                    background: #3a3a3a;
-                    border-color: #1e90ff;
-                    color: #fff;
-                }
-                .btn-primary {
-                    background: #1e90ff;
-                    border: none;
-                    border-radius: 25px;
-                    font-weight: 600;
-                    transition: background 0.3s;
-                }
-                .btn-primary:hover {
-                    background: #1c86ee;
-                }
-                .text-muted {
-                    color: #a0a0a0 !important;
-                }
-                .text-primary {
-                    color: #1e90ff !important;
-                }
-                .success-popup {
-                    display: none;
-                    position: fixed;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    background: #28a745;
-                    color: #fff;
-                    padding: 20px 30px;
-                    border-radius: 10px;
-                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-                    z-index: 1000;
-                    text-align: center;
-                    animation: popupFadeIn 0.5s ease-in-out;
-                }
-                .success-popup i {
-                    font-size: 32px;
-                    margin-bottom: 10px;
-                }
-                .success-popup h5 {
-                    font-weight: 600;
-                    margin: 10px 0;
-                }
-                .success-popup .btn {
-                    margin-top: 15px;
-                    padding: 8px 20px;
-                }
-                .overlay {
-                    display: none;
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.7);
-                    z-index: 999;
-                }
-                @keyframes popupFadeIn {
-                    from { opacity: 0; transform: translate(-50%, -60%); }
-                    to { opacity: 1; transform: translate(-50%, -50%); }
-                }
-            </style>
-        </head>
-<body>
-    <div class="container-fluid">
-        <div class="row vh-100 d-flex justify-content-center">
-            <div class="col-12 align-self-center">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 col-lg-6 col-xl-6 mx-auto">
-                            <div class="card">
-                                <div class="card-body p-0 auth-header-box rounded-top">
-                                    <div class="text-center p-3">
-                                        <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Create an Account</h4>   
-                                        <p class="text-muted fw-medium mb-0">Join StockVision today—enter your details to get started.</p>  
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <title>StockVision AI - Register</title>
+
+    <!-- Fav Icon -->
+    <link rel="icon" href="{{ url_for('static', filename='images/icons/favicon.ico') }}" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link href="{{ url_for('static', filename='assets/css/font-awesome-all.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/flaticon.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/owl.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/jquery.fancybox.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/animate.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/nice-select.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/odometer.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/elpath.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/color.css') }}" id="jssDefault" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/rtl.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/dark.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/header.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/banner.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/clients.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/process.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/trading.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/platform.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/funfact.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/apps.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/about.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/working.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/experience.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/news.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/subscribe.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/footer.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/responsive.css') }}" rel="stylesheet">
+</head>
+
+<body class="dark-mode">
+    <div class="boxed_wrapper dark_home ltr">
+        <!-- Preloader -->
+        <div class="loader-wrap">
+            <div class="preloader">
+                <div class="preloader-close"><i class="fal fa-times"></i></div>
+                <div id="handle-preloader" class="handle-preloader">
+                    <div class="animation-preloader">
+                        <div class="spinner"></div>
+                        <div class="txt-loading">
+                            <span data-text-preloader="S" class="letters-loading">S</span>
+                            <span data-text-preloader="T" class="letters-loading">T</span>
+                            <span data-text-preloader="O" class="letters-loading">O</span>
+                            <span data-text-preloader="C" class="letters-loading">C</span>
+                            <span data-text-preloader="K" class="letters-loading">K</span>
+                            <span data-text-preloader="V" class="letters-loading">V</span>
+                            <span data-text-preloader="I" class="letters-loading">I</span>
+                            <span data-text-preloader="S" class="letters-loading">S</span>
+                            <span data-text-preloader="I" class="letters-loading">I</span>
+                            <span data-text-preloader="O" class="letters-loading">O</span>
+                            <span data-text-preloader="N" class="letters-loading">N</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Header -->
+        <header class="main-header header-style-four">
+            <div class="header-lower">
+                <div class="auto-container">
+                    <div class="outer-box">
+                        <figure class="logo-box">
+                            <h1 style="font-size: 28px; font-weight: 700; margin: 0; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">
+                                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">StockVisionAI</a>
+                            </h1>
+                        </figure>
+                        <div class="menu-area">
+                            <div class="mobile-nav-toggler">
+                                <i class="icon-bar"></i>
+                                <i class="icon-bar"></i>
+                                <i class="icon-bar"></i>
+                            </div>
+                            <nav class="main-menu navbar-expand-md navbar-light clearfix">
+                                <div class="collapse navbar-collapse show clearfix" id="navbarSupportedContent">
+                                    <ul class="navigation clearfix">
+                                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                                        <li><a href="{{ url_for('home') }}#about-section">About</a></li>
+                                        <li><a href="https://ruramaimuchenga.wixsite.com/final-year-school--1" target="_blank">Blog</a></li>
+                                        <li><a href="{{ url_for('home') }}#contact-section">Contact</a></li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="menu-right-content">
+                            <div class="btn-box"><a href="{{ url_for('login_page') }}" class="theme-btn btn-one">Login</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sticky Header -->
+            <div class="sticky-header">
+                <div class="auto-container">
+                    <div class="outer-box">
+                        <figure class="logo-box">
+                            <h1 style="font-size: 28px; font-weight: 700; margin: 0; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">
+                                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">StockVisionAI</a>
+                            </h1>
+                        </figure>
+                        <div class="menu-area">
+                            <nav class="main-menu clearfix"></nav>
+                        </div>
+                        <div class="menu-right-content">
+                            <div class="btn-box"><a href="{{ url_for('login_page') }}" class="theme-btn btn-one">Login</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <div class="menu-backdrop"></div>
+            <div class="close-btn"><i class="fas fa-times"></i></div>
+            <nav class="menu-box">
+                <div class="nav-logo"><a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='assets/images/logo-2.png') }}" alt="" title=""></a></div>
+                <div class="menu-outer"></div>
+                <div class="contact-info">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        <li>Chicago 12, Melborne City, USA</li>
+                        <li><a href="tel:+8801682648101">+88 01682648101</a></li>
+                        <li><a href="mailto:info@stockvisionai.com">info@stockvisionai.com</a></li>
+                    </ul>
+                </div>
+                <div class="social-links">
+                    <ul class="clearfix">
+                        <li><a href="{{ url_for('home') }}"><span class="fab fa-twitter"></span></a></li>
+                        <li><a href="{{ url_for('home') }}"><span class="fab fa-facebook-square"></span></a></li>
+                        <li><a href="{{ url_for('home') }}"><span class="fab fa-pinterest-p"></span></a></li>
+                        <li><a href="{{ url_for('home') }}"><span class="fab fa-instagram"></span></a></li>
+                        <li><a href="{{ url_for('home') }}"><span class="fab fa-youtube"></span></a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Register Section -->
+        <section class="process-section pt_100 pb_100">
+            <div class="pattern-layer" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-24.png') }});"></div>
+            <div class="auto-container">
+                <div class="sec-title light centred pb_60">
+                    <span class="sub-title mb_14">Sign Up</span>
+                    <h2>Create Your StockVision AI Account</h2>
+                    <p>Join today—enter your details to get started with advanced stock predictions.</p>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8 col-sm-12">
+                        <div class="form-box wow fadeInUp animated" data-wow-delay="00ms" data-wow-duration="1500ms">
+                            <form id="register-form">
+                                <div class="form-group">
+                                    <label for="username">Username</label>
+                                    <input type="text" class="form-control" id="username" placeholder="Enter username" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="useremail">Email Address</label>
+                                    <input type="email" class="form-control" id="useremail" placeholder="Enter email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="userpassword">Password</label>
+                                    <input type="password" class="form-control" id="userpassword" placeholder="Enter password" minlength="6" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Confirmpassword">Confirm Password</label>
+                                    <input type="password" class="form-control" id="Confirmpassword" placeholder="Confirm password" minlength="6" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mobileNo">Mobile Number</label>
+                                    <input type="tel" class="form-control" id="mobileNo" placeholder="Enter mobile number" pattern="[0-9]{10}" required>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="customSwitchSuccess" required>
+                                        <label class="form-check-label" for="customSwitchSuccess">I agree to the <a href="#" class="text-primary">Terms of Use</a> and <a href="#" class="text-primary">Privacy Policy</a></label>
                                     </div>
                                 </div>
-                                <div class="card-body pt-0">                                    
-                                    <form class="my-4" id="register-form">            
-                                        <div class="form-group mb-3">
-                                            <label class="form-label" for="username">Username</label>
-                                            <input type="text" class="form-control" id="username" placeholder="Enter username" required>                               
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <label class="form-label" for="useremail">Email Address</label>
-                                            <input type="email" class="form-control" id="useremail" placeholder="Enter email" required>                               
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <label class="form-label" for="userpassword">Password</label>                                            
-                                            <input type="password" class="form-control" id="userpassword" placeholder="Enter password" minlength="6" required>                            
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <label class="form-label" for="Confirmpassword">Confirm Password</label>                                            
-                                            <input type="password" class="form-control" id="Confirmpassword" placeholder="Confirm password" minlength="6" required>                            
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <label class="form-label" for="mobileNo">Mobile Number</label>
-                                            <input type="tel" class="form-control" id="mobileNo" placeholder="Enter mobile number" pattern="[0-9]{10}" required>                               
-                                        </div>
-                                        <div class="form-group row mt-3">
-                                            <div class="col-12">
-                                                <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input" type="checkbox" id="customSwitchSuccess" required>
-                                                    <label class="form-check-label" for="customSwitchSuccess">I agree to the StockVision <a href="#" class="text-primary">Terms of Use</a> and <a href="#" class="text-primary">Privacy Policy</a></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group mb-0 row">
-                                            <div class="col-12">
-                                                <div class="d-grid mt-4">
-                                                    <button class="btn btn-primary" type="submit">Register <i class="fas fa-sign-in-alt ms-1"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>                         
-                                    </form>
-                                    <div id="error-message" class="text-danger text-center mt-3"></div>
-                                    <div class="text-center mt-3">
-                                        <p class="text-muted">Already have an account? <a href="/login" class="text-primary ms-2">Log in</a></p>
-                                    </div>
+                                <div class="form-group btn-container">
+                                    <button type="submit" class="theme-btn btn-one">Register <i class="fas fa-sign-in-alt ms-1"></i></button>
+                                    <div class="spinner" id="spinner"></div>
                                 </div>
+                                <div id="error-message" class="text-danger text-center mt-3"></div>
+                            </form>
+                            <div class="text-center mt-4">
+                                <p class="text-muted">Already have an account? <a href="/login" class="text-primary">Log in</a></p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>                                        
+        </section>
+
+        <!-- Success Popup -->
+        <div class="overlay" id="success-overlay"></div>
+        <div class="success-popup" id="success-popup">
+            <i class="fas fa-check-circle"></i>
+            <h5>Registration Successful!</h5>
+            <p>Your StockVision account is ready. Welcome aboard!</p>
+            <a href="/login" class="btn btn-light">Login Now</a>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="startbar d-print-none">
+            <div class="brand">
+                <a href="/" class="logo"><span>StockVisionAI</span></a>
+            </div>
+            <div class="startbar-menu">
+                <div class="startbar-collapse" id="startbarCollapse">
+                    <ul class="navbar-nav mb-auto w-100">
+                        <li class="menu-label pt-0 mt-0"><span>Main Menu</span></li>
+                        <li class="nav-item"><a class="nav-link" href="/"><i class="icon-20"></i><span>Home</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="/#predictions"><i class="icon-21"></i><span>Stock Predictions</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="https://news.google.com/search?q=stock%20market%20today&hl=en-US&gl=US&ceid=US%3Aen" target="_blank"><i class="icon-22"></i><span>Recent News</span></a></li>
+                        <li class="nav-item currency-converter">
+                            <h6>Currency Converter</h6>
+                            <select id="fromCurrency">
+                                <option value="USD">USD - US Dollar</option>
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="GBP">GBP - British Pound</option>
+                                <option value="JPY">JPY - Japanese Yen</option>
+                                <option value="AUD">AUD - Australian Dollar</option>
+                                <option value="CAD">CAD - Canadian Dollar</option>
+                            </select>
+                            <select id="toCurrency">
+                                <option value="USD">USD - US Dollar</option>
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="GBP">GBP - British Pound</option>
+                                <option value="JPY">JPY - Japanese Yen</option>
+                                <option value="AUD">AUD - Australian Dollar</option>
+                                <option value="CAD">CAD - Canadian Dollar</option>
+                            </select>
+                            <input type="number" id="amount" placeholder="Amount" value="1" min="0" step="0.01">
+                            <p id="conversionResult">Result: </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="startbar-overlay d-print-none"></div>
+
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <div class="footer-bottom">
+                <div class="auto-container">
+                    <div class="bottom-inner">
+                        <p>Ruramai Muchenga © 2025 <a href="{{ url_for('home') }}">StockVision AI</a>. All rights reserved.</p>
+                        <ul class="social-links">
+                            <li><h5>Follow Us On:</h5></li>
+                            <li><a href="{{ url_for('home') }}"><i class="icon-12"></i></a></li>
+                            <li><a href="{{ url_for('home') }}"><i class="icon-13"></i></a></li>
+                            <li><a href="{{ url_for('home') }}"><i class="icon-14"></i></a></li>
+                            <li><a href="{{ url_for('home') }}"><i class="icon-15"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Scroll to Top -->
+        <div class="scroll-to-top">
+            <svg class="scroll-top-inner" viewBox="-1 -1 102 102">
+                <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+            </svg>
+        </div>
     </div>
 
-    <!-- Success Popup -->
-    <div class="overlay" id="success-overlay"></div>
-    <div class="success-popup" id="success-popup">
-        <i class="las la-check-circle"></i>
-        <h5>Registration Successful!</h5>
-        <p>Your StockVision account is ready. Welcome aboard!</p>
-        <a href="/login" class="btn btn-light">Login Now</a>
-    </div>
-    <!-- Firebase Modular SDK -->
+    <!-- jQuery Plugins -->
+    <script src="{{ url_for('static', filename='assets/js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/owl.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/wow.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery.fancybox.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/appear.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/isotope.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/parallax-scroll.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery.nice-select.min.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='assets/js/scrolltop.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/language.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery-ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/odometer.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery.lettering.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery.circleType.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/script.js') }}"></script>
+
+    <!-- Firebase and Register Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
@@ -206,17 +333,25 @@
             const errorMessage = document.getElementById("error-message");
             const successPopup = document.getElementById("success-popup");
             const successOverlay = document.getElementById("success-overlay");
+            const button = document.querySelector(".theme-btn.btn-one");
+            const spinner = document.getElementById("spinner");
 
             errorMessage.textContent = "";
             successPopup.style.display = "none";
             successOverlay.style.display = "none";
+            button.disabled = true;
+            spinner.style.display = "block";
 
             if (password !== confirmPassword) {
                 errorMessage.textContent = "Passwords don’t match!";
+                button.disabled = false;
+                spinner.style.display = "none";
                 return;
             }
             if (!termsAccepted) {
                 errorMessage.textContent = "You must agree to the terms!";
+                button.disabled = false;
+                spinner.style.display = "none";
                 return;
             }
 
@@ -237,8 +372,336 @@
                 errorMessage.style.display = "none";
             } catch (error) {
                 errorMessage.textContent = "Oops! " + error.message;
+            } finally {
+                button.disabled = false;
+                spinner.style.display = "none";
             }
         });
     </script>
+
+    <!-- Inline Scripts -->
+    <script>
+        $(document).ready(function() {
+            // Sidebar Toggle
+            $('#togglemenu').on('click', function() {
+                $('.startbar').toggleClass('active');
+                $('.startbar-overlay').toggleClass('active');
+            });
+
+            $('.startbar-overlay').on('click', function() {
+                $('.startbar').removeClass('active');
+                $('.startbar-overlay').removeClass('active');
+            });
+
+            // Currency Converter
+            function initializeCurrencyConverter() {
+                const fromCurrency = $('#fromCurrency');
+                const toCurrency = $('#toCurrency');
+                const amount = $('#amount');
+                const result = $('#conversionResult');
+                let rates = {};
+
+                fetch('https://open.er-api.com/v6/latest/USD')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.result === 'success') {
+                            rates = data.rates;
+                            updateConversion();
+                        } else {
+                            result.text('Error: Could not fetch rates');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                        result.text('Error: Network issue');
+                    });
+
+                function updateConversion() {
+                    const from = fromCurrency.val();
+                    const to = toCurrency.val();
+                    const amt = parseFloat(amount.val()) || 0;
+                    if (rates[from] && rates[to]) {
+                        const rateFrom = rates[to] / rates[from];
+                        const converted = amt * rateFrom;
+                        result.text(`Result: ${converted.toFixed(2)} ${to}`);
+                    } else {
+                        result.text('Result: Waiting for rates...');
+                    }
+                }
+
+                fromCurrency.on('change', updateConversion);
+                toCurrency.on('change', updateConversion);
+                amount.on('input', updateConversion);
+            }
+
+            if ($('#fromCurrency').length) initializeCurrencyConverter();
+        });
+    </script>
+
+    <!-- Inline CSS -->
+    <style>
+        /* Dark Mode Base */
+        body.dark-mode {
+            background-color: #1a1a1a !important;
+            color: #ffffff !important;
+        }
+        .boxed_wrapper.dark_home {
+            background-color: #1a1a1a !important;
+        }
+
+        /* Register Section */
+        .process-section {
+            position: relative;
+            background-color: #1a1a1a !important;
+        }
+        .form-box {
+            background: #252525;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .form-control {
+            background: #333;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .form-control:focus {
+            border-color: #00b4d8;
+            box-shadow: none;
+            outline: none;
+        }
+        .form-control::placeholder {
+            color: #d1d1d1;
+        }
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+        }
+        .form-check-input {
+            margin-right: 8px;
+            background-color: #333;
+            border: 1px solid #444;
+        }
+        .form-check-label {
+            font-size: 14px;
+            color: #d1d1d1;
+        }
+        .text-muted {
+            color: #a0a0a0 !important;
+            font-size: 14px;
+        }
+        .text-primary {
+            color: #00b4d8 !important;
+        }
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .theme-btn.btn-one {
+            padding: 14px 35px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 8px;
+            background: #00b4d8;
+            border: none;
+            transition: background 0.3s ease;
+            display: inline-block;
+            width: auto;
+        }
+        .theme-btn.btn-one:hover {
+            background: #00e6ff;
+        }
+        .theme-btn.btn-one:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffffff;
+            border-top: 3px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .success-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #28a745;
+            color: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            text-align: center;
+            animation: popupFadeIn 0.5s ease-in-out;
+        }
+        .success-popup i {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .success-popup h5 {
+            font-weight: 600;
+            margin: 10px 0;
+        }
+        .success-popup .btn {
+            margin-top: 15px;
+            padding: 8px 20px;
+            background: #fff;
+            color: #28a745;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .success-popup .btn:hover {
+            background: #f0f0f0;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+        @keyframes popupFadeIn {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        /* Sidebar Styling */
+        .startbar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 1000;
+            width: 280px;
+            background: #252525;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        .startbar.active {
+            transform: translateX(0);
+        }
+        .startbar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .startbar-overlay.active {
+            display: block;
+        }
+        .startbar .brand {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .startbar .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .startbar-menu {
+            padding: 20px;
+        }
+        .startbar-collapse {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .navbar-nav .menu-label {
+            font-size: 14px;
+            color: #d1d1d1;
+            padding: 10px 15px;
+            text-transform: uppercase;
+        }
+        .navbar-nav .nav-item .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #fff;
+            font-size: 16px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .navbar-nav .nav-item .nav-link:hover {
+            background: #00b4d8;
+            color: #fff;
+        }
+        .navbar-nav .nav-item .nav-link i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .currency-converter {
+            padding: 15px;
+        }
+        .currency-converter h6 {
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .currency-converter select, .currency-converter input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background: #333;
+            color: #fff;
+            font-size: 14px;
+        }
+        .currency-converter input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        .currency-converter input::-webkit-outer-spin-button,
+        .currency-converter input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .currency-converter p {
+            color: #d1d1d1;
+            font-size: 14px;
+            margin: 0;
+        }
+    </style>
 </body>
 </html>

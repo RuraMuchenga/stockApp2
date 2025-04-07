@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockVision AI - Profile</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/icons/favicon.ico') }}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/font-awesome-all.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/dark.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/header.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/module-css/footer.css') }}" rel="stylesheet">
+</head>
+<body class="dark-mode">
+    <div class="boxed_wrapper dark_home ltr">
+        <!-- Main Header -->
+        <header class="main-header header-style-four">
+            <div class="header-lower">
+                <div class="auto-container">
+                    <div class="outer-box">
+                        <figure class="logo-box">
+                            <h1 style="font-size: 28px; font-weight: 700; margin: 0; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">
+                                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">StockVisionAI</a>
+                            </h1>
+                        </figure>
+                        <div class="menu-right-content">
+                            {% if current_user.is_authenticated %}
+                                <div class="dropdown">
+                                    <a class="theme-btn btn-one dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-user me-2"></i>{{ current_user.email }}
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="{{ url_for('profile') }}"><i class="fas fa-cog me-2"></i>Edit Profile</a></li>
+                                        <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                                    </ul>
+                                </div>
+                            {% else %}
+                                <div class="btn-box"><a href="{{ url_for('login_page') }}" class="theme-btn btn-one">Login</a></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <div class="startbar d-print-none active">
+            <div class="brand">
+                <a href="/" class="logo"><span>StockVisionAI</span></a>
+            </div>
+            <div class="startbar-menu">
+                <div class="startbar-collapse" id="startbarCollapse">
+                    <ul class="navbar-nav mb-auto w-100">
+                        <li class="menu-label pt-0 mt-0"><span>Main Menu</span></li>
+                        <li class="nav-item"><a class="nav-link" href="/"><i class="icon-20"></i><span>Home</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="/dashboard"><i class="icon-21"></i><span>Stock Predictions</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('profile') }}"><i class="fas fa-cog"></i><span>Edit Profile</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="https://news.google.com/search?q=stock%20market%20today" target="_blank"><i class="icon-22"></i><span>Recent News</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <section class="process-section pt_100 pb_100" style="margin-left: 280px;">
+            <div class="auto-container">
+                <div class="sec-title light centred pb_60">
+                    <h2>Edit Profile</h2>
+                    <p>Update your account details below.</p>
+                </div>
+                {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+                <form method="POST" class="col-md-6 mx-auto">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="theme-btn btn-one">Save Changes</button>
+                        <a href="{{ url_for('index') }}" class="theme-btn btn-one ms-3">Back to Dashboard</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="footer-bottom">
+                <div class="auto-container">
+                    <div class="bottom-inner">
+                        <p>Ruramai Muchenga © 2025 <a href="{{ url_for('home') }}">StockVision AI</a>. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='assets/js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/bootstrap.min.js') }}"></script>
+    <style>
+        body.dark-mode { background-color: #1a1a1a !important; color: #ffffff !important; }
+        .boxed_wrapper.dark_home { background-color: #1a1a1a !important; }
+        .process-section { background-color: #1a1a1a !important; }
+        .startbar {
+            position: fixed; top: 0; left: 0; height: 100%; z-index: 1000; width: 280px;
+            background: #252525; color: #fff; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        .startbar .brand { padding: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .startbar .logo { font-size: 24px; font-weight: 700; color: #fff; text-decoration: none; text-transform: uppercase; }
+        .startbar-menu { padding: 20px; }
+        .navbar-nav .nav-item .nav-link {
+            display: flex; align-items: center; padding: 12px 15px; color: #fff;
+            font-size: 16px; transition: background 0.3s ease;
+        }
+        .navbar-nav .nav-item .nav-link:hover { background: #00b4d8; }
+        .navbar-nav .nav-item .nav-link i { margin-right: 10px; font-size: 18px; }
+        .theme-btn.btn-one {
+            padding: 14px 35px; font-size: 18px; font-weight: 600; border-radius: 8px;
+            background: #00b4d8; border: none; transition: background 0.3s ease;
+        }
+        .theme-btn.btn-one:hover { background: #00e6ff; }
+        .form-control { background: #333; color: #fff; border: 1px solid #444; }
+    </style>
+</body>
+</html>

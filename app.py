@@ -3,6 +3,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import json
 from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -22,7 +23,7 @@ import tweepy
 from flask_mail import Mail, Message
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'
+app.secret_key = os.getenv('SECRET_KEY', 'your-secret-key-here')  # Pull from env or fallback
 
 # Firebase setup
 cred_path = os.getenv("FIREBASE_CRED_PATH")
@@ -36,30 +37,44 @@ else:
         raise FileNotFoundError("Firebase credentials not found.")
 firebase_admin.initialize_app(cred)
 
+# Flask-Login setup
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login_page'  # Redirect to login if not authenticated
+
+# User class for Flask-Login
+class User(UserMixin):
+    def __init__(self, uid, email):
+        self.id = uid
+        self.email = email
+
+@login_manager.user_loader
+def load_user(user_id):
+    try:
+        # Verify the token from session to get user info
+        id_token = session.get('id_token')
+        if not id_token:
+            return None
+        decoded_token = firebase_auth.verify_id_token(id_token, check_revoked=True)
+        if decoded_token['uid'] == user_id:
+            return User(user_id, decoded_token.get('email', 'unknown'))
+        return None
+    except Exception as e:
+        print(f"User Loader Error: {str(e)}")
+        return None
+
 # Twitter API setup
 TWITTER_API_KEY = 'GqcU2thHL681ECyMfbWsd5COn'
 TWITTER_API_SECRET = '9CbIzwMZSaIKgjpwwaSDQ35VXDST4LpCYeLvIf7OAF052mwCd2'
 TWITTER_ACCESS_TOKEN = '834439269607415809-KNVPB5cIigJDEXJjpUYchrOw5RrFVQ0'
 TWITTER_ACCESS_SECRET = '4bLpdmgY9cwokuObhA7OrWO869IpzoNZeYjbeq7uPRmec'
-twitter_auth = tweepy.OAuthHandler(TWITTER_API_KEY, TWITTER_API_SECRET)  # Separate name for clarity
+twitter_auth = tweepy.OAuthHandler(TWITTER_API_KEY, TWITTER_API_SECRET)
 twitter_auth.set_access_token(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_SECRET)
 twitter_api = tweepy.API(twitter_auth)
 
 CACHE_DIR = 'cache'
 if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR)
-
-def check_auth():
-    id_token = session.get('id_token')
-    if not id_token:
-        return False
-    try:
-        firebase_auth.verify_id_token(id_token, check_revoked=True)
-        return True
-    except Exception as e:
-        print(f"Check Auth Error: {str(e)}")
-        session.pop('id_token', None)
-        return False
 
 def plot_to_base64():
     img = io.BytesIO()
@@ -101,10 +116,9 @@ def create_features(df):
 
 def fetch_news_sentiment(symbol):
     try:
-        # Skip Twitter (403'd)
         url = f"https://news.google.com/rss/search?q={symbol}+stock"
         response = requests.get(url)
-        soup = BeautifulSoup(response.content, 'lxml-xml')  # Fixed parser
+        soup = BeautifulSoup(response.content, 'lxml-xml')
         articles = soup.find_all('item')[:10]
         news_texts = [article.title.text + " " + article.description.text for article in articles if article.description]
         all_texts = news_texts
@@ -121,7 +135,7 @@ def fetch_news_sentiment(symbol):
 
 def news_bias(symbol):
     sentiment = fetch_news_sentiment(symbol)
-    return sentiment  # -1 to 1, scaled later as you had it
+    return sentiment
 
 def prophet_prediction(data, symbol):
     try:
@@ -208,7 +222,7 @@ def xgboost_prediction(data, symbol):
             new_row['Close'] = pred
             new_row['lag1'] = pred
             new_row['lag5'] = last_df['Close'].iloc[-5] if i < 4 else xgboost_preds[i-4]
-            new_row['ret'] = (pred - last_df['Close'].iloc[-1]) / last_df['Close'].iloc[-1]  # Fixed 'Close Hours' -> 'Close'
+            new_row['ret'] = (pred - last_df['Close'].iloc[-1]) / last_df['Close'].iloc[-1]
             new_row['ma5'] = (last_df['Close'].tail(4).sum() + pred) / 5
             new_row['ma20'] = (last_df['Close'].tail(19).sum() + pred) / 20
             new_row['vol'] = last_df['ret'].tail(19).std() if i == 0 else pd.concat([last_df['ret'].tail(19), pd.Series([new_row['ret']])]).std()
@@ -258,14 +272,14 @@ def xgboost_prediction(data, symbol):
 def lightgbm_prediction(data, symbol):
     try:
         print(f"LightGBM - Input data shape: {data.shape}")
-        df = create_features(data.tail(100))  # More data
+        df = create_features(data.tail(100))
         train_df = df.iloc[:-10]
         test_df = df.tail(10)
         
         features = ['lag1', 'lag5', 'ma5', 'ma20', 'vol', 'dow', 'mon', 'trend_5d', 'vol_spike', 'ma5_ma20_ratio', 'tariff_shock']
         X = train_df[features]
         y = train_df['Close']
-        model = lgb.LGBMRegressor(n_estimators=300, learning_rate=0.03, max_depth=4, min_data_in_leaf=1, reg_lambda=0.05, random_state=42)  # Deeper
+        model = lgb.LGBMRegressor(n_estimators=300, learning_rate=0.03, max_depth=4, min_data_in_leaf=1, reg_lambda=0.05, random_state=42)
         model.fit(X, y)
         
         X_test = test_df[features]
@@ -369,17 +383,26 @@ def home():
 
 @app.route('/login', methods=['GET'])
 def login_page():
-    if check_auth():
+    if current_user.is_authenticated:
         return redirect(url_for('index'))
     return render_template('login.html')
 
-@app.route('/profile', methods=['GET'])
-def profile_page():
-    return render_template('checkProfile.html')
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    if request.method == 'POST':
+        # Handle profile updates here (e.g., email change via Firebase)
+        new_email = request.form.get('email')
+        try:
+            firebase_auth.update_user(current_user.id, email=new_email)
+            return redirect(url_for('profile'))
+        except Exception as e:
+            return render_template('profile.html', error=f"Update failed: {str(e)}")
+    return render_template('profile.html', user=current_user)
 
 @app.route('/register', methods=['GET'])
 def register_page():
-    if check_auth():
+    if current_user.is_authenticated:
         return redirect(url_for('index'))
     return render_template('register.html')
 
@@ -387,18 +410,18 @@ def register_page():
 def login():
     id_token = request.form.get('id_token')
     try:
-        firebase_auth.verify_id_token(id_token, check_revoked=True)  # Explicit Firebase auth
-        session['id_token'] = id_token
+        decoded_token = firebase_auth.verify_id_token(id_token, check_revoked=True)
+        user = User(decoded_token['uid'], decoded_token.get('email', 'unknown'))
+        login_user(user)
+        session['id_token'] = id_token  # Keep for Firebase checks if needed
         return redirect(url_for('index'))
     except Exception as e:
         print(f"Login Error: {str(e)}")
         return render_template('login.html', error="Login failed: " + str(e))
 
 @app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
 def index():
-    if not check_auth():
-        return redirect(url_for('login_page'))
-    
     if request.method == 'POST':
         stock_symbol = request.form['stock_symbol'].upper()
         data = get_stock_data(stock_symbol)
@@ -433,8 +456,10 @@ def index():
     return render_template('checkPrediction.html')
 
 @app.route('/logout', methods=['GET'])
+@login_required
 def logout():
     session.pop('id_token', None)
+    logout_user()
     return redirect(url_for('home'))
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
