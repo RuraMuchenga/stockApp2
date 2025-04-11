@@ -1,384 +1,718 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
 
     <title>StockVision AI - {{ stock_symbol }} Prediction</title>
 
     <!-- Fav Icon -->
-    <link rel="icon" href="{{ url_for('static', filename='images/icons/favicon.ico') }}" type="image/x-icon">
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/icons/favicon.ico') }}"
+      type="image/x-icon"
+    />
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Stylesheets -->
-    <link href="{{ url_for('static', filename='assets/css/font-awesome-all.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/flaticon.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/owl.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/bootstrap.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/jquery.fancybox.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/animate.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/nice-select.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/odometer.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/elpath.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/color.css') }}" id="jssDefault" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/rtl.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/dark.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/header.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/banner.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/clients.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/process.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/trading.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/platform.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/funfact.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/apps.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/about.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/working.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/experience.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/news.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/subscribe.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/module-css/footer.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/responsive.css') }}" rel="stylesheet">
-</head>
+    <link
+      href="{{ url_for('static', filename='assets/css/font-awesome-all.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/flaticon.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/owl.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/bootstrap.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/jquery.fancybox.min.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/animate.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/nice-select.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/odometer.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/elpath.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/color.css') }}"
+      id="jssDefault"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/rtl.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/style.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/dark.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/header.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/banner.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/clients.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/process.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/trading.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/platform.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/funfact.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/apps.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/about.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/working.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/experience.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/news.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/subscribe.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/module-css/footer.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/responsive.css') }}"
+      rel="stylesheet"
+    />
+  </head>
 
-<body class="dark-mode">
+  <body class="dark-mode">
     <div class="boxed_wrapper dark_home ltr">
-        <!-- Preloader -->
-        <div class="loader-wrap">
-            <div class="preloader">
-                <div class="preloader-close"><i class="fal fa-times"></i></div>
-                <div id="handle-preloader" class="handle-preloader">
-                    <div class="animation-preloader">
-                        <div class="spinner"></div>
-                        <div class="txt-loading">
-                            <span data-text-preloader="S" class="letters-loading">S</span>
-                            <span data-text-preloader="T" class="letters-loading">T</span>
-                            <span data-text-preloader="O" class="letters-loading">O</span>
-                            <span data-text-preloader="C" class="letters-loading">C</span>
-                            <span data-text-preloader="K" class="letters-loading">K</span>
-                            <span data-text-preloader="V" class="letters-loading">V</span>
-                            <span data-text-preloader="I" class="letters-loading">I</span>
-                            <span data-text-preloader="S" class="letters-loading">S</span>
-                            <span data-text-preloader="I" class="letters-loading">I</span>
-                            <span data-text-preloader="O" class="letters-loading">O</span>
-                            <span data-text-preloader="N" class="letters-loading">N</span>
-                        </div>
-                    </div>
-                </div>
+      <!-- Preloader -->
+      <div class="loader-wrap">
+        <div class="preloader">
+          <div class="preloader-close"><i class="fal fa-times"></i></div>
+          <div id="handle-preloader" class="handle-preloader">
+            <div class="animation-preloader">
+              <div class="spinner"></div>
+              <div class="txt-loading">
+                <span data-text-preloader="S" class="letters-loading">S</span>
+                <span data-text-preloader="T" class="letters-loading">T</span>
+                <span data-text-preloader="O" class="letters-loading">O</span>
+                <span data-text-preloader="C" class="letters-loading">C</span>
+                <span data-text-preloader="K" class="letters-loading">K</span>
+                <span data-text-preloader="V" class="letters-loading">V</span>
+                <span data-text-preloader="I" class="letters-loading">I</span>
+                <span data-text-preloader="S" class="letters-loading">S</span>
+                <span data-text-preloader="I" class="letters-loading">I</span>
+                <span data-text-preloader="O" class="letters-loading">O</span>
+                <span data-text-preloader="N" class="letters-loading">N</span>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
 
-        <header class="main-header header-style-four">
-            <div class="header-lower">
-                <div class="auto-container">
-                    <div class="outer-box">
-                        <figure class="logo-box">
-                            <h1 style="font-size: 28px; font-weight: 700; margin: 0; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">
-                                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">StockVisionAI</a>
-                            </h1>
-                        </figure>
-                        <div class="menu-area">
-                            <div class="mobile-nav-toggler">
-                                <i class="icon-bar"></i>
-                                <i class="icon-bar"></i>
-                                <i class="icon-bar"></i>
-                            </div>
-                            <nav class="main-menu navbar-expand-md navbar-light clearfix">
-                                <div class="collapse navbar-collapse show clearfix" id="navbarSupportedContent">
-                                    <ul class="navigation clearfix">
-                                        <li><a href="{{ url_for('home') }}">Home</a></li>
-                                        <li><a href="{{ url_for('home') }}#about-section">About</a></li>
-                                        <li><a href="https://ruramaimuchenga.wixsite.com/final-year-school--1" target="_blank">Blog</a></li>
-                                        <li><a href="{{ url_for('home') }}#contact-section">Contact</a></li>
-                                    </ul>
-                                </div>
-                            </nav>
-                        </div>
-                        <div class="menu-right-content">
-                            {% if current_user.is_authenticated %}
-                                <div class="dropdown">
-                                    <a class="theme-btn btn-one dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fas fa-user me-2"></i>{{ current_user.username }}
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="{{ url_for('profile') }}"><i class="fas fa-cog me-2"></i>Edit Profile</a></li>
-                                        <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-                                    </ul>
-                                </div>
-                            {% else %}
-                                <div class="btn-box"><a href="{{ url_for('login_page') }}" class="theme-btn btn-one">Login</a></div>
-                            {% endif %}
-                        </div>
-                    </div>
+      <header class="main-header header-style-four">
+        <div class="header-lower">
+          <div class="auto-container">
+            <div class="outer-box">
+              <figure class="logo-box">
+                <h1
+                  style="
+                    font-size: 28px;
+                    font-weight: 700;
+                    margin: 0;
+                    color: #ffffff;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                  "
+                >
+                  <a
+                    href="{{ url_for('home') }}"
+                    style="text-decoration: none; color: inherit"
+                    >StockVisionAI</a
+                  >
+                </h1>
+              </figure>
+              <div class="menu-area">
+                <div class="mobile-nav-toggler">
+                  <i class="icon-bar"></i>
+                  <i class="icon-bar"></i>
+                  <i class="icon-bar"></i>
                 </div>
-            </div>
-        
-            <!-- Sticky Header -->
-            <div class="sticky-header">
-                <div class="auto-container">
-                    <div class="outer-box">
-                        <figure class="logo-box">
-                            <h1 style="font-size: 28px; font-weight: 700; margin: 0; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">
-                                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">StockVisionAI</a>
-                            </h1>
-                        </figure>
-                        <div class="menu-area">
-                            <nav class="main-menu clearfix"></nav>
-                        </div>
-                        <div class="menu-right-content">
-                            {% if current_user.is_authenticated %}
-                                <div class="dropdown">
-                                    <a class="theme-btn btn-one dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fas fa-user me-2"></i>{{ current_user.username }}
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="{{ url_for('profile') }}"><i class="fas fa-cog me-2"></i>Edit Profile</a></li>
-                                        <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-                                    </ul>
-                                </div>
-                            {% else %}
-                                <div class="btn-box"><a href="{{ url_for('login_page') }}" class="theme-btn btn-one">Login</a></div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Mobile Menu -->
-        <div class="mobile-menu">
-            <div class="menu-backdrop"></div>
-            <div class="close-btn"><i class="fas fa-times"></i></div>
-            <nav class="menu-box">
-                <div class="nav-logo"><a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='assets/images/logo-2.png') }}" alt="" title=""></a></div>
-                <div class="menu-outer"></div>
-                <div class="contact-info">
-                    <h4>Contact Info</h4>
-                    <ul>
-                        <li>Chicago 12, Melborne City, USA</li>
-                        <li><a href="tel:+8801682648101">+88 01682648101</a></li>
-                        <li><a href="mailto:info@stockvisionai.com">info@stockvisionai.com</a></li>
+                <nav class="main-menu navbar-expand-md navbar-light clearfix">
+                  <div
+                    class="collapse navbar-collapse show clearfix"
+                    id="navbarSupportedContent"
+                  >
+                    <ul class="navigation clearfix">
+                      <li><a href="{{ url_for('home') }}">Home</a></li>
+                      <li>
+                        <a href="{{ url_for('home') }}#about-section">About</a>
+                      </li>
+                      <li>
+                        <a
+                          href="https://ruramaimuchenga.wixsite.com/final-year-school--1"
+                          target="_blank"
+                          >Blog</a
+                        >
+                      </li>
+                      <li>
+                        <a href="{{ url_for('home') }}#contact-section"
+                          >Contact</a
+                        >
+                      </li>
                     </ul>
+                  </div>
+                </nav>
+              </div>
+              <div class="menu-right-content">
+                {% if current_user.is_authenticated %}
+                <div class="dropdown">
+                  <a
+                    class="theme-btn btn-one dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i class="fas fa-user me-2"></i>{{ current_user.username }}
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('profile') }}"
+                        ><i class="fas fa-cog me-2"></i>Edit Profile</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item text-danger"
+                        href="{{ url_for('logout') }}"
+                        ><i class="fas fa-sign-out-alt me-2"></i>Logout</a
+                      >
+                    </li>
+                  </ul>
                 </div>
-                <div class="social-links">
-                    <ul class="clearfix">
-                        <li><a href="{{ url_for('home') }}"><span class="fab fa-twitter"></span></a></li>
-                        <li><a href="{{ url_for('home') }}"><span class="fab fa-facebook-square"></span></a></li>
-                        <li><a href="{{ url_for('home') }}"><span class="fab fa-pinterest-p"></span></a></li>
-                        <li><a href="{{ url_for('home') }}"><span class="fab fa-instagram"></span></a></li>
-                        <li><a href="{{ url_for('home') }}"><span class="fab fa-youtube"></span></a></li>
-                    </ul>
+                {% else %}
+                <div class="btn-box">
+                  <a
+                    href="{{ url_for('login_page') }}"
+                    class="theme-btn btn-one"
+                    >Login</a
+                  >
                 </div>
-            </nav>
+                {% endif %}
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Sidebar (Fixed by Default) -->
-        <div class="startbar d-print-none active">
-            <div class="brand">
-                <a href="/" class="logo"><span>StockVisionAI</span></a>
-            </div>
-            <div class="startbar-menu">
-                <div class="startbar-collapse" id="startbarCollapse">
-                    <ul class="navbar-nav mb-auto w-100">
-                        <li class="menu-label pt-0 mt-0"><span>Main Menu</span></li>
-                        <li class="nav-item"><a class="nav-link" href="/"><i class="icon-20"></i><span>Home</span></a></li>
-                        <li class="nav-item"><a class="nav-link" href="/#predictions"><i class="icon-21"></i><span>Stock Predictions</span></a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('profile') }}"><i class="fas fa-cog"></i><span>Edit Profile</span></a></li>
-                        <li class="nav-item"><a class="nav-link" href="https://news.google.com/search?q=stock%20market%20today&hl=en-US&gl=US&ceid=US%3Aen" target="_blank"><i class="icon-22"></i><span>Recent News</span></a></li>
-                        <li class="nav-item currency-converter">
-                            <h6>Currency Converter</h6>
-                            <select id="fromCurrency">
-                                <option value="USD">USD - US Dollar</option>
-                                <option value="EUR">EUR - Euro</option>
-                                <option value="GBP">GBP - British Pound</option>
-                                <option value="JPY">JPY - Japanese Yen</option>
-                                <option value="AUD">AUD - Australian Dollar</option>
-                                <option value="CAD">CAD - Canadian Dollar</option>
-                            </select>
-                            <select id="toCurrency">
-                                <option value="USD">USD - US Dollar</option>
-                                <option value="EUR">EUR - Euro</option>
-                                <option value="GBP">GBP - British Pound</option>
-                                <option value="JPY">JPY - Japanese Yen</option>
-                                <option value="AUD">AUD - Australian Dollar</option>
-                                <option value="CAD">CAD - Canadian Dollar</option>
-                            </select>
-                            <input type="number" id="amount" placeholder="Amount" value="1" min="0" step="0.01">
-                            <p id="conversionResult">Result: </p>
-                        </li>
-                    </ul>
+        <!-- Sticky Header -->
+        <div class="sticky-header">
+          <div class="auto-container">
+            <div class="outer-box">
+              <figure class="logo-box">
+                <h1
+                  style="
+                    font-size: 28px;
+                    font-weight: 700;
+                    margin: 0;
+                    color: #ffffff;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                  "
+                >
+                  <a
+                    href="{{ url_for('home') }}"
+                    style="text-decoration: none; color: inherit"
+                    >StockVisionAI</a
+                  >
+                </h1>
+              </figure>
+              <div class="menu-area">
+                <nav class="main-menu clearfix"></nav>
+              </div>
+              <div class="menu-right-content">
+                {% if current_user.is_authenticated %}
+                <div class="dropdown">
+                  <a
+                    class="theme-btn btn-one dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i class="fas fa-user me-2"></i>{{ current_user.username }}
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('profile') }}"
+                        ><i class="fas fa-cog me-2"></i>Edit Profile</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item text-danger"
+                        href="{{ url_for('logout') }}"
+                        ><i class="fas fa-sign-out-alt me-2"></i>Logout</a
+                      >
+                    </li>
+                  </ul>
                 </div>
+                {% else %}
+                <div class="btn-box">
+                  <a
+                    href="{{ url_for('login_page') }}"
+                    class="theme-btn btn-one"
+                    >Login</a
+                  >
+                </div>
+                {% endif %}
+              </div>
             </div>
+          </div>
         </div>
-        <div class="startbar-overlay d-print-none"></div>
+      </header>
 
-        <!-- Results Section -->
-        <section class="process-section pt_100 pb_100" style="margin-left: 280px;">
-            <div class="pattern-layer" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-24.png') }});"></div>
-            <div class="auto-container">
-                <div class="sec-title light centred pb_60">
-                   
-                    <h2>Prediction Analysis for {{ stock_symbol }}</h2>
-                    <p>Explore AI-driven insights for the next 5 days.</p>
-                </div>
+      <!-- Mobile Menu -->
+      <div class="mobile-menu">
+        <div class="menu-backdrop"></div>
+        <div class="close-btn"><i class="fas fa-times"></i></div>
+        <nav class="menu-box">
+          <div class="nav-logo">
+            <a href="{{ url_for('home') }}"
+              ><img
+                src="{{ url_for('static', filename='assets/images/logo-2.png') }}"
+                alt=""
+                title=""
+            /></a>
+          </div>
+          <div class="menu-outer"></div>
+          <div class="contact-info">
+            <h4>Contact Info</h4>
+            <ul>
+              <li>Chicago 12, Melborne City, USA</li>
+              <li><a href="tel:+8801682648101">+88 01682648101</a></li>
+              <li>
+                <a href="mailto:info@stockvisionai.com"
+                  >info@stockvisionai.com</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="social-links">
+            <ul class="clearfix">
+              <li>
+                <a href="{{ url_for('home') }}"
+                  ><span class="fab fa-twitter"></span
+                ></a>
+              </li>
+              <li>
+                <a href="{{ url_for('home') }}"
+                  ><span class="fab fa-facebook-square"></span
+                ></a>
+              </li>
+              <li>
+                <a href="{{ url_for('home') }}"
+                  ><span class="fab fa-pinterest-p"></span
+                ></a>
+              </li>
+              <li>
+                <a href="{{ url_for('home') }}"
+                  ><span class="fab fa-instagram"></span
+                ></a>
+              </li>
+              <li>
+                <a href="{{ url_for('home') }}"
+                  ><span class="fab fa-youtube"></span
+                ></a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
 
-                <!-- Stock Info Cards -->
-                <div class="row justify-content-center mb_60">
-                    {% for key, value in stock_info.items() %}
-                    <div class="col-md-2 col-sm-4 mb-4">
-                        <div class="stock-card {{ key|lower }} p-3 text-center">
-                            <h5 class="card-title mb-1">{{ key }}</h5>
-                            <p class="card-text fs-5">{{ value | round(2) }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-
-                <!-- Prophet Chart & Insights -->
-                <div class="row chart-container mb_60">
-                    <div class="col-md-8">
-                        <img src="data:image/png;base64,{{ prophet_plot }}" class="img-fluid" alt="Prophet Prediction">
-                    </div>
-                    <div class="col-md-4">
-                        <div class="insights-card">
-                            <h5>Prophet Model Insights</h5>
-                            <p>Prophet leverages time-series trends and seasonality for robust forecasting.</p>
-                            <ul>
-                                <li>Stable price trends observed.</li>
-                                <li>Linear growth with minor fluctuations.</li>
-                                <li>Expect subtle shifts over 5 days.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- XGBoost Chart & Insights -->
-                <div class="row chart-container mb_60">
-                    <div class="col-md-8">
-                        <img src="data:image/png;base64,{{ xgboost_plot }}" class="img-fluid" alt="XGBoost Prediction">
-                    </div>
-                    <div class="col-md-4">
-                        <div class="insights-card">
-                            <h5>XGBoost Model Insights</h5>
-                            <p>XGBoost uses advanced technical indicators for dynamic predictions.</p>
-                            <ul>
-                                <li>Captures sharp market shifts.</li>
-                                <li>Highly responsive to trends.</li>
-                                <li>Anticipates notable changes.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- LightGBM Chart & Insights -->
-                <div class="row chart-container mb_60">
-                    <div class="col-md-8">
-                        <img src="data:image/png;base64,{{ lightgbm_plot }}" class="img-fluid" alt="LightGBM Prediction">
-                    </div>
-                    <div class="col-md-4">
-                        <div class="insights-card">
-                            <h5>LightGBM Model Insights</h5>
-                            <p>LightGBM provides efficient and accurate predictions using gradient boosting.</p>
-                            <ul>
-                                <li>Optimized for speed and scalability.</li>
-                                <li>Handles non-linear patterns effectively.</li>
-                                <li>Complements other models in the ensemble.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Combined Chart & Insights -->
-                <div class="row chart-container mb_60">
-                    <div class="col-md-8">
-                        <img src="data:image/png;base64,{{ combined_plot }}" class="img-fluid" alt="Combined Prediction">
-                    </div>
-                    <div class="col-md-4">
-                        <div class="insights-card">
-                            <h5>Combined Model Insights</h5>
-                            <p>Combines Prophet, XGBoost, and LightGBM for a balanced forecast.</p>
-                            <ul>
-                                <li>Averages all models for stability.</li>
-                                <li>Balances trend, technical, and boosting insights.</li>
-                                <li>Provides a consensus prediction.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Predictions Table -->
-                <div class="sec-title light centred mb_30">
-                    <h3>5-Day Forecast</h3>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-md-10">
-                        <table class="table pred-table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Prophet Prediction</th>
-                                    <th scope="col">XGBoost Prediction</th>
-                                    <th scope="col">LightGBM Prediction</th>
-                                    <th scope="col">Combined Prediction</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% if prophet_preds|length > 0 and xgboost_preds|length > 0 and lightgbm_preds|length > 0 %}
-                                    {% for i in range(5) %}
-                                    <tr>
-                                        <td>{{ pred_dates[i] }}</td>
-                                        <td>{{ prophet_preds[i] | round(2) | default('N/A') }}</td>
-                                        <td>{{ xgboost_preds[i] | round(2) | default('N/A') }}</td>
-                                        <td>{{ lightgbm_preds[i] | round(2) | default('N/A') }}</td>
-                                        <td>{{ combined_preds[i] | round(2) | default('N/A') }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                {% else %}
-                                    <tr>
-                                        <td colspan="5" class="text-center">No predictions available</td>
-                                    </tr>
-                                {% endif %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Back Button -->
-                <div class="text-center mt_50 mb_30">
-                    <a href="/" class="theme-btn btn-one">Return to Dashboard</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Main Footer -->
-        <footer class="main-footer">
-            <div class="footer-bottom">
-                <div class="auto-container">
-                    <div class="bottom-inner">
-                        <p>Ruramai Muchenga © 2025 <a href="{{ url_for('home') }}">StockVision AI</a>. All rights reserved.</p>
-                        <ul class="social-links">
-                            <li><h5>Follow Us On:</h5></li>
-                            <li><a href="{{ url_for('home') }}"><i class="icon-12"></i></a></li>
-                            <li><a href="{{ url_for('home') }}"><i class="icon-13"></i></a></li>
-                            <li><a href="{{ url_for('home') }}"><i class="icon-14"></i></a></li>
-                            <li><a href="{{ url_for('home') }}"><i class="icon-15"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
-        <!-- Scroll to Top -->
-        <div class="scroll-to-top">
-            <svg class="scroll-top-inner" viewBox="-1 -1 102 102">
-                <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
-            </svg>
+      <!-- Sidebar (Fixed by Default) -->
+      <div class="startbar d-print-none active">
+        <div class="brand">
+          <a href="/" class="logo"><span>StockVisionAI</span></a>
         </div>
+        <div class="startbar-menu">
+          <div class="startbar-collapse" id="startbarCollapse">
+            <ul class="navbar-nav mb-auto w-100">
+              <li class="menu-label pt-0 mt-0"><span>Main Menu</span></li>
+              <li class="nav-item">
+                <a class="nav-link" href="/"
+                  ><i class="icon-20"></i><span>Home</span></a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/#predictions"
+                  ><i class="icon-21"></i><span>Stock Predictions</span></a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('profile') }}"
+                  ><i class="fas fa-cog"></i><span>Edit Profile</span></a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="https://news.google.com/search?q=stock%20market%20today&hl=en-US&gl=US&ceid=US%3Aen"
+                  target="_blank"
+                  ><i class="icon-22"></i><span>Recent News</span></a
+                >
+              </li>
+              <li class="nav-item currency-converter">
+                <h6>Currency Converter</h6>
+                <select id="fromCurrency">
+                  <option value="USD">USD - US Dollar</option>
+                  <option value="EUR">EUR - Euro</option>
+                  <option value="GBP">GBP - British Pound</option>
+                  <option value="JPY">JPY - Japanese Yen</option>
+                  <option value="AUD">AUD - Australian Dollar</option>
+                  <option value="CAD">CAD - Canadian Dollar</option>
+                </select>
+                <select id="toCurrency">
+                  <option value="USD">USD - US Dollar</option>
+                  <option value="EUR">EUR - Euro</option>
+                  <option value="GBP">GBP - British Pound</option>
+                  <option value="JPY">JPY - Japanese Yen</option>
+                  <option value="AUD">AUD - Australian Dollar</option>
+                  <option value="CAD">CAD - Canadian Dollar</option>
+                </select>
+                <input
+                  type="number"
+                  id="amount"
+                  placeholder="Amount"
+                  value="1"
+                  min="0"
+                  step="0.01"
+                />
+                <p id="conversionResult">Result:</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="startbar-overlay d-print-none"></div>
+
+      <!-- Results Section -->
+      <section class="process-section pt_100 pb_100" style="margin-left: 280px">
+        <div
+          class="pattern-layer"
+          style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-24.png') }});"
+        ></div>
+        <div class="auto-container">
+          <div class="sec-title light centred pb_60">
+            <h2>Prediction Analysis for {{ stock_symbol }}</h2>
+            <p>Explore AI-driven insights for the next {{ pred_dates|length }} days.</p>
+          </div>
+
+          <!-- Stock Info Cards -->
+          <div class="row justify-content-center mb_60">
+            {% for key, value in stock_info.items() %}
+            <div class="col-md-2 col-sm-4 mb-4">
+              <div class="stock-card {{ key|lower }} p-3 text-center">
+                <h5 class="card-title mb-1">{{ key }}</h5>
+                <p class="card-text fs-5">{{ value | round(2) }}</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Prophet Chart & Insights -->
+          <div class="row chart-container mb_60">
+            <div class="col-md-8">
+              <img
+                src="data:image/png;base64,{{ prophet_plot }}"
+                class="img-fluid"
+                alt="Prophet Prediction"
+              />
+            </div>
+            <div class="col-md-4">
+              <div class="insights-card">
+                <h5>Prophet Model Insights</h5>
+                <p>
+                  Prophet leverages time-series trends and seasonality for
+                  robust forecasting.
+                </p>
+                <ul>
+                  <li><p>{{ prophet_reasons }}</p></li>
+                  <li><p>News Impact: {{ prophet_news }}</p></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- XGBoost Chart & Insights -->
+          <div class="row chart-container mb_60">
+            <div class="col-md-8">
+              <img
+                src="data:image/png;base64,{{ xgboost_plot }}"
+                class="img-fluid"
+                alt="XGBoost Prediction"
+              />
+            </div>
+            <div class="col-md-4">
+              <div class="insights-card">
+                <h5>XGBoost Model Insights</h5>
+                <p>
+                  XGBoost uses advanced technical indicators for dynamic
+                  predictions.
+                </p>
+                <ul>
+                  <li><p>{{ xgboost_reasons }}</p></li>
+                  <li><p>News Impact: {{ xgboost_news }}</p></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- LightGBM Chart & Insights -->
+          <div class="row chart-container mb_60">
+            <div class="col-md-8">
+              <img
+                src="data:image/png;base64,{{ lightgbm_plot }}"
+                class="img-fluid"
+                alt="LightGBM Prediction"
+              />
+            </div>
+            <div class="col-md-4">
+              <div class="insights-card">
+                <h5>LightGBM Model Insights</h5>
+                <p>
+                  LightGBM provides efficient and accurate predictions using
+                  gradient boosting.
+                </p>
+                <ul>
+                  <li><p>{{ lightgbm_reasons }}</p></li>
+                  <li><p>News Impact: {{ lightgbm_news }}</p></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Combined Chart & Insights -->
+          <div class="row chart-container mb_60">
+            <div class="col-md-8">
+              <img
+                src="data:image/png;base64,{{ combined_plot }}"
+                class="img-fluid"
+                alt="Combined Prediction"
+              />
+            </div>
+            <div class="col-md-4">
+              <div class="insights-card">
+                <h5>Combined Model Insights</h5>
+                <p>
+                  Combines Prophet, XGBoost, and LightGBM for a balanced
+                  forecast.
+                </p>
+                <ul>
+                  <li>Averages all models for stability.</li>
+                  <li>Balances trend, technical, and boosting insights.</li>
+                  <li>Provides a consensus prediction.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Predictions Table -->
+          <div class="sec-title light centred mb_30">
+            <h3>{{ pred_dates|length }}-Day Forecast</h3>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-md-10">
+              <table class="table pred-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Prophet Prediction</th>
+                    <th scope="col">XGBoost Prediction</th>
+                    <th scope="col">LightGBM Prediction</th>
+                    <th scope="col">Combined Prediction</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if pred_dates|length > 0 and prophet_preds|length > 0 and xgboost_preds|length > 0 and lightgbm_preds|length > 0 and combined_preds|length > 0 %}
+                  {% for i in range(pred_dates|length) %}
+                  <tr>
+                    <td>{{ pred_dates[i] }}</td>
+                    <td>
+                      {% if i < prophet_preds|length and prophet_preds[i] is defined %}
+                        {{ prophet_preds[i] | round(2) }}
+                      {% else %}
+                        N/A
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if i < xgboost_preds|length and xgboost_preds[i] is defined %}
+                        {{ xgboost_preds[i] | round(2) }}
+                      {% else %}
+                        N/A
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if i < lightgbm_preds|length and lightgbm_preds[i] is defined %}
+                        {{ lightgbm_preds[i] | round(2) }}
+                      {% else %}
+                        N/A
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if i < combined_preds|length and combined_preds[i] is defined %}
+                        {{ combined_preds[i] | round(2) }}
+                      {% else %}
+                        N/A
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  {% else %}
+                  <tr>
+                    <td colspan="5" class="text-center">
+                      No predictions available
+                    </td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+
+              <div class="sec-title light centred mb_30">
+                <h3>Past 10 Days: Actual vs Predicted Prices</h3>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-md-10">
+              <table class="table pred-table">
+                  <thead>
+                      <tr>
+                          <th>Date</th>
+                          <th>Actual Price</th>
+                          <th>Prophet Predicted</th>
+                          <th>XGBoost Predicted</th>
+                          <th>LightGBM Predicted</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for pred in past_predictions %}
+                      <tr>
+                          <td>{{ pred.date }}</td>
+                          <td>{{ pred.actual_price | round(2) if pred.actual_price != 0 else 'N/A' }}</td>
+                          <td>{{ pred.prophet_pred | round(2) if pred.prophet_pred != 0 else 'N/A' }}</td>
+                          <td>{{ pred.xgboost_pred | round(2) if pred.xgboost_pred != 0 else 'N/A' }}</td>
+                          <td>{{ pred.lightgbm_pred | round(2) if pred.lightgbm_pred != 0 else 'N/A' }}</td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+            </div>
+          </div>  
+            </div>
+          </div>
+
+          <!-- Back Button -->
+          <div class="text-center mt_50 mb_30">
+            <a href="/" class="theme-btn btn-one">Logout</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Footer -->
+      <footer class="main-footer">
+        <div class="footer-bottom">
+          <div class="auto-container">
+            <div class="bottom-inner">
+              <p>
+                Ruramai Muchenga © 2025
+                <a href="{{ url_for('home') }}">StockVision AI</a>. All rights
+                reserved.
+              </p>
+              <ul class="social-links">
+                <li><h5>Follow Me At:</h5></li>
+                <li>
+                  <a href="{{ url_for('home') }}"><i class="icon-12"></i></a>
+                </li>
+                <li>
+                  <a href="{{ url_for('home') }}"><i class="icon-13"></i></a>
+                </li>
+                <li>
+                  <a href="{{ url_for('home') }}"><i class="icon-14"></i></a>
+                </li>
+                <li>
+                  <a href="{{ url_for('home') }}"><i class="icon-15"></i></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      <!-- Scroll to Top -->
+      <div class="scroll-to-top">
+        <svg class="scroll-top-inner" viewBox="-1 -1 102 102">
+          <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+      </div>
     </div>
 
     <!-- jQuery Plugins -->
@@ -391,7 +725,10 @@
     <script src="{{ url_for('static', filename='assets/js/appear.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/isotope.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/parallax-scroll.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/js/jquery.nice-select.min.js') }}" defer></script>
+    <script
+      src="{{ url_for('static', filename='assets/js/jquery.nice-select.min.js') }}"
+      defer
+    ></script>
     <script src="{{ url_for('static', filename='assets/js/scrolltop.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/language.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/jquery-ui.js') }}"></script>
@@ -402,309 +739,327 @@
 
     <!-- Inline Scripts -->
     <script>
-        $(document).ready(function() {
-            // Sidebar Toggle (Optional, since it's fixed by default)
-            $('#togglemenu').on('click', function() {
-                $('.startbar').toggleClass('active');
-                $('.startbar-overlay').toggleClass('active');
-                if ($('.startbar').hasClass('active')) {
-                    $('.process-section').css('margin-left', '280px');
-                } else {
-                    $('.process-section').css('margin-left', '0');
-                }
-            });
-
-            $('.startbar-overlay').on('click', function() {
-                $('.startbar').removeClass('active');
-                $('.startbar-overlay').removeClass('active');
-                $('.process-section').css('margin-left', '0');
-            });
-
-            // Currency Converter
-            function initializeCurrencyConverter() {
-                const fromCurrency = $('#fromCurrency');
-                const toCurrency = $('#toCurrency');
-                const amount = $('#amount');
-                const result = $('#conversionResult');
-                let rates = {};
-
-                fetch('https://open.er-api.com/v6/latest/USD')
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.result === 'success') {
-                            rates = data.rates;
-                            updateConversion();
-                        } else {
-                            result.text('Error: Could not fetch rates');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Fetch error:', error);
-                        result.text('Error: Network issue');
-                    });
-
-                function updateConversion() {
-                    const from = fromCurrency.val();
-                    const to = toCurrency.val();
-                    const amt = parseFloat(amount.val()) || 0;
-                    if (rates[from] && rates[to]) {
-                        const rateFrom = rates[to] / rates[from];
-                        const converted = amt * rateFrom;
-                        result.text(`Result: ${converted.toFixed(2)} ${to}`);
-                    } else {
-                        result.text('Result: Waiting for rates...');
-                    }
-                }
-
-                fromCurrency.on('change', updateConversion);
-                toCurrency.on('change', updateConversion);
-                amount.on('input', updateConversion);
-            }
-
-            if ($('#fromCurrency').length) initializeCurrencyConverter();
+      $(document).ready(function () {
+        // Sidebar Toggle (Optional, since it's fixed by default)
+        $("#togglemenu").on("click", function () {
+          $(".startbar").toggleClass("active");
+          $(".startbar-overlay").toggleClass("active");
+          if ($(".startbar").hasClass("active")) {
+            $(".process-section").css("margin-left", "280px");
+          } else {
+            $(".process-section").css("margin-left", "0");
+          }
         });
+
+        $(".startbar-overlay").on("click", function () {
+          $(".startbar").removeClass("active");
+          $(".startbar-overlay").removeClass("active");
+          $(".process-section").css("margin-left", "0");
+        });
+
+        // Currency Converter
+        function initializeCurrencyConverter() {
+          const fromCurrency = $("#fromCurrency");
+          const toCurrency = $("#toCurrency");
+          const amount = $("#amount");
+          const result = $("#conversionResult");
+          let rates = {};
+
+          fetch("https://open.er-api.com/v6/latest/USD")
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.result === "success") {
+                rates = data.rates;
+                updateConversion();
+              } else {
+                result.text("Error: Could not fetch rates");
+              }
+            })
+            .catch((error) => {
+              console.error("Fetch error:", error);
+              result.text("Error: Network issue");
+            });
+
+          function updateConversion() {
+            const from = fromCurrency.val();
+            const to = toCurrency.val();
+            const amt = parseFloat(amount.val()) || 0;
+            if (rates[from] && rates[to]) {
+              const rateFrom = rates[to] / rates[from];
+              const converted = amt * rateFrom;
+              result.text(`Result: ${converted.toFixed(2)} ${to}`);
+            } else {
+              result.text("Result: Waiting for rates...");
+            }
+          }
+
+          fromCurrency.on("change", updateConversion);
+          toCurrency.on("change", updateConversion);
+          amount.on("input", updateConversion);
+        }
+
+        if ($("#fromCurrency").length) initializeCurrencyConverter();
+      });
     </script>
 
     <!-- Inline CSS -->
     <style>
-        /* Dark Mode Base */
-        body.dark-mode {
-            background-color: #1a1a1a !important;
-            color: #ffffff !important;
-        }
-        .boxed_wrapper.dark_home {
-            background-color: #1a1a1a !important;
-        }
+      /* Dark Mode Base */
+      body.dark-mode {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+      }
+      .boxed_wrapper.dark_home {
+        background-color: #1a1a1a !important;
+      }
 
-        /* Sidebar Styling */
+      /* Sidebar Styling */
+      .startbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        z-index: 1000;
+        width: 280px;
+        background: #252525;
+        color: #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        transform: translateX(0); /* Fixed by default */
+        transition: transform 0.3s ease-in-out;
+      }
+      .startbar:not(.active) {
+        transform: translateX(-100%);
+      }
+      .startbar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+      }
+      .startbar-overlay.active {
+        display: block;
+      }
+      .startbar .brand {
+        padding: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .startbar .logo {
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+      .startbar-menu {
+        padding: 20px;
+      }
+      .startbar-collapse {
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+      .navbar-nav .menu-label {
+        font-size: 14px;
+        color: #d1d1d1;
+        padding: 10px 15px;
+        text-transform: uppercase;
+      }
+      .navbar-nav .nav-item .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        color: #fff;
+        font-size: 16px;
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+      .navbar-nav .nav-item .nav-link:hover {
+        background: #00b4d8;
+        color: #fff;
+      }
+      .navbar-nav .nav-item .nav-link i {
+        margin-right: 10px;
+        font-size: 18px;
+      }
+      .currency-converter {
+        padding: 15px;
+      }
+      .currency-converter h6 {
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+      .currency-converter select,
+      .currency-converter input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #444;
+        background: #333;
+        color: #fff;
+        font-size: 14px;
+      }
+      .currency-converter input[type="number"] {
+        -moz-appearance: textfield;
+      }
+      .currency-converter input::-webkit-outer-spin-button,
+      .currency-converter input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      .currency-converter p {
+        color: #d1d1d1;
+        font-size: 14px;
+        margin: 0;
+      }
+
+      /* Results Section */
+      .process-section {
+        position: relative;
+        background-color: #1a1a1a !important;
+        transition: margin-left 0.3s ease-in-out;
+      }
+      .stock-card {
+        color: #fff;
+        font-weight: 600;
+        border-radius: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeIn 0.5s ease-in;
+      }
+      .stock-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+      }
+      .stock-card.open {
+        background: linear-gradient(135deg, #28a745, #218838);
+      }
+      .stock-card.high {
+        background: linear-gradient(135deg, #ffc107, #e0a800);
+      }
+      .stock-card.low {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+      }
+      .stock-card.close {
+        background: linear-gradient(135deg, #007bff, #0069d9);
+      }
+      .stock-card.volume {
+        background: linear-gradient(135deg, #6f42c1, #5a32a3);
+      }
+      .chart-container {
+        background: #252525;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .stock-card .card-text {
+        color: #ffffff !important; /* Forces white, overrides any other styles */
+      }
+      .chart-container img {
+        border: 1px solid #444;
+        border-radius: 8px;
+        width: 100%;
+      }
+      .insights-card {
+        background: #333;
+        border: none;
+        border-radius: 10px;
+        height: 100%;
+        padding: 1.5rem;
+      }
+      .insights-card h5 {
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 1.25rem;
+      }
+      .insights-card p,
+      .insights-card ul {
+        color: #d1d1d1;
+        font-size: 0.95rem;
+      }
+      .insights-card ul {
+        padding-left: 20px;
+      }
+      .pred-table {
+        background: #252525;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .pred-table thead {
+        background: #1a1a1a;
+        color: #ffffff;
+      }
+      .pred-table tbody {
+        color: #e0e0e0;
+      }
+      .pred-table tbody tr:hover {
+        background: #3a3a3a;
+      }
+      .theme-btn.btn-one {
+        padding: 14px 35px;
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 8px;
+        background: #00b4d8;
+        border: none;
+        transition: background 0.3s ease;
+        display: inline-block;
+        width: auto;
+      }
+      .theme-btn.btn-one:hover {
+        background: #00e6ff;
+      }
+      .dropdown-menu {
+        background: #252525;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+      }
+      .dropdown-item {
+        color: #d1d1d1;
+        padding: 10px 20px;
+       
+        transition: background 0.3s ease;
+      }
+      .dropdown-item:hover {
+        background: #00b4d8;
+        color: #fff;
+      }
+      .dropdown-item.text-danger {
+        color: #dc3545 !important;
+      }
+      .dropdown-item.text-danger:hover {
+        background: #dc3545;
+        color: #fff !important;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive Adjustments */
+      @media (max-width: 991px) {
         .startbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            z-index: 1000;
-            width: 280px;
-            background: #252525;
-            color: #fff;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            transform: translateX(0); /* Fixed by default */
-            transition: transform 0.3s ease-in-out;
+          transform: translateX(-100%);
         }
-        .startbar:not(.active) {
-            transform: translateX(-100%);
+        .startbar.active {
+          transform: translateX(0);
         }
-        .startbar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        }
-        .startbar-overlay.active {
-            display: block;
-        }
-        .startbar .brand {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .startbar .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: #fff;
-            text-decoration: none;
-            text-transform: uppercase;
-        }
-        .startbar-menu {
-            padding: 20px;
-        }
-        .startbar-collapse {
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .navbar-nav .menu-label {
-            font-size: 14px;
-            color: #d1d1d1;
-            padding: 10px 15px;
-            text-transform: uppercase;
-        }
-        .navbar-nav .nav-item .nav-link {
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            color: #fff;
-            font-size: 16px;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-        .navbar-nav .nav-item .nav-link:hover {
-            background: #00b4d8;
-            color: #fff;
-        }
-        .navbar-nav .nav-item .nav-link i {
-            margin-right: 10px;
-            font-size: 18px;
-        }
-        .currency-converter {
-            padding: 15px;
-        }
-        .currency-converter h6 {
-            color: #fff;
-            font-weight: 600;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        .currency-converter select, .currency-converter input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #444;
-            background: #333;
-            color: #fff;
-            font-size: 14px;
-        }
-        .currency-converter input[type="number"] {
-            -moz-appearance: textfield;
-        }
-        .currency-converter input::-webkit-outer-spin-button,
-        .currency-converter input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        .currency-converter p {
-            color: #d1d1d1;
-            font-size: 14px;
-            margin: 0;
-        }
-
-        /* Results Section */
         .process-section {
-            position: relative;
-            background-color: #1a1a1a !important;
-            transition: margin-left 0.3s ease-in-out;
+          margin-left: 0 !important;
         }
-        .stock-card {
-            color: #fff;
-            font-weight: 600;
-            border-radius: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeIn 0.5s ease-in;
-        }
-        .stock-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-        }
-        .stock-card.open { background: linear-gradient(135deg, #28a745, #218838); }
-        .stock-card.high { background: linear-gradient(135deg, #ffc107, #e0a800); }
-        .stock-card.low { background: linear-gradient(135deg, #dc3545, #c82333); }
-        .stock-card.close { background: linear-gradient(135deg, #007bff, #0069d9); }
-        .stock-card.volume { background: linear-gradient(135deg, #6f42c1, #5a32a3); }
-        .chart-container {
-            
-            background: #252525;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .stock-card .card-text {
-    color: #ffffff !important; /* Forces white, overrides any other styles */
-}
-        .chart-container img {
-            border: 1px solid #444;
-            border-radius: 8px;
-            width: 100%;
-        }
-        .insights-card {
-            background: #333;
-            border: none;
-            border-radius: 10px;
-            height: 100%;
-            padding: 1.5rem;
-        }
-        .insights-card h5 {
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 1.25rem;
-        }
-        .insights-card p, .insights-card ul {
-            color: #d1d1d1;
-            font-size: 0.95rem;
-        }
-        .insights-card ul {
-            padding-left: 20px;
-        }
-        .pred-table {
-            background: #252525;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .pred-table thead {
-            background: #1a1a1a;
-            color: #ffffff;
-        }
-        .pred-table tbody {
-            color: #e0e0e0;
-        }
-        .pred-table tbody tr:hover {
-            background: #3a3a3a;
-        }
-        .theme-btn.btn-one {
-            padding: 14px 35px;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 8px;
-            background: #00b4d8;
-            border: none;
-            transition: background 0.3s ease;
-            display: inline-block;
-            width: auto;
-        }
-        .theme-btn.btn-one:hover {
-            background: #00e6ff;
-        }
-        .dropdown-menu {
-            background: #252525;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-        }
-        .dropdown-item {
-            color: #d1d1d1;
-            padding: 10px 20px;
-            transition: background 0.3s ease;
-        }
-        .dropdown-item:hover {
-            background: #00b4d8;
-            color: #fff;
-        }
-        .dropdown-item.text-danger {
-            color: #dc3545 !important;
-        }
-        .dropdown-item.text-danger:hover {
-            background: #dc3545;
-            color: #fff !important;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 991px) {
-            .startbar {
-                transform: translateX(-100%);
-            }
-            .startbar.active {
-                transform: translateX(0);
-            }
-            .process-section {
-                margin-left: 0 !important;
-            }
-        }
+      }
     </style>
-</body>
+  </body>
 </html>

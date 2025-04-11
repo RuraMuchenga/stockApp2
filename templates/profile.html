@@ -6,8 +6,8 @@
     <title>StockVision AI - Profile</title>
     <link rel="icon" href="{{ url_for('static', filename='images/icons/favicon.ico') }}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link href="{{ url_for('static', filename='assets/css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='assets/css/font-awesome-all.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='assets/css/dark.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='assets/css/module-css/header.css') }}" rel="stylesheet">
@@ -65,26 +65,78 @@
 
         <!-- Profile Section -->
         <section class="process-section pt_100 pb_100" style="margin-left: 280px;">
+            <div class="pattern-layer" style="background-image: url({{ url_for('static', filename='assets/images/shape/shape-24.png') }});"></div>
             <div class="auto-container">
                 <div class="sec-title light centred pb_60">
-                    <h2>Edit Profile</h2>
-                    <p>Update your account details below.</p>
+                    <span class="sub-title mb_14">Account Settings</span>
+                    <h2>Edit Your Profile</h2>
+                    <p>Manage your StockVision AI account details below.</p>
                 </div>
-                {% if error %}
-                    <div class="alert alert-danger">{{ error }}</div>
-                {% endif %}
-                <form method="POST" class="col-md-6 mx-auto">
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8 col-sm-12">
+                        <div class="form-box wow fadeInUp animated" data-wow-delay="00ms" data-wow-duration="1500ms">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} text-center mb-4">{{ message }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                            <form method="POST">
+                                <input type="hidden" name="action" value="update">
+                                <div class="form-group">
+                                    <label for="email">Email (Read-Only)</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username">Username</label>
+                                    <input type="text" class="form-control" id="username" name="username" value="{{ user_data.username or '' }}" placeholder="Enter username" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mobileNo">Mobile Number</label>
+                                    <input type="tel" class="form-control" id="mobileNo" name="mobileNo" value="{{ user_data.mobileNo or '' }}" placeholder="Enter mobile number" pattern="[0-9]{10}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new_password">New Password (Leave blank to keep current)</label>
+                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" minlength="6">
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm_password">Confirm New Password</label>
+                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm new password" minlength="6">
+                                </div>
+                                <div class="form-group btn-container">
+                                    <button type="submit" class="theme-btn btn-one">Save Changes <i class="fas fa-save ms-1"></i></button>
+                                    <a href="{{ url_for('index') }}" class="theme-btn btn-one">Back to Dashboard <i class="fas fa-arrow-left ms-1"></i></a>
+                                    <button type="button" class="theme-btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Account <i class="fas fa-trash-alt ms-1"></i></button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <button type="submit" class="theme-btn btn-one">Save Changes</button>
-                        <a href="{{ url_for('index') }}" class="theme-btn btn-one ms-3">Back to Dashboard</a>
-                    </div>
-                </form>
+                </div>
             </div>
         </section>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background: #252525; color: #fff;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Confirm Account Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete your account? This action cannot be undone.
+                    </div>
+                    <div class="modal-footer">
+                        <form method="POST">
+                            <input type="hidden" name="action" value="delete">
+                            <button type="button" class="theme-btn btn-one" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="theme-btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Footer -->
         <footer class="main-footer">
@@ -100,29 +152,169 @@
 
     <script src="{{ url_for('static', filename='assets/js/jquery.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/wow.js') }}"></script>
     <style>
-        body.dark-mode { background-color: #1a1a1a !important; color: #ffffff !important; }
-        .boxed_wrapper.dark_home { background-color: #1a1a1a !important; }
-        .process-section { background-color: #1a1a1a !important; }
-        .startbar {
-            position: fixed; top: 0; left: 0; height: 100%; z-index: 1000; width: 280px;
-            background: #252525; color: #fff; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        /* Dark Mode Base */
+        body.dark-mode {
+            background-color: #1a1a1a !important;
+            color: #ffffff !important;
         }
-        .startbar .brand { padding: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        .startbar .logo { font-size: 24px; font-weight: 700; color: #fff; text-decoration: none; text-transform: uppercase; }
-        .startbar-menu { padding: 20px; }
-        .navbar-nav .nav-item .nav-link {
-            display: flex; align-items: center; padding: 12px 15px; color: #fff;
-            font-size: 16px; transition: background 0.3s ease;
+        .boxed_wrapper.dark_home {
+            background-color: #1a1a1a !important;
         }
-        .navbar-nav .nav-item .nav-link:hover { background: #00b4d8; }
-        .navbar-nav .nav-item .nav-link i { margin-right: 10px; font-size: 18px; }
+
+        /* Process Section */
+        .process-section {
+            position: relative;
+            background-color: #1a1a1a !important;
+        }
+        .form-box {
+            background: #252525;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .form-control {
+            background: #333;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .form-control:focus {
+            border-color: #00b4d8;
+            box-shadow: none;
+            outline: none;
+        }
+        .form-control[readonly] {
+            background: #222;
+            opacity: 0.7;
+        }
+        .form-control::placeholder {
+            color: #d1d1d1;
+        }
+        .btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
         .theme-btn.btn-one {
-            padding: 14px 35px; font-size: 18px; font-weight: 600; border-radius: 8px;
-            background: #00b4d8; border: none; transition: background 0.3s ease;
+            padding: 14px 35px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 8px;
+            background: #00b4d8;
+            border: none;
+            transition: background 0.3s ease;
+            display: inline-flex;
+            align-items: center;
         }
-        .theme-btn.btn-one:hover { background: #00e6ff; }
-        .form-control { background: #333; color: #fff; border: 1px solid #444; }
+        .theme-btn.btn-one:hover {
+            background: #00e6ff;
+        }
+        .theme-btn.btn-danger {
+            padding: 14px 35px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 8px;
+            background: #dc3545;
+            border: none;
+            transition: background 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        .theme-btn.btn-danger:hover {
+            background: #ff4d5e;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .alert-success {
+            background: #28a745;
+            border: none;
+        }
+        .alert-danger {
+            background: #dc3545;
+            border: none;
+        }
+
+        /* Sidebar Styling */
+        .startbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 1000;
+            width: 280px;
+            background: #252525;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        .startbar .brand {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .startbar .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .startbar-menu {
+            padding: 20px;
+        }
+        .navbar-nav .menu-label {
+            font-size: 14px;
+            color: #d1d1d1;
+            padding: 10px 15px;
+            text-transform: uppercase;
+        }
+        .navbar-nav .nav-item .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #fff;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+        .navbar-nav .nav-item .nav-link:hover {
+            background: #00b4d8;
+        }
+        .navbar-nav .nav-item .nav-link i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        /* Modal Styling */
+        .modal-content {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .modal-header, .modal-footer {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
     </style>
 </body>
 </html>
