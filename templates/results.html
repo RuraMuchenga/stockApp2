@@ -349,8 +349,8 @@
           <div class="contact-info">
             <h4>Contact Info</h4>
             <ul>
-              <li>Chicago 12, Melborne City, USA</li>
-              <li><a href="tel:+8801682648101">+88 01682648101</a></li>
+              <li>Harare, Zimbabwe</li>
+              <li><a href="tel:+263777503503">0777503503</a></li>
               <li>
                 <a href="mailto:info@stockvisionai.com"
                   >info@stockvisionai.com</a
@@ -465,7 +465,7 @@
         <div class="auto-container">
           <div class="sec-title light centred pb_60">
             <h2>Prediction Analysis for {{ stock_symbol }}</h2>
-            <p>Explore AI-driven insights for the next {{ pred_dates|length }} days.</p>
+            <p>Explore AI-driven insights for past performance and future trends.</p>
           </div>
 
           <!-- Stock Info Cards -->
@@ -493,8 +493,7 @@
               <div class="insights-card">
                 <h5>Prophet Model Insights</h5>
                 <p>
-                  Prophet leverages time-series trends and seasonality for
-                  robust forecasting.
+                  Prophet leverages time-series trends and seasonality for robust forecasting.
                 </p>
                 <ul>
                   <li><p>{{ prophet_reasons }}</p></li>
@@ -517,8 +516,7 @@
               <div class="insights-card">
                 <h5>XGBoost Model Insights</h5>
                 <p>
-                  XGBoost uses advanced technical indicators for dynamic
-                  predictions.
+                  XGBoost uses advanced technical indicators for dynamic predictions.
                 </p>
                 <ul>
                   <li><p>{{ xgboost_reasons }}</p></li>
@@ -541,8 +539,7 @@
               <div class="insights-card">
                 <h5>LightGBM Model Insights</h5>
                 <p>
-                  LightGBM provides efficient and accurate predictions using
-                  gradient boosting.
+                  LightGBM provides efficient and accurate predictions using gradient boosting.
                 </p>
                 <ul>
                   <li><p>{{ lightgbm_reasons }}</p></li>
@@ -565,8 +562,7 @@
               <div class="insights-card">
                 <h5>Combined Model Insights</h5>
                 <p>
-                  Combines Prophet, XGBoost, and LightGBM for a balanced
-                  forecast.
+                  Combines Prophet, XGBoost, and LightGBM for a balanced forecast.
                 </p>
                 <ul>
                   <li>Averages all models for stability.</li>
@@ -577,11 +573,74 @@
             </div>
           </div>
 
-          <!-- Predictions Table -->
+          <!-- Past Predictions Table -->
           <div class="sec-title light centred mb_30">
-            <h3>{{ pred_dates|length }}-Day Forecast</h3>
+            <h3>Past 10 Days: Actual vs Predicted Prices</h3>
           </div>
-          <div class="row justify-content-center">
+          <div class="row justify-content-center mb_60">
+            <div class="col-md-10">
+              <table class="table pred-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Actual Price</th>
+                    <th scope="col">Prophet Predicted</th>
+                    <th scope="col">XGBoost Predicted</th>
+                    <th scope="col">LightGBM Predicted</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if past_predictions|length > 0 %}
+                  {% for pred in past_predictions %}
+                  <tr>
+                    <td>{{ pred.date }}</td>
+                    <td>
+                      {% if pred.actual_price is defined and pred.actual_price != 0 %}
+                        {{ pred.actual_price | round(2) }}
+                      {% else %}
+                        N/A
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if pred.prophet_pred is defined and pred.prophet_pred != 0 %}
+                        {{ pred.prophet_pred | round(2) }}
+                      {% else %}
+                        N/A
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if pred.xgboost_pred is defined and pred.xgboost_pred != 0 %}
+                        {{ pred.xgboost_pred | round(2) }}
+                      {% else %}
+                        N/A
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if pred.lightgbm_pred is defined and pred.lightgbm_pred != 0 %}
+                        {{ pred.lightgbm_pred | round(2) }}
+                      {% else %}
+                        N/A
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  {% else %}
+                  <tr>
+                    <td colspan="5" class="text-center">
+                      No past predictions available
+                    </td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Future Predictions Table -->
+          <div class="sec-title light centred mb_30">
+            <h3>2-Day Forecast</h3>
+          </div>
+          <div class="row justify-content-center mb_60">
             <div class="col-md-10">
               <table class="table pred-table">
                 <thead>
@@ -599,28 +658,28 @@
                   <tr>
                     <td>{{ pred_dates[i] }}</td>
                     <td>
-                      {% if i < prophet_preds|length and prophet_preds[i] is defined %}
+                      {% if i < prophet_preds|length and prophet_preds[i] is defined and prophet_preds[i] != 0 %}
                         {{ prophet_preds[i] | round(2) }}
                       {% else %}
                         N/A
                       {% endif %}
                     </td>
                     <td>
-                      {% if i < xgboost_preds|length and xgboost_preds[i] is defined %}
+                      {% if i < xgboost_preds|length and xgboost_preds[i] is defined and xgboost_preds[i] != 0 %}
                         {{ xgboost_preds[i] | round(2) }}
                       {% else %}
                         N/A
                       {% endif %}
                     </td>
                     <td>
-                      {% if i < lightgbm_preds|length and lightgbm_preds[i] is defined %}
+                      {% if i < lightgbm_preds|length and lightgbm_preds[i] is defined and lightgbm_preds[i] != 0 %}
                         {{ lightgbm_preds[i] | round(2) }}
                       {% else %}
                         N/A
                       {% endif %}
                     </td>
                     <td>
-                      {% if i < combined_preds|length and combined_preds[i] is defined %}
+                      {% if i < combined_preds|length and combined_preds[i] is defined and combined_preds[i] != 0 %}
                         {{ combined_preds[i] | round(2) }}
                       {% else %}
                         N/A
@@ -637,42 +696,12 @@
                   {% endif %}
                 </tbody>
               </table>
-
-              <div class="sec-title light centred mb_30">
-                <h3>Past 10 Days: Actual vs Predicted Prices</h3>
-            </div>
-            <div class="row justify-content-center">
-              <div class="col-md-10">
-              <table class="table pred-table">
-                  <thead>
-                      <tr>
-                          <th>Date</th>
-                          <th>Actual Price</th>
-                          <th>Prophet Predicted</th>
-                          <th>XGBoost Predicted</th>
-                          <th>LightGBM Predicted</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {% for pred in past_predictions %}
-                      <tr>
-                          <td>{{ pred.date }}</td>
-                          <td>{{ pred.actual_price | round(2) if pred.actual_price != 0 else 'N/A' }}</td>
-                          <td>{{ pred.prophet_pred | round(2) if pred.prophet_pred != 0 else 'N/A' }}</td>
-                          <td>{{ pred.xgboost_pred | round(2) if pred.xgboost_pred != 0 else 'N/A' }}</td>
-                          <td>{{ pred.lightgbm_pred | round(2) if pred.lightgbm_pred != 0 else 'N/A' }}</td>
-                      </tr>
-                      {% endfor %}
-                  </tbody>
-              </table>
-            </div>
-          </div>  
             </div>
           </div>
 
           <!-- Back Button -->
           <div class="text-center mt_50 mb_30">
-            <a href="/" class="theme-btn btn-one">Logout</a>
+            <a href="{{ url_for('index') }}" class="theme-btn btn-one">Back to Dashboard</a>
           </div>
         </div>
       </section>
@@ -687,7 +716,6 @@
                 <a href="{{ url_for('home') }}">StockVision AI</a>. All rights
                 reserved.
               </p>
-              
             </div>
           </div>
         </div>
@@ -726,7 +754,7 @@
     <!-- Inline Scripts -->
     <script>
       $(document).ready(function () {
-        // Sidebar Toggle (Optional, since it's fixed by default)
+        // Sidebar Toggle
         $("#togglemenu").on("click", function () {
           $(".startbar").toggleClass("active");
           $(".startbar-overlay").toggleClass("active");
@@ -977,6 +1005,12 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
+      .pred-table th,
+      .pred-table td {
+        padding: 12px;
+        text-align: center;
+        vertical-align: middle;
+      }
       .pred-table thead {
         background: #1a1a1a;
         color: #ffffff;
@@ -1009,7 +1043,6 @@
       .dropdown-item {
         color: #d1d1d1;
         padding: 10px 20px;
-       
         transition: background 0.3s ease;
       }
       .dropdown-item:hover {
@@ -1044,6 +1077,11 @@
         }
         .process-section {
           margin-left: 0 !important;
+        }
+        .pred-table th,
+        .pred-table td {
+          font-size: 14px;
+          padding: 8px;
         }
       }
     </style>
